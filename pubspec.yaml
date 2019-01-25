@@ -1,5 +1,5 @@
 name: ml_preprocessing
-description: Implementtaion of popular algorithms of data preprocessing for machine learning
+description: Implementaion of popular algorithms of data preprocessing for machine learning
 version: 1.0.0
 author: Ilia Gyrdymov <ilgyrd@gmail.com>
 homepage: https://github.com/gyrdym/ml_preprocessing
