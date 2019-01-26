@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/category_values_extractor_impl.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/category_values_extractor_impl.dart';
 import 'package:test/test.dart';
 
 void main() {

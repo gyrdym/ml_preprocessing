@@ -1,9 +1,9 @@
-import 'package:ml_preprocessing/src/categorical_encoder/category_values_extractor.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encode_unknown_strategy_type.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/one_hot_encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/ordinal_encoder.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/category_values_extractor.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/encode_unknown_strategy_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/one_hot_encoder.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/ordinal_encoder.dart';
 
 CategoricalDataEncoder createEncoder({
   EncodeUnknownValueStrategy strategy,

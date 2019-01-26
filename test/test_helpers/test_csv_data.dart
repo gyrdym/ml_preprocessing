@@ -3,9 +3,9 @@ import 'dart:typed_data';
 
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
-import 'package:ml_preprocessing/src/ml_data/float32x4_csv_ml_data.dart';
-import 'package:ml_preprocessing/src/ml_data/validator/ml_data_params_validator.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/encoder_factory.dart';
+import 'package:ml_preprocessing/src/raw_data_preprocessor/float32x4_csv_ml_data_preprocessor.dart';
+import 'package:ml_preprocessing/src/raw_data_preprocessor/validator/ml_data_params_validator.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
 
@@ -25,7 +25,7 @@ Future testCsvData({
   categoricalDataFactoryMock ??= createCategoricalDataEncoderFactoryMock();
   validatorMock ??= createMLDataParamsValidatorMock(validationShouldBeFailed: false);
 
-  final data = Float32x4CsvMLDataInternal.fromFile(fileName,
+  final data = Float32x4CsvMLDataPreprocessor.fromFile(fileName,
     labelIdx: labelIdx,
     columns: columns,
     rows: rows,

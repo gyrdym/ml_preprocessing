@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encode_unknown_strategy_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_encoder/encode_unknown_strategy_type.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
