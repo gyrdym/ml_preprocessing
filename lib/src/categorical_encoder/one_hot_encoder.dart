@@ -1,36 +1,22 @@
-import 'package:ml_preprocessing/src/categorical_encoder/category_values_extractor.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/category_values_extractor_impl.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encode_unknown_strategy_type.dart';
+import 'dart:typed_data';
+
+import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder_mixin.dart';
 
-class OneHotEncoder implements CategoricalDataEncoder {
-  @override
-  final EncodeUnknownValueStrategy encodeUnknownValueStrategy;
-
-  final CategoryValuesExtractor _valuesExtractor;
-
-  List<Object> _values;
-
-  OneHotEncoder({
-    this.encodeUnknownValueStrategy = EncodeUnknownValueStrategy.throwError,
-    CategoryValuesExtractor valuesExtractor = const CategoryValuesExtractorImpl<Object>(),
-  }) : _valuesExtractor = valuesExtractor;
+class OneHotEncoder with EncoderMixin implements CategoricalDataEncoder {
+  OneHotEncoder([Type dtype = Float32x4]) : dtype = dtype;
 
   @override
-  List<double> encode(Object value) {
-    if (!_values.contains(value)) {
-      if (encodeUnknownValueStrategy == EncodeUnknownValueStrategy.throwError) {
-        throw UnsupportedError('One hot encoding: unknown value `$value`');
-      } else {
-        return List<double>.filled(_values.length, 0.0);
-      }
-    }
-    final targetIdx = _values.indexOf(value);
-    return List<double>.generate(_values.length, (int idx) => idx == targetIdx ? 1.0 : 0.0);
-  }
+  final Type dtype;
 
   @override
-  void setCategoryValues(List<Object> values) {
-    _values ??= _valuesExtractor.extractCategoryValues(values);
+  Vector encodeLabel(String value, Iterable<String> categoryLabels) {
+    final valueIdx = categoryLabels.toList(growable: false).indexOf(value);
+    final encodedCategorySource = List<double>.generate(
+        categoryLabels.length,
+            (int idx) => idx == valueIdx ? 1.0 : 0.0
+    );
+    return Vector.from(encodedCategorySource, dtype: dtype);
   }
 }
