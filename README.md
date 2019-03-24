@@ -5,9 +5,11 @@
 
 # ml_preprocessing
 
+Data preprocessing algorithms in Dart
+
 ## What is data preprocessing?
 
-Data preprocessing is a set of techniques for data preparation before one can use the data in Machine Learning algorithms.
+*Data preprocessing* is a set of techniques for data preparation before one can use the data in Machine Learning algorithms.
 
 ## Why does it needed?
 
@@ -28,11 +30,11 @@ Let's say, you have a dataset:
 ````
 
 Everything seems good for now. Say, you're about to train a classifier to predict if a person has diabetes. 
-But there is an obstacle - how can it possible to use a data in mathematical equations with string-value columns 
+But there is an obstacle - how can it possible to use the data in mathematical equations with string-value columns 
 (`Gender`, `Country`)? And things are getting even worse because of an empty (N/A) value in `Diabetes` column. There 
 should be a way to convert this data to a valid numeric representation. Here data preprocessing techniques come to play. 
 You should decide, how to convert string data (aka *categorical data*) to numbers and how to treat empty values. Of 
-course, you can come across with your own unique algorithms to do all of these operations, but, actually, there are a 
+course, you can come up with your own unique algorithms to do all of these operations, but, actually, there are a 
 bunch of well-known well-performed techniques for doing all the conversions.      
 
 ## [`DataFrame`](https://github.com/gyrdym/ml_preprocessing/blob/master/lib/src/data_frame/data_frame.dart)
