@@ -4,15 +4,12 @@
 [![Gitter Chat](https://badges.gitter.im/gyrdym/gyrdym.svg)](https://gitter.im/gyrdym/)
 
 # ml_preprocessing
-
-Data preprocessing algorithms in Dart
+Data preprocessing algorithms
 
 ## What is data preprocessing?
-
 *Data preprocessing* is a set of techniques for data preparation before one can use the data in Machine Learning algorithms.
 
 ## Why does it needed?
-
 Let's say, you have a dataset:
 
 ````
@@ -37,7 +34,15 @@ You should decide, how to convert string data (aka *categorical data*) to number
 course, you can come up with your own unique algorithms to do all of these operations, but, actually, there are a 
 bunch of well-known well-performed techniques for doing all the conversions.      
 
-## [`DataFrame`](https://github.com/gyrdym/ml_preprocessing/blob/master/lib/src/data_frame/data_frame.dart)
+In this library, all the data preprocessing operations are narrowed to just one entity - `DataFrame`.
+
+## DataFrame
+[`DataFrame`](https://github.com/gyrdym/ml_preprocessing/blob/master/lib/src/data_frame/data_frame.dart)
 Factory, that creates instances of different adapters for data. For example, one can create a csv reader, that makes 
 work with csv data easier: it's just needed to point, where a dataset resides and then get features and labels in 
-convenient data science friendly format.
+convenient data science friendly format. Also one can specify, how to treat categorical data.
+
+## Usage
+Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/mehdidag/black-friday) 
+dataset. It's pretty interesting data with huge amount of observations (538000 rows) and good number of categorical 
+features.
