@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ml_preprocessing/categorical_data_encoder_type.dart';
-import 'package:ml_preprocessing/float32x4_csv_ml_data.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:tuple/tuple.dart';
 
 Future main() async {
@@ -13,7 +13,7 @@ Future main() async {
   // and column `country` will be encoded with Ordinal encoder
   // `rows: [Tuple2<int, int>(0, 6)]` means, that we want to read range of the csv's rows from 0 to 6th line
   // `columns: [Tuple2<int, int>(0, 3)]` means, that we want to read range of the csv's columns from 0 to third columns
-  final data = Float32x4CsvMLData.fromFile('example/dataset.csv', labelIdx: 3,
+  final data = DataFrame.fromCsv('example/dataset.csv', labelIdx: 3,
     headerExists: true,
     categoryNameToEncoder: {
       'position': CategoricalDataEncoderType.oneHot,
