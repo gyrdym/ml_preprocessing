@@ -29,7 +29,7 @@ Let's say, you have a dataset:
 Everything seems good for now. Say, you're about to train a classifier to predict if a person has diabetes. 
 But there is an obstacle - how can it possible to use the data in mathematical equations with string-value columns 
 (`Gender`, `Country`)? And things are getting even worse because of an empty (N/A) value in `Diabetes` column. There 
-should be a way to convert this data to a valid numeric representation. Here data preprocessing techniques come to play. 
+should be a way to convert this data to a valid numerical representation. Here data preprocessing techniques come to play. 
 You should decide, how to convert string data (aka *categorical data*) to numbers and how to treat empty values. Of 
 course, you can come up with your own unique algorithms to do all of these operations, but, actually, there are a 
 bunch of well-known well-performed techniques for doing all the conversions.      
@@ -74,7 +74,7 @@ final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
 
 Apparently, it is needed to explain input parameters. 
 
-- **labelName** - name of column, that contains dependant variables
+- **labelName** - name of a column, that contains dependant variables
 - **columns** - a set of intervals, representing which columns one needs to read. The intervals are supposed to be 
 [closed](http://mathworld.wolfram.com/ClosedInterval.html)
 - **rows** - the same as **columns**, but in this case it's being described, which rows one needs to read
@@ -91,4 +91,4 @@ print(features);
 print(labels);
 ```` 
 
-We see in output just numerical data, that's exactly we wanted to reached.
+In output we will see just numerical data, that's exactly we wanted to reach.
