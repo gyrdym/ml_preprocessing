@@ -6,12 +6,15 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/data_frame/encoders_processor/encoders_processor.dart';
 
 class EncodersProcessorImpl implements EncodersProcessor {
-  EncodersProcessorImpl(this.header, this.encoderFactory,
-      [Type dtype = Float32x4]) : _dtype = dtype;
+  EncodersProcessorImpl(List<String> _columnNames, this._encoderFactory,
+      [Type dtype = Float32x4])
+      : _colNameToIdx = _columnNames.asMap().map(
+          (idx, name) => MapEntry(name, idx)),
+        _dtype = dtype;
 
   final Type _dtype;
-  final List<String> header;
-  final CategoricalDataEncoderFactory encoderFactory;
+  final Map<String, int> _colNameToIdx;
+  final CategoricalDataEncoderFactory _encoderFactory;
 
   @override
   Map<int, CategoricalDataEncoder> createEncoders(
@@ -20,27 +23,26 @@ class EncodersProcessorImpl implements EncodersProcessor {
   ) {
     if (indexesToEncoderTypes.isNotEmpty) {
       return _createEncodersFromIndexToEncoder(indexesToEncoderTypes);
-    } else if (header.isNotEmpty && namesToEncoderTypes.isNotEmpty) {
+    } else if (_colNameToIdx.isNotEmpty && namesToEncoderTypes.isNotEmpty) {
       return _createEncodersFromNameToEncoder(namesToEncoderTypes);
     }
     return {};
   }
 
   Map<int, CategoricalDataEncoder> _createEncodersFromNameToEncoder(
-          Map<String, CategoricalDataEncoderType> nameToEncoder) {
-    final indexToEncoder = <int, CategoricalDataEncoder>{};
-    for (int i = 0; i < header.length; i++) {
-      if (nameToEncoder.containsKey(header[i])) {
-        indexToEncoder[i] =
-            encoderFactory.fromType(nameToEncoder[header[i]], _dtype);
+          Map<String, CategoricalDataEncoderType> nameToEncoder) =>
+    nameToEncoder.map((colName, encoderType) {
+      if (!_colNameToIdx.containsKey(colName)) {
+        throw Exception('Column named `$colName` does not exist, please, '
+            'double check your dataset column names');
       }
-    }
-    return indexToEncoder;
-  }
+      final idx = _colNameToIdx[colName];
+      final encoder = _encoderFactory.fromType(encoderType, _dtype);
+      return MapEntry(idx, encoder);
+    });
 
   Map<int, CategoricalDataEncoder> _createEncodersFromIndexToEncoder(
           Map<int, CategoricalDataEncoderType> indexToEncoderType) =>
     indexToEncoderType.map((idx, encoderType) =>
-        MapEntry<int, CategoricalDataEncoder>(idx,
-            encoderFactory.fromType(encoderType, _dtype)));
+        MapEntry(idx, _encoderFactory.fromType(encoderType, _dtype)));
 }

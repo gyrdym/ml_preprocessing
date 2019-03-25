@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
-import 'package:logging/logging.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
@@ -68,8 +67,6 @@ class CsvDataFrame implements DataFrame {
 
       CsvCodecFactory csvCodecFactory =
         const CsvCodecFactoryImpl(),
-
-      Logger logger,
     })  :
       _dtype = dtype ?? Float32x4,
       _csvCodec =

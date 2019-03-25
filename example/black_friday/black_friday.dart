@@ -12,7 +12,7 @@ Future processDataSetWithCategoricalData() async {
       'Age': CategoricalDataEncoderType.oneHot,
       'City_Category': CategoricalDataEncoderType.oneHot,
       'Stay_In_Current_City_Years': CategoricalDataEncoderType.oneHot,
-      'Martial_Status': CategoricalDataEncoderType.oneHot,
+      'Marital_Status': CategoricalDataEncoderType.oneHot,
     },
   );
 
@@ -20,10 +20,12 @@ Future processDataSetWithCategoricalData() async {
   final genderEncoded = features.submatrix(columns: Range(0, 2));
   final ageEncoded = features.submatrix(columns: Range(2, 9));
   final cityCategoryEncoded = features.submatrix(columns: Range(9, 12));
-  final stayInCityEncoded = features.submatrix(columns: Range(12, 16));
-//  final martialStatusEncoded = features.submatrix(columns: Range(16, 18));
+  final stayInCityEncoded = features.submatrix(columns: Range(12, 17));
+  final maritalStatusEncoded = features.submatrix(columns: Range(17, 19));
 
   print('Features:');
+
+  print(features);
 
   print('feature matrix dimensions: ${features.rowsNum} x '
       '${features.columnsNum};');
@@ -50,8 +52,8 @@ Future processDataSetWithCategoricalData() async {
 
   print('==============================');
 
-//  print('Martial status');
-//  print(martialStatusEncoded);
+  print('Martial status');
+  print(maritalStatusEncoded);
 }
 
 Future main() async {
