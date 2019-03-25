@@ -37,7 +37,6 @@ class CsvDataFrame implements DataFrame {
       int labelIdx,
       String labelName,
       bool headerExists = true,
-      Map<int, List<Object>> categoriesByIndexes,
       Map<String, CategoricalDataEncoderType> categories,
       Map<int, CategoricalDataEncoderType> categoryIndices,
       List<Tuple2<int, int>> rows,

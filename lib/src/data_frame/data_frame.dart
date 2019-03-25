@@ -22,14 +22,6 @@ abstract class DataFrame {
    * [headerExists] Indicates, whether the csv-file header (a sequence of
    * column names) exists or not
    *
-   * [categoriesByIndexes] Categories' column indexes and all the categories'
-   * possible values. Use it, if you know in advance all the categorical values.
-   * If [categories] or [categoriesByIndexes] are provided, data will be
-   * processed much faster
-   *
-   * [categoriesByIndexes] Categories' column indexes and all their possible
-   * values
-   *
    * [categories] A map, that links category name to the encoder
    * type, which will be used to encode this column's values
    *
@@ -52,7 +44,6 @@ abstract class DataFrame {
     String labelName,
     bool headerExists,
     String fieldDelimiter,
-    Map<int, List<String>> categoriesByIndexes,
     Map<String, CategoricalDataEncoderType> categories,
     Map<int, CategoricalDataEncoderType> categoryIndices,
     List<Tuple2<int, int>> rows,
