@@ -35,6 +35,8 @@ class VariablesExtractorImpl implements VariablesExtractor {
   final ToFloatNumberConverter _toFloatConverter;
   final List<List<Object>> _observations;
 
+  bool get _hasCategoricalData => _encoders.isNotEmpty;
+
   Tuple2<Matrix, Matrix> _data;
 
   @override
@@ -57,8 +59,13 @@ class VariablesExtractorImpl implements VariablesExtractor {
     // key here is a zero-based number of column in the [records]
     final Map<int, List<double>> numericalColumns = {};
 
-    for (int i = 0; i < _rowsMask.length; i++) {
-      if (_rowsMask[i] == true) {
+    final rowsNumber = _hasCategoricalData
+        ? _observations.length : _rowsMask.length;
+
+    for (int i = 0; i < rowsNumber; i++) {
+      // if categories exist - iterate through the whole data to collect all the
+      // categorical values in order to fit categorical data encoders
+      if (_hasCategoricalData || _rowsMask[i] == true) {
         final rowData = _processRow(_observations[i]);
         rowData.item1.forEach((idx, value) =>
             numericalColumns.putIfAbsent(idx, () => []).add(value));
@@ -66,6 +73,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
             categoricalColumns.putIfAbsent(idx, () => []).add(value));
       }
     }
+
     return Tuple2(numericalColumns, categoricalColumns);
   }
 
@@ -78,9 +86,9 @@ class VariablesExtractorImpl implements VariablesExtractor {
         continue;
       }
       if (_encoders.containsKey(i)) {
-        categoricalValues.putIfAbsent(i, () => row[i].toString());
+        categoricalValues[i] = row[i].toString();
       } else {
-        numericalValues.putIfAbsent(i, () => _toFloatConverter.convert(row[i]));
+        numericalValues[i] = _toFloatConverter.convert(row[i]);
       }
     }
     return Tuple2(numericalValues, categoricalValues);
@@ -109,9 +117,24 @@ class VariablesExtractorImpl implements VariablesExtractor {
     }
     return Tuple2(
         featureColumns.isNotEmpty
-            ? Matrix.columns(featureColumns, dtype: _dtype) : null,
+            ? _filterMatrix(Matrix.columns(featureColumns, dtype: _dtype))
+            : null,
         labelColumns.isNotEmpty
-            ? Matrix.columns(labelColumns, dtype: _dtype) : null
+            ? _filterMatrix(Matrix.columns(labelColumns, dtype: _dtype))
+            : null
     );
+  }
+
+  Matrix _filterMatrix(Matrix data) {
+    if (!_hasCategoricalData) {
+      return data;
+    }
+    final source = <Vector>[];
+    for (int i = 0; i < _rowsMask.length; i++) {
+      if (_rowsMask[i] == true) {
+        source.add(data.getRow(i));
+      }
+    }
+    return Matrix.rows(source);
   }
 }
