@@ -1,36 +1,19 @@
-import 'package:ml_preprocessing/src/categorical_encoder/category_values_extractor.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/category_values_extractor_impl.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encode_unknown_strategy_type.dart';
+import 'dart:typed_data';
+
+import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder_mixin.dart';
 
-class OrdinalEncoder implements CategoricalDataEncoder {
-  @override
-  final EncodeUnknownValueStrategy encodeUnknownValueStrategy;
-
-  final CategoryValuesExtractor _valuesExtractor;
-
-  List<Object> _values;
-
-  OrdinalEncoder({
-    this.encodeUnknownValueStrategy = EncodeUnknownValueStrategy.throwError,
-    CategoryValuesExtractor valuesExtractor = const CategoryValuesExtractorImpl<Object>(),
-  }) : _valuesExtractor = valuesExtractor;
+class OrdinalEncoder with EncoderMixin implements CategoricalDataEncoder {
+  OrdinalEncoder([Type dtype = Float32x4]) : dtype = dtype;
 
   @override
-  Iterable<double> encode(Object value) {
-    if (!_values.contains(value)) {
-      if (encodeUnknownValueStrategy == EncodeUnknownValueStrategy.throwError) {
-        throw UnsupportedError('Ordinal encoding: unsupported value `$value`');
-      } else {
-        return [0.0];
-      }
-    }
-    final ordinalNum = _values.indexOf(value).toDouble();
-    return [ordinalNum + 1]; // plus one - to avoid zero value. Zero is reserved for unknown values
-  }
+  final Type dtype;
 
   @override
-  void setCategoryValues(List<Object> values) {
-    _values ??= _valuesExtractor.extractCategoryValues(values);
+  Vector encodeLabel(String value, Iterable<String> categoryLabels) {
+    final ordinalNum = categoryLabels.toList(growable: false).indexOf(value)
+        .toDouble();
+    return Vector.from([ordinalNum], dtype: dtype);
   }
 }

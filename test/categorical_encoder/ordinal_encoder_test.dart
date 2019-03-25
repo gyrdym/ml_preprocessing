@@ -1,60 +1,84 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encode_unknown_strategy_type.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
-import 'package:mockito/mockito.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/ordinal_encoder.dart';
+import 'package:ml_linalg/matrix.dart';
 import 'package:test/test.dart';
 
-import '../mocks.dart';
-import '../test_helpers/create_encoder.dart';
-
 void main() {
-  group('Ordinal encoder', () {
-    final valuesExtractor = CategoryValuesExtractorMock();
-
-    tearDown(() {
-      clearInteractions(valuesExtractor);
+  group('OrdinalEncoder', () {
+    test('should encode categorical data, ordered collection of non-repeatable '
+        'labels', () {
+      final encoder = OrdinalEncoder();
+      expect(encoder.encode(['group A', 'group B', 'group C', 'group D']),
+        equals([
+          [0],
+          [1],
+          [2],
+          [3],
+        ]),
+      );
     });
 
-    test('should encode numeric categorical test_data', () {
-      when(valuesExtractor.extractCategoryValues(any)).thenReturn(<int>[20, 10]);
-      final encoder = createEncoder(strategy: EncodeUnknownValueStrategy.returnZeroes, extractor: valuesExtractor,
-          values: [], type: CategoricalDataEncoderType.ordinal);
-      expect(encoder.encode(20), equals([1]));
-      expect(encoder.encode(10), equals([2]));
+    test('should encode categorical data, unordered collection of unrepeatable'
+        'labels', () {
+      final encoder = OrdinalEncoder();
+      expect(encoder.encode(['group B', 'group D', 'group A', 'group C']),
+        equals([
+          [0],
+          [1],
+          [2],
+          [3],
+        ]),
+      );
     });
 
-    test('should encode string categorical test_data', () {
-      when(valuesExtractor.extractCategoryValues(any))
-          .thenReturn(<String>['group A', 'group B', 'group C', 'group D']);
-      final encoder = createEncoder(strategy: EncodeUnknownValueStrategy.returnZeroes, extractor: valuesExtractor,
-          values: [], type: CategoricalDataEncoderType.ordinal);
-      expect(encoder.encode('group A'), equals([1]));
-      expect(encoder.encode('group B'), equals([2]));
-      expect(encoder.encode('group C'), equals([3]));
-      expect(encoder.encode('group D'), equals([4]));
+    test('should encode categorical data, unordered collection of repeatable'
+        'labels', () {
+      final encoder = OrdinalEncoder();
+      expect(encoder.encode(['group B', 'group D', 'group B', 'group A',
+        'group C', 'group C', 'group A']),
+        equals([
+          [0],
+          [1],
+          [0],
+          [2],
+          [3],
+          [3],
+          [2],
+        ]),
+      );
     });
 
-    test('should encode boolean categorical test_data', () {
-      when(valuesExtractor.extractCategoryValues(any))
-          .thenReturn(<bool>[true, false]);
-      final encoder = createEncoder(strategy: EncodeUnknownValueStrategy.returnZeroes, extractor: valuesExtractor,
-          values: [], type: CategoricalDataEncoderType.ordinal);
-      expect(encoder.encode(true), equals([1]));
-      expect(encoder.encode(false), equals([2]));
+    test('should provide symmetrical encoding/decoding', () {
+      final encoder = OrdinalEncoder();
+      final encoded = encoder.encode(['group B', 'group D', 'group B', 'group A',
+        'group C', 'group C', 'group A']);
+      expect(encoder.decode(encoded), equals(['group B', 'group D', 'group B',
+        'group A', 'group C', 'group C', 'group A']));
     });
 
-    test('should throw an error if unknown value is passed and unknown value encoding strategy is `throwError`', () {
-      when(valuesExtractor.extractCategoryValues(any)).thenReturn(<int>[1, 2, 3, 4]);
-      final encoder = createEncoder(strategy: EncodeUnknownValueStrategy.throwError, extractor: valuesExtractor,
-          values: [], type: CategoricalDataEncoderType.ordinal);
-      expect(() => encoder.encode(234), throwsUnsupportedError);
+    test('should decode categorical data', () {
+      final encoder = OrdinalEncoder();
+      encoder.encode(['group B', 'group D', 'group B', 'group A',
+        'group C', 'group C', 'group A']);
+      expect(encoder.decode(Matrix.from([
+        [2.0],
+        [3.0],
+        [3.0],
+      ])), equals(['group A', 'group C', 'group C']));
     });
 
-    test(
-        'should return all zeroes if unknown value is passed and unknown value encoding strategy is `returnZeroes`', () {
-      when(valuesExtractor.extractCategoryValues(any)).thenReturn(<int>[10, 20]);
-      final encoder = createEncoder(strategy: EncodeUnknownValueStrategy.returnZeroes, extractor: valuesExtractor,
-          values: [], type: CategoricalDataEncoderType.ordinal);
-      expect(encoder.encode(21), equals([0]));
+    test('should throw an exception if one tries to decode nonexistent '
+        'category value', () {
+      final encoder = OrdinalEncoder();
+      encoder.encode(['group B', 'group D', 'group B', 'group A',
+      'group C', 'group C', 'group A']);
+      expect(() => encoder.decode(Matrix.from([
+        [25.0],
+      ])), throwsException);
+    });
+
+    test('should throw an error if an empty label list is passed', () {
+      final encoder = OrdinalEncoder();
+      expect(() => encoder.encode([]), throwsException);
     });
   });
 }

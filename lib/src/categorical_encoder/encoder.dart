@@ -1,33 +1,17 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encode_unknown_strategy_type.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/one_hot_encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/ordinal_encoder.dart';
+import 'package:ml_linalg/matrix.dart';
+import 'package:ml_linalg/vector.dart';
 
-/// A categorical data encoder. Contains names and values of the categories that supposed to be encoded and provides
-/// method for data encoding
+/// A categorical data encoder. Contains names and values of the categories
+/// that supposed to be encoded and provides method for data encoding
 abstract class CategoricalDataEncoder {
-  factory CategoricalDataEncoder.fromType(CategoricalDataEncoderType type,
-      [EncodeUnknownValueStrategy encodeUnknownValueStrategy]) {
-    switch (type) {
-      case CategoricalDataEncoderType.ordinal:
-        return CategoricalDataEncoder.ordinal(encodeUnknownValueStrategy: encodeUnknownValueStrategy);
-      case CategoricalDataEncoderType.oneHot:
-        return CategoricalDataEncoder.oneHot(encodeUnknownValueStrategy: encodeUnknownValueStrategy);
-      default:
-        throw Error();
-    }
-  }
+  Type get dtype;
 
-  factory CategoricalDataEncoder.oneHot({EncodeUnknownValueStrategy encodeUnknownValueStrategy}) = OneHotEncoder;
+  /// Encodes passed categorical values to a numerical representation
+  Matrix encode(Iterable<String> values);
 
-  factory CategoricalDataEncoder.ordinal({EncodeUnknownValueStrategy encodeUnknownValueStrategy}) = OrdinalEncoder;
+  /// Decodes passed categorical encoded data to a source string representation
+  Iterable<String> decode(Matrix values);
 
-  /// Specifies what to do with NaN(in numeric context)/null/empty or other unknown values for the particular category
-  EncodeUnknownValueStrategy get encodeUnknownValueStrategy;
-
-  /// Encodes passed categorical value to a numerical representation
-  Iterable<double> encode(Object value);
-
-  /// Find all unique values in the given list
-  void setCategoryValues(List<Object> values);
+  /// Encodes a single categorical label
+  Vector encodeLabel(String label, Iterable<String> categoryLabels);
 }
