@@ -13,6 +13,7 @@ Future testCsvWithCategories(
     int labelIdx,
     int rowNum,
     List<Tuple2<int, int>> columns,
+    List<Tuple2<int, int>> rows,
     Map<String, CategoricalDataEncoderType> categoryNameToEncoder,
     Map<int, CategoricalDataEncoderType> categoryIndexToEncoder,
     void testContentFn(Matrix features, Matrix labels, List<String> headers,
@@ -20,6 +21,7 @@ Future testCsvWithCategories(
   final dataFrame = CsvDataFrame.fromFile(fileName,
       labelIdx: labelIdx,
       columns: columns,
+      rows: rows,
       headerExists: headerExist,
       categoryNameToEncoder: categoryNameToEncoder,
       categoryIndexToEncoder: categoryIndexToEncoder,
@@ -73,6 +75,41 @@ void main() {
               [400],
               [500],
               [700]
+            ]));
+          });
+    });
+
+    test('should encode categorical data (`categoryNameToEncoder` parameter),'
+        'rows to read number is less than category values number',
+        () async {
+      // feature_1 - category values: value_1_1, value_1_2, value_1_3 -
+      // in total - 3 values, needed to read just 1 row
+      await testCsvWithCategories(
+          fileName: 'test/test_data/fake_data.csv',
+          labelIdx: 3,
+          rowNum: 1,
+          columns: [
+            const Tuple2(0, 3),
+          ],
+          rows: [
+            const Tuple2(0, 0),
+          ],
+          categoryNameToEncoder: {
+            'feature_1': CategoricalDataEncoderType.oneHot,
+            'feature_2': CategoricalDataEncoderType.ordinal,
+            'feature_3': CategoricalDataEncoderType.oneHot,
+          },
+          testContentFn: (features, labels, header, dataFrame) {
+            expect(header,
+                equals(['feature_1', 'feature_2', 'feature_3', 'score']));
+            expect(
+                features,
+                equals([
+                  //  feature 1     feature 2      feature 3
+                  [1.0, 0.0, 0.0, /**/ 0.0, /**/ 1.0, 0.0, 0.0],
+                ]));
+            expect(labels, equals([
+              [1],
             ]));
           });
     });

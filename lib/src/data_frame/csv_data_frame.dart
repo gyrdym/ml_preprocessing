@@ -145,7 +145,7 @@ class CsvDataFrame implements DataFrame {
     return _labels ??= _variablesExtractor.extractLabels();
   }
 
-  Future<Null> _init([Iterable<Tuple2<int, int>> rows,
+  Future<void> _init([Iterable<Tuple2<int, int>> rows,
     Iterable<Tuple2<int, int>> columns]) async {
     _data = await _extractData();
 
@@ -175,13 +175,11 @@ class CsvDataFrame implements DataFrame {
       ? data[0].map((dynamic el) => el.toString()).toList(growable: false)
       : <String>[];
 
-  Future<List<List<dynamic>>> _extractData() async {
-    final fileStream = _file.openRead();
-    return await (fileStream
+  Future<List<List<dynamic>>> _extractData() =>
+      _file.openRead()
         .transform(utf8.decoder)
         .transform(_csvCodec.decoder)
-        .toList());
-  }
+        .toList();
 
   int _getLabelIdx(List<String> originalHeader, int columnsNum) {
     if (_labelIdx != null) {
@@ -237,4 +235,8 @@ class CsvDataFrame implements DataFrame {
   }
 
   String _wrapErrorMessage(String text) => '$_loggerPrefix: $text';
+
+  @override
+  Future<DataFrame> shuffle() => throw UnimplementedError('Shuffle method is'
+      'not implemented yet');
 }

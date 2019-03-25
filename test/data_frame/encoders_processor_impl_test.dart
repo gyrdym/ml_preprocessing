@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import '../mocks.dart';
 
 void main() {
-  final header = ['country', 'gender', 'age', 'martial_status', 'salary'];
+  final header = ['country', 'gender', 'age', 'marital_status', 'salary'];
 
   group('EncodersProcessorImpl', () {
     test('should return empty map if there are no specific encoders provided '
@@ -27,7 +27,7 @@ void main() {
 
       final nameToEncoder = <String, CategoricalDataEncoderType>{
         'gender': CategoricalDataEncoderType.oneHot,
-        'martial_status': CategoricalDataEncoderType.oneHot,
+        'marital_status': CategoricalDataEncoderType.oneHot,
         'age': CategoricalDataEncoderType.ordinal,
         'country': CategoricalDataEncoderType.ordinal,
       };
@@ -49,7 +49,7 @@ void main() {
 
     test('should create encoders from `index-to-encoder` map if both maps ('
         'index to encoder and name to encoder) are provided (`index-to-encoder` '
-        'map has high priority)', () {
+        'map has higher priority)', () {
       final encoderFactory = createCategoricalDataEncoderFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
@@ -66,7 +66,7 @@ void main() {
         'country': CategoricalDataEncoderType.oneHot,
         'gender': CategoricalDataEncoderType.oneHot,
         'age': CategoricalDataEncoderType.ordinal,
-        'martial_status': CategoricalDataEncoderType.ordinal,
+        'marital_status': CategoricalDataEncoderType.ordinal,
       };
 
       when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
@@ -82,6 +82,31 @@ void main() {
         2: oneHotEncoderMock,
         3: oneHotEncoderMock,
       }));
+    });
+
+    test('should throw an error if inexistent column passed to be '
+        'processed', () {
+      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
+      final oneHotEncoderMock = OneHotEncoderMock();
+      final ordinalEncoderMock = OrdinalEncoderMock();
+
+      final nameToEncoder = <String, CategoricalDataEncoderType>{
+        'country': CategoricalDataEncoderType.oneHot,
+        'gender': CategoricalDataEncoderType.oneHot,
+        'age': CategoricalDataEncoderType.ordinal,
+        'city': CategoricalDataEncoderType.ordinal,
+      };
+
+      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+          .thenReturn(ordinalEncoderMock);
+      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+          .thenReturn(oneHotEncoderMock);
+
+      expect(
+        () => encoderProcessor.createEncoders({}, nameToEncoder),
+        throwsException
+      );
     });
   });
 }

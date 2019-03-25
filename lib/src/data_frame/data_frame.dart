@@ -87,4 +87,8 @@ abstract class DataFrame {
   ///
   /// [colIdx] - an index of encoded column
   Iterable<String> decode(Matrix column, {String colName, int colIdx});
+
+  /// Changes order of records in dataset and return new [DataFrame] with
+  /// newly ordered records
+  Future<DataFrame> shuffle();
 }
