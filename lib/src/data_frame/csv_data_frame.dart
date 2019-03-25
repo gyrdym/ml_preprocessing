@@ -38,8 +38,8 @@ class CsvDataFrame implements DataFrame {
       String labelName,
       bool headerExists = true,
       Map<int, List<Object>> categoriesByIndexes,
-      Map<String, CategoricalDataEncoderType> categoryNameToEncoder,
-      Map<int, CategoricalDataEncoderType> categoryIndexToEncoder,
+      Map<String, CategoricalDataEncoderType> categories,
+      Map<int, CategoricalDataEncoderType> categoryIndices,
       List<Tuple2<int, int>> rows,
       List<Tuple2<int, int>> columns,
 
@@ -75,8 +75,8 @@ class CsvDataFrame implements DataFrame {
       _labelIdx = labelIdx,
       _labelName = labelName,
       _headerExists = headerExists,
-      _nameToEncoderType = categoryNameToEncoder ?? {},
-      _indexToEncoderType = categoryIndexToEncoder ?? {},
+      _nameToEncoderType = categories ?? {},
+      _indexToEncoderType = categoryIndices ?? {},
       _encoderFactory = encoderFactory,
       _paramsValidator = paramsValidator,
       _valueConverter = valueConverter,
@@ -90,8 +90,8 @@ class CsvDataFrame implements DataFrame {
       rows: rows,
       columns: columns,
       headerExists: headerExists,
-      namesToEncoders: categoryNameToEncoder,
-      indexToEncoder: categoryIndexToEncoder,
+      namesToEncoders: categories,
+      indexToEncoder: categoryIndices,
     );
     if (errorMsg.isNotEmpty) {
       throw Exception(_wrapErrorMessage(errorMsg));

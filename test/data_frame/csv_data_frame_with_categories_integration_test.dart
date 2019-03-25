@@ -14,8 +14,8 @@ Future testCsvWithCategories(
     int rowNum,
     List<Tuple2<int, int>> columns,
     List<Tuple2<int, int>> rows,
-    Map<String, CategoricalDataEncoderType> categoryNameToEncoder,
-    Map<int, CategoricalDataEncoderType> categoryIndexToEncoder,
+    Map<String, CategoricalDataEncoderType> categories,
+    Map<int, CategoricalDataEncoderType> categoryIndices,
     void testContentFn(Matrix features, Matrix labels, List<String> headers,
         DataFrame dataFrame)}) async {
   final dataFrame = CsvDataFrame.fromFile(fileName,
@@ -23,8 +23,8 @@ Future testCsvWithCategories(
       columns: columns,
       rows: rows,
       headerExists: headerExist,
-      categoryNameToEncoder: categoryNameToEncoder,
-      categoryIndexToEncoder: categoryIndexToEncoder,
+      categories: categories,
+      categoryIndices: categoryIndices,
   );
   final header = await dataFrame.header;
   final features = await dataFrame.features;
@@ -38,7 +38,7 @@ Future testCsvWithCategories(
 
 void main() {
   group('CsvDataFrame', () {
-    test('should encode categorical data (`categoryNameToEncoder` parameter)',
+    test('should encode categorical data (`categories` parameter)',
         () async {
       await testCsvWithCategories(
           fileName: 'test/test_data/fake_data.csv',
@@ -47,7 +47,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryNameToEncoder: {
+          categories: {
             'feature_1': CategoricalDataEncoderType.oneHot,
             'feature_2': CategoricalDataEncoderType.ordinal,
             'feature_3': CategoricalDataEncoderType.oneHot,
@@ -79,7 +79,7 @@ void main() {
           });
     });
 
-    test('should encode categorical data (`categoryNameToEncoder` parameter),'
+    test('should encode categorical data (`categories` parameter),'
         'rows to read number is less than category values number',
         () async {
       // feature_1 - category values: value_1_1, value_1_2, value_1_3 -
@@ -94,7 +94,7 @@ void main() {
           rows: [
             const Tuple2(0, 0),
           ],
-          categoryNameToEncoder: {
+          categories: {
             'feature_1': CategoricalDataEncoderType.oneHot,
             'feature_2': CategoricalDataEncoderType.ordinal,
             'feature_3': CategoricalDataEncoderType.oneHot,
@@ -123,7 +123,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -163,7 +163,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -201,7 +201,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -230,7 +230,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -253,7 +253,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -275,7 +275,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -297,7 +297,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,
@@ -319,7 +319,7 @@ void main() {
           columns: [
             const Tuple2(0, 3),
           ],
-          categoryIndexToEncoder: {
+          categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
             1: CategoricalDataEncoderType.ordinal,
             2: CategoricalDataEncoderType.oneHot,

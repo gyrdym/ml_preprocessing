@@ -62,7 +62,7 @@ final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
   labelName: 'Purchase\r',
   columns: [const Tuple2(2, 3), const Tuple2(5, 7), const Tuple2(11, 11)],
   rows: [const Tuple2(0, 20)],
-  categoryNameToEncoder: {
+  categories: {
     'Gender': CategoricalDataEncoderType.oneHot,
     'Age': CategoricalDataEncoderType.oneHot,
     'City_Category': CategoricalDataEncoderType.oneHot,
@@ -78,7 +78,7 @@ Apparently, it is needed to explain input parameters.
 - **columns** - a set of intervals, representing which columns one needs to read. The intervals are supposed to be 
 [closed](http://mathworld.wolfram.com/ClosedInterval.html)
 - **rows** - the same as **columns**, but in this case it's being described, which rows one needs to read
-- **categoryNameToEncoder** - columns, which contains categorical data, and encoders we want these columns to be 
+- **categories** - columns, which contains categorical data, and encoders we want these columns to be 
 processed with. In this particular case we want to encode all the categorical columns with [one-hot encoder](https://en.wikipedia.org/wiki/One-hot)
 
 It's time to take a look at our processed data! Let's read it:
