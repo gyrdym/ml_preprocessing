@@ -9,7 +9,7 @@ Data preprocessing algorithms
 ## What is data preprocessing?
 *Data preprocessing* is a set of techniques for data preparation before one can use the data in Machine Learning algorithms.
 
-## Why does it needed?
+## Why is it needed?
 Let's say, you have a dataset:
 
 ````
@@ -37,15 +37,15 @@ bunch of well-known well-performed techniques for doing all the conversions.
 In this library, all the data preprocessing operations are narrowed to just one entity - `DataFrame`.
 
 ## DataFrame
-[`DataFrame`](https://github.com/gyrdym/ml_preprocessing/blob/master/lib/src/data_frame/data_frame.dart)
-Factory, that creates instances of different adapters for data. For example, one can create a csv reader, that makes 
+[`DataFrame`](https://github.com/gyrdym/ml_preprocessing/blob/master/lib/src/data_frame/data_frame.dart) is a
+factory, that creates instances of different adapters for data. For example, one can create a csv reader, that makes 
 work with csv data easier: it's just needed to point, where a dataset resides and then get features and labels in 
 convenient data science friendly format. Also one can specify, how to treat categorical data.
 
 ## A simple usage example
 Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/mehdidag/black-friday) 
-dataset. It's pretty interesting data with huge amount of observations (538000 rows) and good number of categorical 
-features.
+dataset. It's pretty interesting data with huge amount of observations (approx. 538000 rows) and a good number of 
+categorical features.
 
 First, import all necessary libraries:
 
@@ -91,4 +91,4 @@ print(features);
 print(labels);
 ```` 
 
-We see in output just numerical data, that's exactly we wanted to have.
+We see in output just numerical data, that's exactly we wanted to reached.
