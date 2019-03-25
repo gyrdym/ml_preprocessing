@@ -42,7 +42,53 @@ Factory, that creates instances of different adapters for data. For example, one
 work with csv data easier: it's just needed to point, where a dataset resides and then get features and labels in 
 convenient data science friendly format. Also one can specify, how to treat categorical data.
 
-## Usage
+## A simple usage example
 Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/mehdidag/black-friday) 
 dataset. It's pretty interesting data with huge amount of observations (538000 rows) and good number of categorical 
 features.
+
+First, import all necessary libraries:
+
+````dart
+import 'package:ml_linalg/range.dart';
+import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:tuple/tuple.dart';
+````
+
+Then, we should read the csv and create a data frame:
+
+````dart
+final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
+  labelName: 'Purchase\r',
+  columns: [const Tuple2(2, 3), const Tuple2(5, 7), const Tuple2(11, 11)],
+  rows: [const Tuple2(0, 20)],
+  categoryNameToEncoder: {
+    'Gender': CategoricalDataEncoderType.oneHot,
+    'Age': CategoricalDataEncoderType.oneHot,
+    'City_Category': CategoricalDataEncoderType.oneHot,
+    'Stay_In_Current_City_Years': CategoricalDataEncoderType.oneHot,
+    'Marital_Status': CategoricalDataEncoderType.oneHot,
+  },
+);
+````
+
+Apparently, it is needed to explain input parameters. 
+
+- **labelName** - name of column, that contains dependant variables
+- **columns** - a set of intervals, representing which columns one needs to read. The intervals are supposed to be 
+[closed](http://mathworld.wolfram.com/ClosedInterval.html)
+- **rows** - the same as **columns**, but in this case it's being described, which rows one needs to read
+- **categoryNameToEncoder** - columns, which contains categorical data, and encoders we want these columns to be 
+processed with. In this particular case we want to encode all the categorical columns with [one-hot encoder](https://en.wikipedia.org/wiki/One-hot)
+
+It's time to take a look at our processed data! Let's read it:
+
+````dart
+final features = await dataFrame.features;
+final labels = await = dataFrame.labels;
+
+print(features);
+print(labels);
+```` 
+
+We see in output just numerical data, that's exactly we wanted to have.
