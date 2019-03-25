@@ -30,10 +30,10 @@ abstract class DataFrame {
    * [categoriesByIndexes] Categories' column indexes and all their possible
    * values
    *
-   * [categoryNameToEncoder] A map, that links category name to the encoder
+   * [categories] A map, that links category name to the encoder
    * type, which will be used to encode this column's values
    *
-   * [categoryIndexToEncoder] A map, that links category's column index to the
+   * [categoryIndices] A map, that links category's column index to the
    * encoder type, which will be used to encode this column's values. It only
    * makes sense if [headerExists] is true
    *
@@ -53,8 +53,8 @@ abstract class DataFrame {
     bool headerExists,
     String fieldDelimiter,
     Map<int, List<String>> categoriesByIndexes,
-    Map<String, CategoricalDataEncoderType> categoryNameToEncoder,
-    Map<int, CategoricalDataEncoderType> categoryIndexToEncoder,
+    Map<String, CategoricalDataEncoderType> categories,
+    Map<int, CategoricalDataEncoderType> categoryIndices,
     List<Tuple2<int, int>> rows,
     List<Tuple2<int, int>> columns,
     Type dtype,

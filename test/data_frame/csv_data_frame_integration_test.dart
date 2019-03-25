@@ -150,7 +150,7 @@ void main() {
         labelName: 'some_unknown_column',
         columns: [const Tuple2(0, 3), const Tuple2(5, 7)],
         rows: [const Tuple2(0, 0)],
-        categoryNameToEncoder: {
+        categories: {
           'country': CategoricalDataEncoderType.oneHot,
           'confederation': CategoricalDataEncoderType.oneHot,
           'gdp_source': CategoricalDataEncoderType.oneHot,

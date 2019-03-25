@@ -7,7 +7,7 @@ Future processDataSetWithCategoricalData() async {
     labelName: 'Purchase\r',
     columns: [const Tuple2(2, 3), const Tuple2(5, 7), const Tuple2(11, 11)],
     rows: [const Tuple2(0, 20)],
-    categoryNameToEncoder: {
+    categories: {
       'Gender': CategoricalDataEncoderType.oneHot,
       'Age': CategoricalDataEncoderType.oneHot,
       'City_Category': CategoricalDataEncoderType.oneHot,

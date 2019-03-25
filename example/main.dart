@@ -11,7 +11,7 @@ Future main() async {
   //
   // `headerExists: true` means, that our csv-file has a header row
   //
-  // `categoryNameToEncoder: {...}` means, that we want to encode values of
+  // `categories: {...}` means, that we want to encode values of
   // `position`-column with one-hot encoder and column `country` will be
   // encoded with Ordinal encoder
   //
@@ -22,7 +22,7 @@ Future main() async {
   // the csv's columns from 0 to third columns
   final data = DataFrame.fromCsv('example/dataset.csv', labelIdx: 3,
     headerExists: true,
-    categoryNameToEncoder: {
+    categories: {
       'position': CategoricalDataEncoderType.oneHot,
       'country': CategoricalDataEncoderType.ordinal,
     },
