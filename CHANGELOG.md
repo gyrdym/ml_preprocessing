@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+- `xrange` library supported: it's possible to provide `ZRange` object now instead of `tuple2` to specify a range of 
+indices 
+
 ## 2.0.0
 - `DataFrame` introduced
 
