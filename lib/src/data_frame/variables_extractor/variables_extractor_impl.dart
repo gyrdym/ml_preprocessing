@@ -70,13 +70,13 @@ class VariablesExtractorImpl implements VariablesExtractor {
     final rowIndices = _hasCategoricalData
         ? ZRange.closedOpen(0, _observations.length).values() : _rowIndices;
 
-    for (final rowIdx in rowIndices) {
+    rowIndices.forEach((rowIdx) {
       final rowData = _processRow(_observations[rowIdx]);
       rowData.item1.forEach((idx, value) =>
           numericalColumns.putIfAbsent(idx, () => []).add(value));
       rowData.item2.forEach((idx, value) =>
           categoricalColumns.putIfAbsent(idx, () => []).add(value));
-    }
+    });
 
     return Tuple2(numericalColumns, categoricalColumns);
   }
