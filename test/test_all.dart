@@ -7,7 +7,7 @@ import 'data_frame/csv_data_frame_integration_test.dart' as csv_df_integration_t
 import 'data_frame/csv_data_frame_with_categories_integration_test.dart' as csv_df_with_categories_integration_test;
 import 'data_frame/encoders_processor_impl_test.dart' as encoder_processor_test;
 import 'data_frame/params_validator_impl_test.dart' as params_validator_test;
-import 'data_frame/read_mask_creator_impl_test.dart' as read_mask_creator_test;
+import 'data_frame/index_ranges_combiner_impl_test.dart' as index_ranges_combiner_test;
 
 void main() {
   encoder_factory_test.main();
@@ -19,5 +19,5 @@ void main() {
   csv_df_with_categories_integration_test.main();
   encoder_processor_test.main();
   params_validator_test.main();
-  read_mask_creator_test.main();
+  index_ranges_combiner_test.main();
 }

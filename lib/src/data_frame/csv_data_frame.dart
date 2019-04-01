@@ -58,7 +58,7 @@ class CsvDataFrame implements DataFrame {
       VariablesExtractorFactory featuresExtractorFactory =
         const VariablesExtractorFactoryImpl(),
 
-      IndexRangesCombinerFactory readMaskCreatorFactory =
+      IndexRangesCombinerFactory indexRangesCombinerFactory =
         const IndexRangesCombinerFactoryImpl(),
 
       EncodersProcessorFactory encodersProcessorFactory =
@@ -81,7 +81,7 @@ class CsvDataFrame implements DataFrame {
       _valueConverter = valueConverter,
       _headerExtractorFactory = headerExtractorFactory,
       _variablesExtractorFactory = featuresExtractorFactory,
-      _readMaskCreatorFactory = readMaskCreatorFactory,
+      _indexRangesCombinerFactory = indexRangesCombinerFactory,
       _encodersProcessorFactory = encodersProcessorFactory {
     final errorMsg = _paramsValidator.validate(
       labelIdx: labelIdx,
@@ -107,7 +107,7 @@ class CsvDataFrame implements DataFrame {
   final CategoricalDataEncoderFactory _encoderFactory;
   final DataFrameParamsValidator _paramsValidator;
   final ToFloatNumberConverter _valueConverter;
-  final IndexRangesCombinerFactory _readMaskCreatorFactory;
+  final IndexRangesCombinerFactory _indexRangesCombinerFactory;
   final DataFrameHeaderExtractorFactory _headerExtractorFactory;
   final VariablesExtractorFactory _variablesExtractorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
@@ -149,10 +149,10 @@ class CsvDataFrame implements DataFrame {
 
     final rowsNum = _data.length;
     final columnsNum = _data.last.length;
-    final readMaskCreator = _readMaskCreatorFactory.create();
-    final rowIndices = readMaskCreator.combine(
+    final indexRangesCombiner = _indexRangesCombinerFactory.create();
+    final rowIndices = indexRangesCombiner.combine(
         rows ?? [ZRange.closedOpen(0, rowsNum - (_headerExists ? 1 : 0))]);
-    final columnIndices = readMaskCreator
+    final columnIndices = indexRangesCombiner
         .combine(columns ?? [ZRange.closedOpen(0, columnsNum)]);
     final originalHeader = _getOriginalHeader(_data);
     final labelIdx = _getLabelIdx(originalHeader, columnsNum);
