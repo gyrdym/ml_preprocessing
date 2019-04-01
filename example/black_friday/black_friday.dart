@@ -1,12 +1,11 @@
-import 'package:ml_linalg/range.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
   final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
     labelName: 'Purchase\r',
-    columns: [const Tuple2(2, 3), const Tuple2(5, 7), const Tuple2(11, 11)],
-    rows: [const Tuple2(0, 20)],
+    columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
+    rows: [ZRange.closed(0, 20)],
     categories: {
       'Gender': CategoricalDataEncoderType.oneHot,
       'Age': CategoricalDataEncoderType.oneHot,
@@ -17,11 +16,12 @@ Future processDataSetWithCategoricalData() async {
   );
 
   final features = await dataFrame.features;
-  final genderEncoded = features.submatrix(columns: Range(0, 2));
-  final ageEncoded = features.submatrix(columns: Range(2, 9));
-  final cityCategoryEncoded = features.submatrix(columns: Range(9, 12));
-  final stayInCityEncoded = features.submatrix(columns: Range(12, 17));
-  final maritalStatusEncoded = features.submatrix(columns: Range(17, 19));
+  final genderEncoded = features.submatrix(columns: ZRange.closed(0, 1));
+  final ageEncoded = features.submatrix(columns: ZRange.closed(2, 8));
+  final cityCategoryEncoded = features.submatrix(columns: ZRange.closed(9, 11));
+  final stayInCityEncoded = features.submatrix(columns: ZRange.closed(12, 16));
+  final maritalStatusEncoded = features
+      .submatrix(columns: ZRange.closed(17, 18));
 
   print('Features:');
 
@@ -52,7 +52,7 @@ Future processDataSetWithCategoricalData() async {
 
   print('==============================');
 
-  print('Martial status');
+  print('Marital status');
   print(maritalStatusEncoded);
 }
 

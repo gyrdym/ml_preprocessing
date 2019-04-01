@@ -5,15 +5,15 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/data_frame/csv_data_frame.dart';
 import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:test/test.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 Future testCsvWithCategories(
     {String fileName,
     bool headerExist = true,
     int labelIdx,
     int rowNum,
-    List<Tuple2<int, int>> columns,
-    List<Tuple2<int, int>> rows,
+    List<ZRange> columns,
+    List<ZRange> rows,
     Map<String, CategoricalDataEncoderType> categories,
     Map<int, CategoricalDataEncoderType> categoryIndices,
     void testContentFn(Matrix features, Matrix labels, List<String> headers,
@@ -45,7 +45,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categories: {
             'feature_1': CategoricalDataEncoderType.oneHot,
@@ -89,10 +89,10 @@ void main() {
           labelIdx: 3,
           rowNum: 1,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           rows: [
-            const Tuple2(0, 0),
+            ZRange.closed(0, 0),
           ],
           categories: {
             'feature_1': CategoricalDataEncoderType.oneHot,
@@ -121,7 +121,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -161,7 +161,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -199,7 +199,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -228,7 +228,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -251,7 +251,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -273,7 +273,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -295,7 +295,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,
@@ -317,7 +317,7 @@ void main() {
           labelIdx: 3,
           rowNum: 7,
           columns: [
-            const Tuple2(0, 3),
+            ZRange.closed(0, 3),
           ],
           categoryIndices: {
             0: CategoricalDataEncoderType.oneHot,

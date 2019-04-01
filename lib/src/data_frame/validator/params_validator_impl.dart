@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/data_frame/validator/error_messages.dart';
 import 'package:ml_preprocessing/src/data_frame/validator/params_validator.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
   const DataFrameParamsValidatorImpl();
@@ -10,8 +10,8 @@ class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
   String validate({
     int labelIdx,
     String labelName,
-    Iterable<Tuple2<int, int>> rows,
-    Iterable<Tuple2<int, int>> columns,
+    Iterable<ZRange> rows,
+    Iterable<ZRange> columns,
     bool headerExists = true,
     Map<String, CategoricalDataEncoderType> namesToEncoders,
     Map<int, CategoricalDataEncoderType> indexToEncoder,
@@ -65,25 +65,19 @@ class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
     return DataFrameParametersValidationErrorMessages.noErrorMsg;
   }
 
-  String _validateRanges(Iterable<Tuple2<int, int>> ranges, [int labelIdx]) {
+  String _validateRanges(Iterable<ZRange> ranges, [int labelIdx]) {
     if (ranges == null || ranges.isEmpty == true) {
       return DataFrameParametersValidationErrorMessages.noErrorMsg;
     }
-    Tuple2<int, int> prevRange;
+    ZRange prevRange;
     bool isLabelInRanges = false;
 
     for (final range in ranges) {
-      if (range.item1 > range.item2) {
-        return DataFrameParametersValidationErrorMessages
-            .leftBoundGreaterThanRightMsg(range);
-      }
-      if (prevRange != null && prevRange.item2 >= range.item1) {
+      if (prevRange?.connectedTo(range) == true) {
         return DataFrameParametersValidationErrorMessages
             .intersectingRangesMsg(prevRange, range);
       }
-      if (labelIdx != null &&
-          labelIdx >= range.item1 &&
-          labelIdx <= range.item2) {
+      if (labelIdx != null && range.contains(labelIdx)) {
         isLabelInRanges = true;
       }
       prevRange = range;
