@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/data_frame/csv_data_frame.dart';
-import 'package:ml_linalg/matrix.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 /// A parser for raw data
 abstract class DataFrame {
@@ -46,8 +46,8 @@ abstract class DataFrame {
     String fieldDelimiter,
     Map<String, CategoricalDataEncoderType> categories,
     Map<int, CategoricalDataEncoderType> categoryIndices,
-    List<Tuple2<int, int>> rows,
-    List<Tuple2<int, int>> columns,
+    List<ZRange> rows,
+    List<ZRange> columns,
     Type dtype,
   }) = CsvDataFrame.fromFile;
 

@@ -6,30 +6,36 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor.dart';
 import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 class VariablesExtractorImpl implements VariablesExtractor {
-  VariablesExtractorImpl(this._observations, this._rowsMask, this._columnsMask,
-      this._encoders, this._labelIdx, this._toFloatConverter,
+  VariablesExtractorImpl(
+      this._observations,
+      this._columnIndices,
+      this._rowIndices,
+      this._encoders,
+      this._labelIdx,
+      this._toFloatConverter,
       [Type dtype = Float32x4]) : _dtype = dtype {
-    if (_columnsMask.length > _observations.first.length) {
-      throw Exception(columnsMaskWrongLengthMsg);
+    if (_columnIndices.length > _observations.first.length) {
+      throw Exception(columnIndicesWrongNumberMsg);
     }
-    if (_rowsMask.length > _observations.length) {
-      throw Exception(rowsMaskWrongLengthMsg);
+    if (_rowIndices.length > _observations.length) {
+      throw Exception(rowIndicesWrongNumberMsg);
     }
   }
 
-  static const String rowsMaskWrongLengthMsg =
-      'Rows mask length should not be greater than actual rows number in the '
+  static const String columnIndicesWrongNumberMsg =
+      'Column indices number should not be greater than actual columns number '
+      'in the dataset!';
+
+  static const String rowIndicesWrongNumberMsg =
+      'Row indices number should not be greater than actual rows number in the '
       'dataset!';
 
-  static const String columnsMaskWrongLengthMsg =
-      'Columns mask length should not be greater than actual columns number in '
-      'the dataset!';
-
   final Type _dtype;
-  final List<bool> _rowsMask;
-  final List<bool> _columnsMask;
+  final List<int> _rowIndices;
+  final List<int> _columnIndices;
   final Map<int, CategoricalDataEncoder> _encoders;
   final int _labelIdx;
   final ToFloatNumberConverter _toFloatConverter;
@@ -59,20 +65,18 @@ class VariablesExtractorImpl implements VariablesExtractor {
     // key here is a zero-based number of column in the [records]
     final Map<int, List<double>> numericalColumns = {};
 
-    final rowsNumber = _hasCategoricalData
-        ? _observations.length : _rowsMask.length;
+    // if categories exist - iterate through the whole data to collect all the
+    // categorical values in order to fit categorical data encoders
+    final rowIndices = _hasCategoricalData
+        ? ZRange.closedOpen(0, _observations.length).values() : _rowIndices;
 
-    for (int i = 0; i < rowsNumber; i++) {
-      // if categories exist - iterate through the whole data to collect all the
-      // categorical values in order to fit categorical data encoders
-      if (_hasCategoricalData || _rowsMask[i] == true) {
-        final rowData = _processRow(_observations[i]);
-        rowData.item1.forEach((idx, value) =>
-            numericalColumns.putIfAbsent(idx, () => []).add(value));
-        rowData.item2.forEach((idx, value) =>
-            categoricalColumns.putIfAbsent(idx, () => []).add(value));
-      }
-    }
+    rowIndices.forEach((rowIdx) {
+      final rowData = _processRow(_observations[rowIdx]);
+      rowData.item1.forEach((idx, value) =>
+          numericalColumns.putIfAbsent(idx, () => []).add(value));
+      rowData.item2.forEach((idx, value) =>
+          categoricalColumns.putIfAbsent(idx, () => []).add(value));
+    });
 
     return Tuple2(numericalColumns, categoricalColumns);
   }
@@ -81,16 +85,13 @@ class VariablesExtractorImpl implements VariablesExtractor {
       List<Object> row) {
     final Map<int, double> numericalValues = {};
     final Map<int, String> categoricalValues = {};
-    for (int i = 0; i < _columnsMask.length; i++) {
-      if (_columnsMask[i] == false) {
-        continue;
-      }
-      if (_encoders.containsKey(i)) {
-        categoricalValues[i] = row[i].toString();
+    _columnIndices.forEach((idx) {
+      if (_encoders.containsKey(idx)) {
+        categoricalValues[idx] = row[idx].toString();
       } else {
-        numericalValues[i] = _toFloatConverter.convert(row[i]);
+        numericalValues[idx] = _toFloatConverter.convert(row[idx]);
       }
-    }
+    });
     return Tuple2(numericalValues, categoricalValues);
   }
 
@@ -105,16 +106,18 @@ class VariablesExtractorImpl implements VariablesExtractor {
           ? labelColumns.add(vectorColumn)
           : featureColumns.add(vectorColumn);
     };
-    for (int i = 0; i < _columnsMask.length; i++) {
-      if (numericalColumns.containsKey(i)) {
-        updateColumns(i, Vector.from(numericalColumns[i], dtype: _dtype));
-      } else if (categoricalColumns.containsKey(i)) {
-        final encoded = _encoders[i].encode(categoricalColumns[i]);
+    _columnIndices.forEach((columnIdx) {
+      if (numericalColumns.containsKey(columnIdx)) {
+        updateColumns(columnIdx, Vector.from(numericalColumns[columnIdx],
+            dtype: _dtype));
+      } else if (categoricalColumns.containsKey(columnIdx)) {
+        final encoded = _encoders[columnIdx]
+            .encode(categoricalColumns[columnIdx]);
         for (int col = 0; col < encoded.columnsNum; col++) {
-          updateColumns(i, encoded.getColumn(col));
+          updateColumns(columnIdx, encoded.getColumn(col));
         }
       }
-    }
+    });
     return Tuple2(
         featureColumns.isNotEmpty
             ? _filterMatrix(Matrix.columns(featureColumns, dtype: _dtype))
@@ -126,15 +129,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
   }
 
   Matrix _filterMatrix(Matrix data) {
-    if (!_hasCategoricalData) {
-      return data;
-    }
-    final source = <Vector>[];
-    for (int i = 0; i < _rowsMask.length; i++) {
-      if (_rowsMask[i] == true) {
-        source.add(data.getRow(i));
-      }
-    }
-    return Matrix.rows(source);
+    if (!_hasCategoricalData) return data;
+    return Matrix.rows(_rowIndices.map(data.getRow).toList(growable: true));
   }
 }

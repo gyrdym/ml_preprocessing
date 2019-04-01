@@ -17,8 +17,8 @@ import 'package:ml_preprocessing/src/data_frame/encoders_processor/encoders_proc
 import 'package:ml_preprocessing/src/data_frame/header_extractor/header_extractor.dart';
 import 'package:ml_preprocessing/src/data_frame/header_extractor/header_extractor_factory.dart';
 import 'package:ml_preprocessing/src/data_frame/header_extractor/header_extractor_factory_impl.dart';
-import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator_factory.dart';
-import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator_factory_impl.dart';
+import 'package:ml_preprocessing/src/data_frame/index_ranges_combiner/index_ranges_combiner_factory.dart';
+import 'package:ml_preprocessing/src/data_frame/index_ranges_combiner/index_ranges_combiner_factory_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/validator/params_validator.dart';
@@ -26,7 +26,7 @@ import 'package:ml_preprocessing/src/data_frame/validator/params_validator_impl.
 import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor.dart';
 import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor_factory.dart';
 import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor_factory_impl.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 class CsvDataFrame implements DataFrame {
   CsvDataFrame.fromFile(String fileName, {
@@ -39,8 +39,8 @@ class CsvDataFrame implements DataFrame {
       bool headerExists = true,
       Map<String, CategoricalDataEncoderType> categories,
       Map<int, CategoricalDataEncoderType> categoryIndices,
-      List<Tuple2<int, int>> rows,
-      List<Tuple2<int, int>> columns,
+      List<ZRange> rows,
+      List<ZRange> columns,
 
       // private parameters, they are hidden by the factory
       CategoricalDataEncoderFactory encoderFactory =
@@ -58,8 +58,8 @@ class CsvDataFrame implements DataFrame {
       VariablesExtractorFactory featuresExtractorFactory =
         const VariablesExtractorFactoryImpl(),
 
-      DataFrameReadMaskCreatorFactory readMaskCreatorFactory =
-        const DataFrameReadMaskCreatorFactoryImpl(),
+      IndexRangesCombinerFactory indexRangesCombinerFactory =
+        const IndexRangesCombinerFactoryImpl(),
 
       EncodersProcessorFactory encodersProcessorFactory =
         const EncodersProcessorFactoryImpl(),
@@ -81,7 +81,7 @@ class CsvDataFrame implements DataFrame {
       _valueConverter = valueConverter,
       _headerExtractorFactory = headerExtractorFactory,
       _variablesExtractorFactory = featuresExtractorFactory,
-      _readMaskCreatorFactory = readMaskCreatorFactory,
+      _indexRangesCombinerFactory = indexRangesCombinerFactory,
       _encodersProcessorFactory = encodersProcessorFactory {
     final errorMsg = _paramsValidator.validate(
       labelIdx: labelIdx,
@@ -107,7 +107,7 @@ class CsvDataFrame implements DataFrame {
   final CategoricalDataEncoderFactory _encoderFactory;
   final DataFrameParamsValidator _paramsValidator;
   final ToFloatNumberConverter _valueConverter;
-  final DataFrameReadMaskCreatorFactory _readMaskCreatorFactory;
+  final IndexRangesCombinerFactory _indexRangesCombinerFactory;
   final DataFrameHeaderExtractorFactory _headerExtractorFactory;
   final VariablesExtractorFactory _variablesExtractorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
@@ -144,19 +144,16 @@ class CsvDataFrame implements DataFrame {
     return _labels ??= _variablesExtractor.extractLabels();
   }
 
-  Future<void> _init([Iterable<Tuple2<int, int>> rows,
-    Iterable<Tuple2<int, int>> columns]) async {
+  Future<void> _init([Iterable<ZRange> rows, Iterable<ZRange> columns]) async {
     _data = await _extractData();
 
     final rowsNum = _data.length;
     final columnsNum = _data.last.length;
-    final readMaskCreator = _readMaskCreatorFactory.create();
-
-    final rowsMask = readMaskCreator.create(
-        rows ?? [Tuple2(0, rowsNum - (_headerExists ? 2 : 1))]);
-    final columnsMask = readMaskCreator
-        .create(columns ?? [Tuple2(0, columnsNum - 1)]);
-
+    final indexRangesCombiner = _indexRangesCombinerFactory.create();
+    final rowIndices = indexRangesCombiner.combine(
+        rows ?? [ZRange.closedOpen(0, rowsNum - (_headerExists ? 1 : 0))]);
+    final columnIndices = indexRangesCombiner
+        .combine(columns ?? [ZRange.closedOpen(0, columnsNum)]);
     final originalHeader = _getOriginalHeader(_data);
     final labelIdx = _getLabelIdx(originalHeader, columnsNum);
     final records = _data.sublist(_headerExists ? 1 : 0);
@@ -165,9 +162,10 @@ class CsvDataFrame implements DataFrame {
 
     _encoders = encodersProcessor.createEncoders(_indexToEncoderType,
         _nameToEncoderType);
-    _headerExtractor = _headerExtractorFactory.create(columnsMask);
-    _variablesExtractor = _variablesExtractorFactory.create(records, rowsMask,
-        columnsMask, _encoders, labelIdx, _valueConverter, _dtype);
+    _headerExtractor = _headerExtractorFactory.create(columnIndices);
+    _variablesExtractor = _variablesExtractorFactory.create(records,
+        columnIndices, rowIndices, _encoders, labelIdx, _valueConverter,
+        _dtype);
   }
 
   List<String> _getOriginalHeader(List<List> data) => _headerExists

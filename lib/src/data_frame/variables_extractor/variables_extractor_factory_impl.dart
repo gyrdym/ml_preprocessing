@@ -10,12 +10,12 @@ class VariablesExtractorFactoryImpl implements VariablesExtractorFactory {
   @override
   VariablesExtractor create(
           List<List<Object>> records,
-          List<bool> rowMask,
-          List<bool> columnsMask,
+          List<int> columnIndices,
+          List<int> rowIndices,
           Map<int, CategoricalDataEncoder> encoders,
           int labelIdx,
           ToFloatNumberConverter valueConverter,
           Type dtype) =>
-      VariablesExtractorImpl(records, rowMask, columnsMask, encoders,
+      VariablesExtractorImpl(records, columnIndices, rowIndices, encoders,
           labelIdx, valueConverter, dtype);
 }

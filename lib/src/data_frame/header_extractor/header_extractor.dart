@@ -1,3 +1,3 @@
 abstract class DataFrameHeaderExtractor {
-  List<String> extract(List<List<dynamic>> data);
+  Iterable<String> extract(Iterable<Iterable<dynamic>> data);
 }

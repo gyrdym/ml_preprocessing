@@ -8,6 +8,6 @@ class DataFrameHeaderExtractorFactoryImpl implements
   const DataFrameHeaderExtractorFactoryImpl();
 
   @override
-  DataFrameHeaderExtractor create(List<bool> readMask) =>
-      DataFrameHeaderExtractorImpl(readMask);
+  DataFrameHeaderExtractor create(Iterable<int> indices) =>
+      DataFrameHeaderExtractorImpl(indices);
 }

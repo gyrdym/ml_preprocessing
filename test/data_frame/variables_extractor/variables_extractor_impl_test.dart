@@ -15,15 +15,15 @@ void main() {
   ];
 
   group('VariablesExtractorImpl', () {
-    test('should extract variables according to passed colum read mask', () {
-      final rowMask = <bool>[true, true, true, true];
-      final columnsMask = <bool>[true, false, true, false, true];
+    test('should extract variables according to passed colum indices', () {
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 2, 4];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
+      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final features = extractor.extractFeatures();
       final labels = extractor.extractLabels();
 
@@ -47,15 +47,15 @@ void main() {
       );
     });
 
-    test('should extract variables according to passed row read mask', () {
-      final rowMask = <bool>[true, false, false, true];
-      final columnsMask = <bool>[true, true, true, true, true];
+    test('should extract variables according to passed row indices', () {
+      final rowIndices = <int>[0, 3];
+      final columnsIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
+      final extractor = VariablesExtractorImpl(data, columnsIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final features = extractor.extractFeatures();
       final labels = extractor.extractLabels();
 
@@ -74,14 +74,14 @@ void main() {
 
     test('should consider index of a label column while extracting variables',
         () {
-      final rowMask = <bool>[true, true, true, true];
-      final columnsMask = <bool>[true, true, true, true, true];
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 1;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
+      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final features = extractor.extractFeatures();
       final labels = extractor.extractLabels();
 
@@ -111,16 +111,16 @@ void main() {
         [4000.0, 3000.0],
       ]));
 
-      final rowMask = <bool>[true, true, true, true];
-      final columnsMask = <bool>[true, true, true, true, true];
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncoder>{
         2: encoderMock,
       };
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
+      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final features = extractor.extractFeatures();
 
       expect(
@@ -142,17 +142,15 @@ void main() {
         [7000],
       ]));
 
-      final rowMask = <bool>[true, true, true, true];
-      final columnsMask = <bool>[true, true, true, true, true];
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 1, 2, 3, 4];
       final labelIdx = 4;
       final encoders = <int, CategoricalDataEncoder>{
         labelIdx: encoderMock,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
-
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
-
+      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final features = extractor.extractFeatures();
       final labels = extractor.extractLabels();
 
@@ -173,15 +171,15 @@ void main() {
       ]));
     });
 
-    test('should not throw an error if length of columns mask is less than '
+    test('should not throw an error if number of column indices is less than '
         'number of elements in an observation', () {
-      final rowMask = <bool>[true, true, true, true];
-      final columnsMask = <bool>[true, true, true];
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 1, 2];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
+      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final features = extractor.extractFeatures();
       final labels = extractor.extractLabels();
 
@@ -197,29 +195,29 @@ void main() {
       expect(labels, isNull);
     });
 
-    test('should throw an error if length of columns mask is greater than '
+    test('should throw an error if number of column indices is greater than '
         'number of elements in an observation', () {
-      final rowMask = <bool>[true, true, true, true];
-      final columnsMask = <bool>[true, true, true, true, true, true];
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 1, 2, 3, 4, 5];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
       expect(
-          () => VariablesExtractorImpl(data, rowMask, columnsMask,
+          () => VariablesExtractorImpl(data, columnIndices, rowIndices,
               encoders, labelIdx, valueConverter),
           throwsException);
     });
 
-    test('should not throw an error if length of rows mask is less than number '
-        'of rows in dataset', () {
-      final rowMask = <bool>[true, true, true];
-      final columnsMask = <bool>[true, true, true, true, true];
+    test('should not throw an error if number of row indices is less than '
+        'number of rows in dataset', () {
+      final rowIndices = <int>[0, 1, 2];
+      final columnsIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final extractor = VariablesExtractorImpl(data, rowMask,
-          columnsMask, encoders, labelIdx, valueConverter);
+      final extractor = VariablesExtractorImpl(data, columnsIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
       final actual = extractor.extractFeatures();
 
       expect(
@@ -231,16 +229,16 @@ void main() {
           ]));
     });
 
-    test('should throw an error if length of rows mask is greater than number '
-        'of rows in dataset', () {
-      final rowMask = <bool>[true, true, true, true, true, true];
-      final columnsMask = <bool>[true, true, true, true, true];
+    test('should throw an error if number of row indices is greater than '
+        'number of rows in dataset', () {
+      final rowIndices = <int>[0, 1, 2, 3, 4, 5];
+      final columnIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
       expect(
-          () => VariablesExtractorImpl(data, rowMask, columnsMask,
+          () => VariablesExtractorImpl(data, columnIndices, rowIndices,
               encoders, labelIdx, valueConverter),
           throwsException);
     });

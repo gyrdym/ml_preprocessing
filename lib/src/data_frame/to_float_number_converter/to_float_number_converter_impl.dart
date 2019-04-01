@@ -5,6 +5,9 @@ class ToFloatNumberConverterImpl implements ToFloatNumberConverter {
 
   @override
   double convert(Object value, [double fallbackValue = 0.0]) {
+    if (value == null) {
+      return fallbackValue;
+    }
     if (value is String) {
       if (value.isEmpty) {
         return fallbackValue;
