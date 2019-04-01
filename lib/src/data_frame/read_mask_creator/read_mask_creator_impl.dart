@@ -1,29 +1,26 @@
-import 'dart:math' as math;
-
 import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 class DataFrameReadMaskCreatorImpl implements DataFrameReadMaskCreator {
-
   DataFrameReadMaskCreatorImpl();
 
   static const String emptyRangesMsg =
       'Columns/rows read ranges list cannot be empty!';
 
   @override
-  List<bool> create(Iterable<Tuple2<int, int>> ranges) {
+  Iterable<int> create(Iterable<ZRange> ranges) {
     if (ranges.isEmpty) {
       throw Exception(emptyRangesMsg);
     }
-    final numberOfElements = ranges.last.item2 + 1;
-    final mask = List<bool>.filled(numberOfElements, false);
-    ranges.forEach((Tuple2<int, int> range) {
-      if (range.item1 >= numberOfElements) {
-        return false;
-      }
-      final end = math.min(numberOfElements, range.item2 + 1);
-      mask.fillRange(range.item1, end, true);
+    final numOfIndices = ranges.fold<int>(0,
+            (value, range) => value + range.length);
+    final indices = List<int>(numOfIndices);
+    var offset = 0;
+    ranges.forEach((range) {
+      final end = offset + range.length;
+      indices.setRange(offset, offset + range.length, range.values());
+      offset = end;
     });
-    return mask;
+    return indices;
   }
 }

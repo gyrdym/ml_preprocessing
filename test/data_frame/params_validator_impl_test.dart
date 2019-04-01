@@ -2,7 +2,7 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/data_frame/validator/error_messages.dart';
 import 'package:ml_preprocessing/src/data_frame/validator/params_validator_impl.dart';
 import 'package:test/test.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 void main() {
   group('DataFrameParamsValidatorImpl (`rows` param)', () {
@@ -11,7 +11,7 @@ void main() {
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
         rows: null,
-        columns: [const Tuple2<int, int>(0, 1)],
+        columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
       expect(actual, equals(DataFrameParametersValidationErrorMessages
@@ -24,7 +24,7 @@ void main() {
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
         rows: [],
-        columns: [const Tuple2<int, int>(0, 1)],
+        columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
       expect(actual, equals(DataFrameParametersValidationErrorMessages
@@ -34,12 +34,12 @@ void main() {
     test('should return proper error message if provided row ranges are '
         'intersecting', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final rowRange1 = const Tuple2<int, int>(0, 2);
-      final rowRange2 = const Tuple2<int, int>(0, 1);
+      final rowRange1 = ZRange.closed(0, 2);
+      final rowRange2 = ZRange.closed(0, 1);
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
         rows: [rowRange1, rowRange2],
-        columns: [const Tuple2<int, int>(0, 1)],
+        columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
       expect(
@@ -51,12 +51,12 @@ void main() {
     test('should return proper error message if provided row ranges are '
         'intersecting, corner case', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final rowRange1 = const Tuple2<int, int>(0, 2);
-      final rowRange2 = const Tuple2<int, int>(2, 3);
+      final rowRange1 = ZRange.closed(0, 2);
+      final rowRange2 = ZRange.closed(2, 3);
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
         rows: [rowRange1, rowRange2],
-        columns: [const Tuple2<int, int>(0, 1)],
+        columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
       expect(
@@ -65,33 +65,16 @@ void main() {
               .intersectingRangesMsg(rowRange1, rowRange2)));
     });
 
-    test('should return proper error message if at least one of the provided '
-        'row ranges has its left bondary greater than the right', () {
-      final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final rowRange1 = const Tuple2<int, int>(0, 2);
-      final rowRange2 = const Tuple2<int, int>(5, 3);
-      final actual = dataFrameParamsValidator.validate(
-        labelIdx: 0,
-        rows: [rowRange1, rowRange2],
-        columns: [const Tuple2<int, int>(0, 1)],
-        headerExists: true,
-      );
-      expect(
-          actual,
-          equals(DataFrameParametersValidationErrorMessages
-              .leftBoundGreaterThanRightMsg(rowRange2)));
-    });
-
     test('should return no error message if valid row ranges list is '
         'provided', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final rowRange1 = const Tuple2<int, int>(0, 2);
-      final rowRange2 = const Tuple2<int, int>(5, 6);
-      final rowRange3 = const Tuple2<int, int>(7, 10);
+      final rowRange1 = ZRange.closed(0, 2);
+      final rowRange2 = ZRange.closed(5, 6);
+      final rowRange3 = ZRange.closed(7, 10);
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
         rows: [rowRange1, rowRange2, rowRange3],
-        columns: [const Tuple2<int, int>(0, 1)],
+        columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
       expect(actual, equals(DataFrameParametersValidationErrorMessages
@@ -104,7 +87,7 @@ void main() {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
-        rows: [const Tuple2<int, int>(0, 1)],
+        rows: [ZRange.closed(0, 1)],
         columns: null,
         headerExists: true,
       );
@@ -117,7 +100,7 @@ void main() {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
-        rows: [const Tuple2<int, int>(0, 1)],
+        rows: [ZRange.closed(0, 1)],
         columns: [],
         headerExists: true,
       );
@@ -128,11 +111,11 @@ void main() {
     test('should return proper error message if provided row ranges are '
         'intersecting', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final colRange1 = const Tuple2<int, int>(0, 2);
-      final colRange2 = const Tuple2<int, int>(0, 1);
+      final colRange1 = ZRange.closed(0, 2);
+      final colRange2 = ZRange.closed(0, 1);
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
-        rows: [const Tuple2<int, int>(0, 1)],
+        rows: [ZRange.closed(0, 1)],
         columns: [colRange1, colRange2],
         headerExists: true,
       );
@@ -145,11 +128,11 @@ void main() {
     test('should return proper error message if provided row ranges are '
         'intersecting, corner case', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final colRange1 = const Tuple2<int, int>(0, 2);
-      final colRange2 = const Tuple2<int, int>(2, 3);
+      final colRange1 = ZRange.closed(0, 2);
+      final colRange2 = ZRange.closed(2, 3);
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
-        rows: [const Tuple2<int, int>(0, 1)],
+        rows: [ZRange.closed(0, 1)],
         columns: [colRange1, colRange2],
         headerExists: true,
       );
@@ -159,32 +142,15 @@ void main() {
               .intersectingRangesMsg(colRange1, colRange2)));
     });
 
-    test('should return proper error message if at least one of the provided '
-        'row ranges has its left bondary greater than the right', () {
-      final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final colRange1 = const Tuple2<int, int>(0, 2);
-      final colRange2 = const Tuple2<int, int>(5, 3);
-      final actual = dataFrameParamsValidator.validate(
-        labelIdx: 0,
-        rows: [const Tuple2<int, int>(0, 1)],
-        columns: [colRange1, colRange2],
-        headerExists: true,
-      );
-      expect(
-          actual,
-          equals(DataFrameParametersValidationErrorMessages
-              .leftBoundGreaterThanRightMsg(colRange2)));
-    });
-
     test('should return no error message if valid row ranges list is provided',
         () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final colRange1 = const Tuple2<int, int>(0, 2);
-      final colRange2 = const Tuple2<int, int>(5, 6);
-      final colRange3 = const Tuple2<int, int>(7, 10);
+      final colRange1 = ZRange.closed(0, 2);
+      final colRange2 = ZRange.closed(5, 6);
+      final colRange3 = ZRange.closed(7, 10);
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 0,
-        rows: [const Tuple2<int, int>(0, 1)],
+        rows: [ZRange.closed(0, 1)],
         columns: [colRange1, colRange2, colRange3],
         headerExists: true,
       );
@@ -220,8 +186,8 @@ void main() {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final labelIdx = 10;
       final ranges = [
-        const Tuple2<int, int>(0, 5),
-        const Tuple2<int, int>(6, 8)
+        ZRange.closed(0, 5),
+        ZRange.closed(6, 8)
       ];
       final actual = dataFrameParamsValidator.validate(
         labelIdx: labelIdx,
@@ -238,8 +204,8 @@ void main() {
         '`labelName` are provided', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final ranges = [
-        const Tuple2<int, int>(0, 5),
-        const Tuple2<int, int>(6, 8)
+        ZRange.closed(0, 5),
+        ZRange.closed(6, 8)
       ];
       final actual = dataFrameParamsValidator.validate(
         labelIdx: null,
@@ -255,8 +221,8 @@ void main() {
         'but `headerExists` is false (no header case)', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final ranges = [
-        const Tuple2<int, int>(0, 5),
-        const Tuple2<int, int>(6, 8)
+        ZRange.closed(0, 5),
+        ZRange.closed(6, 8)
       ];
       final actual = dataFrameParamsValidator.validate(
         labelIdx: null,
@@ -273,8 +239,8 @@ void main() {
         '`labelIdx`', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final ranges = [
-        const Tuple2<int, int>(0, 5),
-        const Tuple2<int, int>(6, 8)
+        ZRange.closed(0, 5),
+        ZRange.closed(6, 8)
       ];
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 3,

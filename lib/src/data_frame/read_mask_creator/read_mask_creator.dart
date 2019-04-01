@@ -1,5 +1,5 @@
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 abstract class DataFrameReadMaskCreator {
-  List<bool> create(Iterable<Tuple2<int, int>> ranges);
+  Iterable<int> create(Iterable<ZRange> ranges);
 }

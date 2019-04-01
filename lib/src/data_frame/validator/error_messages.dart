@@ -1,5 +1,5 @@
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/range.dart';
 
 abstract class DataFrameParametersValidationErrorMessages {
   static const noErrorMsg = '';
@@ -23,15 +23,15 @@ abstract class DataFrameParametersValidationErrorMessages {
   static String labelNameWithoutHeader() => 'label name is provided, but '
       'the dataset doesn\'t have a header';
 
-  static String leftBoundGreaterThanRightMsg(Tuple2<int, int> range) =>
+  static String leftBoundGreaterThanRightMsg(Range range) =>
       'left boundary of the range $range is greater than the right one';
 
   static String intersectingRangesMsg(
-          Tuple2<int, int> range1, Tuple2<int, int> range2) =>
+          Range range1, Range range2) =>
       '$range1 and $range2 ranges are intersecting';
 
   static String labelIsNotInRangesMsg(
-          int labelIdx, Iterable<Tuple2<int, int>> ranges) =>
+          int labelIdx, Iterable<Range> ranges) =>
       'label index $labelIdx is not in provided ranges $ranges';
 
   static String emptyCategoriesMsg() => 'provided categories are empty';

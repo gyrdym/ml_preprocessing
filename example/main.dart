@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 Future main() async {
   // Let's create data frame from a csv file,
@@ -26,8 +26,8 @@ Future main() async {
       'position': CategoricalDataEncoderType.oneHot,
       'country': CategoricalDataEncoderType.ordinal,
     },
-    rows: [Tuple2(0, 6)],
-    columns: [Tuple2(0, 3)],
+    rows: [ZRange.closed(0, 6)],
+    columns: [ZRange.closed(0, 3)],
   );
 
   // Let's read the header of the dataset, preprocessed features and labels

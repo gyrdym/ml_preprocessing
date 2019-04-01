@@ -5,8 +5,8 @@ import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_ex
 abstract class VariablesExtractorFactory {
   VariablesExtractor create(
       List<List<Object>> records,
-      List<bool> rowMask,
-      List<bool> columnsMask,
+      List<int> columnIndices,
+      List<int> rowIndices,
       Map<int, CategoricalDataEncoder> encoders,
       int labelIdx,
       ToFloatNumberConverter valueConverter,

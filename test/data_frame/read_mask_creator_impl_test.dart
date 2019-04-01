@@ -1,40 +1,40 @@
 import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator_impl.dart';
 import 'package:test/test.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 void main() {
   final creator = DataFrameReadMaskCreatorImpl();
 
   group('MLDataReadMaskCreatorImpl', () {
-    test('should create read mask, case 1', () {
-      final mask = creator.create([const Tuple2<int, int>(0, 7)]);
-      expect(mask, equals([true, true, true, true, true, true, true, true]));
+    test('should generate indices to read, case 1', () {
+      final mask = creator.create([ZRange.closed(0, 7)]);
+      expect(mask, equals([0, 1, 2, 3, 4, 5, 6, 7]));
     });
 
-    test('should create read mask, case 2', () {
-      final mask = creator.create([const Tuple2<int, int>(0, 6)]);
-      expect(mask, equals([true, true, true, true, true, true, true]));
+    test('should generate indices to read, case 2', () {
+      final mask = creator.create([ZRange.closed(0, 6)]);
+      expect(mask, equals([0, 1, 2, 3, 4, 5, 6]));
     });
 
-    test('should create read mask, case 3', () {
-      final mask = creator.create([const Tuple2<int, int>(0, 0)]);
-      expect(mask, equals([true]));
+    test('should generate indices to read, case 3', () {
+      final mask = creator.create([ZRange.closed(0, 0)]);
+      expect(mask, equals([0]));
     });
 
-    test('should create read mask, case 4', () {
+    test('should generate indices to read, case 4', () {
       expect(() => creator.create([]), throwsException);
     });
 
-    test('should create read mask, case 5', () {
+    test('should generate indices to read, case 5', () {
       final mask = creator
-          .create([const Tuple2<int, int>(0, 0), const Tuple2<int, int>(0, 0)]);
-      expect(mask, equals([true]));
+          .create([ZRange.closed(0, 0), ZRange.closed(0, 0)]);
+      expect(mask, equals([0, 0]));
     });
 
-    test('should create read mask, case 5', () {
+    test('should generate indices to read, case 5', () {
       final mask = creator
-          .create([const Tuple2<int, int>(0, 0), const Tuple2<int, int>(3, 4)]);
-      expect(mask, equals([true, false, false, true, true]));
+          .create([ZRange.closed(0, 0), ZRange.closed(3, 4)]);
+      expect(mask, equals([0, 3, 4]));
     });
   });
 }

@@ -9,8 +9,9 @@ environment:
 
 dependencies:
   csv: ^4.0.0
-  ml_linalg: ^6.1.1
+  ml_linalg: ^7.0.0
   tuple: ^1.0.2
+  xrange: ^0.0.4
 
 dev_dependencies:
   benchmark_harness: ">=1.0.0 <2.0.0"

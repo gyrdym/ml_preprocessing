@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/data_frame/csv_data_frame.dart';
 import 'package:test/test.dart';
-import 'package:tuple/tuple.dart';
+import 'package:xrange/zrange.dart';
 
 import '../mocks.dart';
 import '../test_helpers/floating_point_iterable_matchers.dart';
@@ -113,7 +113,7 @@ void main() {
         () => CsvDataFrame.fromFile(
               'test/test_data/elo_blatter.csv',
               labelIdx: 1,
-              columns: [const Tuple2(2, 3), const Tuple2(5, 7)],
+              columns: [ZRange.closed(2, 3), ZRange.closed(5, 7)],
             ),
         throwsException,
       );
@@ -125,7 +125,7 @@ void main() {
           'test/test_data/elo_blatter.csv',
           labelIdx: null,
           labelName: null,
-          columns: [const Tuple2(2, 3), const Tuple2(5, 7)],
+          columns: [ZRange.closed(2, 3), ZRange.closed(5, 7)],
         ),
         throwsException,
       );
@@ -137,7 +137,7 @@ void main() {
         'test/test_data/elo_blatter.csv',
         labelIdx: null,
         labelName: 'some_unknown_column',
-        columns: [const Tuple2(2, 3), const Tuple2(5, 7)],
+        columns: [ZRange.closed(2, 3), ZRange.closed(5, 7)],
       );
       expect(() async => await data.header, throwsException);
     });
@@ -148,8 +148,8 @@ void main() {
         'test/test_data/elo_blatter.csv',
         labelIdx: 1,
         labelName: 'some_unknown_column',
-        columns: [const Tuple2(0, 3), const Tuple2(5, 7)],
-        rows: [const Tuple2(0, 0)],
+        columns: [ZRange.closed(0, 3), ZRange.closed(5, 7)],
+        rows: [ZRange.closed(0, 0)],
         categories: {
           'country': CategoricalDataEncoderType.oneHot,
           'confederation': CategoricalDataEncoderType.oneHot,
@@ -158,9 +158,7 @@ void main() {
         },
       );
       final actual = await data.labels;
-      expect(actual, equals([
-        [993.0],
-      ]));
+      expect(actual, equals([[993.0]]));
     });
 
     test('should cut out selected columns', () async {
@@ -171,10 +169,10 @@ void main() {
           expectedColsNum: 8,
           expectedRowsNum: 768,
           columns: [
-            const Tuple2(0, 1),
-            const Tuple2(2, 2),
-            const Tuple2(3, 4),
-            const Tuple2(6, 8)
+            ZRange.closed(0, 1),
+            ZRange.closed(2, 2),
+            ZRange.closed(3, 4),
+            ZRange.closed(6, 8)
           ],
           testContentFn: (features, labels, header) {
             expect(
@@ -199,10 +197,10 @@ void main() {
             'test/test_data/pima_indians_diabetes_database.csv',
             labelIdx: 8,
             columns: [
-              const Tuple2(0, 1), // first and
-              const Tuple2(1, 2), // second ranges are intersecting
-              const Tuple2(3, 4),
-              const Tuple2(6, 8)
+              ZRange.closed(0, 1), // first and
+              ZRange.closed(1, 2), // second ranges are intersecting
+              ZRange.closed(3, 4),
+              ZRange.closed(6, 8)
             ],
           );
       expect(actual, throwsException);
@@ -213,7 +211,7 @@ void main() {
           fileName:
               'test/test_data/pima_indians_diabetes_database.csv',
           labelIdx: 8,
-          rows: [const Tuple2(0, 767)],
+          rows: [ZRange.closed(0, 767)],
           expectedColsNum: 8,
           expectedRowsNum: 768,
           testContentFn: (features, labels, header) {
@@ -241,9 +239,9 @@ void main() {
               'test/test_data/pima_indians_diabetes_database.csv',
           labelIdx: 8,
           rows: [
-            const Tuple2(0, 2),
-            const Tuple2(3, 4),
-            const Tuple2(10, 15),
+            ZRange.closed(0, 2),
+            ZRange.closed(3, 4),
+            ZRange.closed(10, 15),
           ],
           expectedColsNum: 8,
           expectedRowsNum: 11,
