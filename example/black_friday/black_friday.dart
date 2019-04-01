@@ -4,8 +4,7 @@ import 'package:xrange/zrange.dart';
 Future processDataSetWithCategoricalData() async {
   final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
     labelName: 'Purchase\r',
-    columns: [ZRange.closed(2, 3), ZRange.closed(5, 7),
-      ZRange.closed(11, 11)],
+    columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
     rows: [ZRange.closed(0, 20)],
     categories: {
       'Gender': CategoricalDataEncoderType.oneHot,
@@ -17,12 +16,12 @@ Future processDataSetWithCategoricalData() async {
   );
 
   final features = await dataFrame.features;
-  final genderEncoded = features.submatrix(columns: ZRange.closed(0, 2));
-  final ageEncoded = features.submatrix(columns: ZRange.closed(2, 9));
-  final cityCategoryEncoded = features.submatrix(columns: ZRange.closed(9, 12));
-  final stayInCityEncoded = features.submatrix(columns: ZRange.closed(12, 17));
+  final genderEncoded = features.submatrix(columns: ZRange.closed(0, 1));
+  final ageEncoded = features.submatrix(columns: ZRange.closed(2, 8));
+  final cityCategoryEncoded = features.submatrix(columns: ZRange.closed(9, 11));
+  final stayInCityEncoded = features.submatrix(columns: ZRange.closed(12, 16));
   final maritalStatusEncoded = features
-      .submatrix(columns: ZRange.closed(17, 19));
+      .submatrix(columns: ZRange.closed(17, 18));
 
   print('Features:');
 
@@ -53,7 +52,7 @@ Future processDataSetWithCategoricalData() async {
 
   print('==============================');
 
-  print('Martial status');
+  print('Marital status');
   print(maritalStatusEncoded);
 }
 
