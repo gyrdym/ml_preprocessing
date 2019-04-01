@@ -83,10 +83,10 @@ It's time to take a look at our processed data! Let's read it:
 
 ````dart
 final features = await dataFrame.features;
-final labels = await = dataFrame.labels;
+final labels = await dataFrame.labels;
 
 print(features);
 print(labels);
 ```` 
 
-In output we will see just numerical data, that's exactly we wanted to reach.
+In the output we will see just numerical data, that's exactly we wanted to reach.
