@@ -17,8 +17,8 @@ import 'package:ml_preprocessing/src/data_frame/encoders_processor/encoders_proc
 import 'package:ml_preprocessing/src/data_frame/header_extractor/header_extractor.dart';
 import 'package:ml_preprocessing/src/data_frame/header_extractor/header_extractor_factory.dart';
 import 'package:ml_preprocessing/src/data_frame/header_extractor/header_extractor_factory_impl.dart';
-import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator_factory.dart';
-import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator_factory_impl.dart';
+import 'package:ml_preprocessing/src/data_frame/index_ranges_combiner/index_ranges_combiner_factory.dart';
+import 'package:ml_preprocessing/src/data_frame/index_ranges_combiner/index_ranges_combiner_factory_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/validator/params_validator.dart';
@@ -58,8 +58,8 @@ class CsvDataFrame implements DataFrame {
       VariablesExtractorFactory featuresExtractorFactory =
         const VariablesExtractorFactoryImpl(),
 
-      DataFrameReadMaskCreatorFactory readMaskCreatorFactory =
-        const DataFrameReadMaskCreatorFactoryImpl(),
+      IndexRangesCombinerFactory readMaskCreatorFactory =
+        const IndexRangesCombinerFactoryImpl(),
 
       EncodersProcessorFactory encodersProcessorFactory =
         const EncodersProcessorFactoryImpl(),
@@ -107,7 +107,7 @@ class CsvDataFrame implements DataFrame {
   final CategoricalDataEncoderFactory _encoderFactory;
   final DataFrameParamsValidator _paramsValidator;
   final ToFloatNumberConverter _valueConverter;
-  final DataFrameReadMaskCreatorFactory _readMaskCreatorFactory;
+  final IndexRangesCombinerFactory _readMaskCreatorFactory;
   final DataFrameHeaderExtractorFactory _headerExtractorFactory;
   final VariablesExtractorFactory _variablesExtractorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
@@ -150,10 +150,10 @@ class CsvDataFrame implements DataFrame {
     final rowsNum = _data.length;
     final columnsNum = _data.last.length;
     final readMaskCreator = _readMaskCreatorFactory.create();
-    final rowIndices = readMaskCreator.create(
+    final rowIndices = readMaskCreator.combine(
         rows ?? [ZRange.closedOpen(0, rowsNum - (_headerExists ? 1 : 0))]);
     final columnIndices = readMaskCreator
-        .create(columns ?? [ZRange.closedOpen(0, columnsNum)]);
+        .combine(columns ?? [ZRange.closedOpen(0, columnsNum)]);
     final originalHeader = _getOriginalHeader(_data);
     final labelIdx = _getLabelIdx(originalHeader, columnsNum);
     final records = _data.sublist(_headerExists ? 1 : 0);

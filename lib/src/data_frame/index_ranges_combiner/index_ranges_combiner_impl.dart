@@ -1,14 +1,14 @@
-import 'package:ml_preprocessing/src/data_frame/read_mask_creator/read_mask_creator.dart';
+import 'package:ml_preprocessing/src/data_frame/index_ranges_combiner/index_ranges_combiner.dart';
 import 'package:xrange/zrange.dart';
 
-class DataFrameReadMaskCreatorImpl implements DataFrameReadMaskCreator {
-  DataFrameReadMaskCreatorImpl();
+class IndexRangesCombinerImpl implements IndexRangesCombiner {
+  IndexRangesCombinerImpl();
 
   static const String emptyRangesMsg =
-      'Columns/rows read ranges list cannot be empty!';
+      'Columns/rows ranges list cannot be empty!';
 
   @override
-  Iterable<int> create(Iterable<ZRange> ranges) {
+  Iterable<int> combine(Iterable<ZRange> ranges) {
     if (ranges.isEmpty) {
       throw Exception(emptyRangesMsg);
     }
@@ -18,7 +18,7 @@ class DataFrameReadMaskCreatorImpl implements DataFrameReadMaskCreator {
     var offset = 0;
     ranges.forEach((range) {
       final end = offset + range.length;
-      indices.setRange(offset, offset + range.length, range.values());
+      indices.setRange(offset, end, range.values());
       offset = end;
     });
     return indices;
