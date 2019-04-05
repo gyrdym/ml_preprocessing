@@ -14,6 +14,7 @@ Future testCsvWithCategories(
     int rowNum,
     List<ZRange> columns,
     List<ZRange> rows,
+    Map<CategoricalDataEncoderType, Iterable<String>> encoders,
     Map<String, CategoricalDataEncoderType> categories,
     Map<int, CategoricalDataEncoderType> categoryIndices,
     void testContentFn(Matrix features, Matrix labels, List<String> headers,
@@ -23,6 +24,7 @@ Future testCsvWithCategories(
       columns: columns,
       rows: rows,
       headerExists: headerExist,
+      encoders: encoders,
       categories: categories,
       categoryIndices: categoryIndices,
   );
@@ -114,7 +116,7 @@ void main() {
           });
     });
 
-    test('should encode categorical data (`categorIndexToEncoder` parameter)',
+    test('should encode categorical data (`categorIndices` parameter)',
             () async {
       await testCsvWithCategories(
           fileName: 'test/test_data/fake_data.csv',
@@ -153,6 +155,44 @@ void main() {
             ]));
           });
     });
+
+    test('should encode categorical data (`encoders` parameter)', () async {
+          await testCsvWithCategories(
+              fileName: 'test/test_data/fake_data.csv',
+              labelIdx: 3,
+              rowNum: 7,
+              columns: [
+                ZRange.closed(0, 3),
+              ],
+              encoders: {
+                CategoricalDataEncoderType.oneHot: ['feature_1', 'feature_3'],
+                CategoricalDataEncoderType.ordinal: ['feature_2'],
+              },
+              testContentFn: (features, labels, header, dataFrame) {
+                expect(header,
+                    equals(['feature_1', 'feature_2', 'feature_3', 'score']));
+                expect(
+                    features,
+                    equals([
+                      [1.0, 0.0, 0.0, /**/ 0.0, /**/ 1.0, 0.0, 0.0],
+                      [0.0, 1.0, 0.0, /**/ 1.0, /**/ 0.0, 1.0, 0.0],
+                      [0.0, 0.0, 1.0, /**/ 2.0, /**/ 0.0, 0.0, 1.0],
+                      [0.0, 1.0, 0.0, /**/ 3.0, /**/ 1.0, 0.0, 0.0],
+                      [0.0, 1.0, 0.0, /**/ 4.0, /**/ 0.0, 0.0, 1.0],
+                      [1.0, 0.0, 0.0, /**/ 5.0, /**/ 0.0, 1.0, 0.0],
+                      [0.0, 0.0, 1.0, /**/ 0.0, /**/ 0.0, 0.0, 1.0],
+                    ]));
+                expect(labels, equals([
+                  [1],
+                  [10],
+                  [200],
+                  [300],
+                  [400],
+                  [500],
+                  [700]
+                ]));
+              });
+        });
 
     test('should encode categorical data in headless dataset', () async {
       await testCsvWithCategories(
@@ -267,7 +307,7 @@ void main() {
     });
 
     test('should throw an exception if one tries to decode a data providing '
-        'inexistent column name', () async {
+        'unexistent column name', () async {
       await testCsvWithCategories(
           fileName: 'test/test_data/fake_data.csv',
           labelIdx: 3,

@@ -29,6 +29,11 @@ abstract class DataFrame {
    * encoder type, which will be used to encode this column's values. It only
    * makes sense if [headerExists] is true
    *
+   * [encoders] A map, that links categorical data encoder type to the sequence
+   * of columns, which are supposed to be encoded with this encoder. If one
+   * column is going to be processed at least with two different encoders, an
+   * exception will be thrown
+   *
    * [rows] Ranges of rows to be read from csv-file. Ranges represented as
    * closed interval, that means that, e.g. `const Tuple2<int, int>(1, 1)` is a
    * valid interval that contains only one value - `1`
@@ -46,6 +51,7 @@ abstract class DataFrame {
     String fieldDelimiter,
     Map<String, CategoricalDataEncoderType> categories,
     Map<int, CategoricalDataEncoderType> categoryIndices,
+    Map<CategoricalDataEncoderType, Iterable<String>> encoders,
     List<ZRange> rows,
     List<ZRange> columns,
     Type dtype,
