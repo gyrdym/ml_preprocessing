@@ -18,8 +18,8 @@ class EncodersProcessorImpl implements EncodersProcessor {
 
   @override
   Map<int, CategoricalDataEncoder> createEncoders(
-      Map<CategoricalDataEncoderType, Iterable<String>> encoderTypesToNames,
       Map<int, CategoricalDataEncoderType> indexesToEncoderTypes,
+      Map<CategoricalDataEncoderType, Iterable<String>> encoderTypesToNames,
       Map<String, CategoricalDataEncoderType> namesToEncoderTypes,
   ) {
     if (indexesToEncoderTypes?.isNotEmpty == true) {
@@ -41,9 +41,8 @@ class EncodersProcessorImpl implements EncodersProcessor {
       for (final name in entry.value.toSet()) {
         final idxToEncoder = _createEntry(name, entry.key);
         if (encoders.containsKey(idxToEncoder.key)) {
-          throw Exception('Column `$name` has been provided to be '
-              'encoded at least by two different encoders, please, re-check'
-              'your input parameters');
+          throw Exception('Column `$name` is going to be encoded at least by '
+              'two different encoders, please, re-check your input parameters');
         }
         encoders[idxToEncoder.key] = idxToEncoder.value;
       }

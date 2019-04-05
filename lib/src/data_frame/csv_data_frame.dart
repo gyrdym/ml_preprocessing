@@ -163,8 +163,8 @@ class CsvDataFrame implements DataFrame {
     final encodersProcessor = _encodersProcessorFactory.create(originalHeader,
         _encoderFactory, _dtype);
 
-    _encoders = encodersProcessor.createEncoders(_encoderTypeToName,
-        _indexToEncoderType, _nameToEncoderType);
+    _encoders = encodersProcessor.createEncoders(_indexToEncoderType,
+        _encoderTypeToName, _nameToEncoderType);
     _headerExtractor = _headerExtractorFactory.create(columnIndices);
     _variablesExtractor = _variablesExtractorFactory.create(records,
         columnIndices, rowIndices, _encoders, labelIdx, _valueConverter,

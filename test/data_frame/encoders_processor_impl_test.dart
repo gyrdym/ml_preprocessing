@@ -47,9 +47,9 @@ void main() {
       }));
     });
 
-    test('should create encoders from `index-to-encoder` map if both maps ('
-        'index to encoder and name to encoder) are provided (`index-to-encoder` '
-        'map has higher priority)', () {
+    test('should create encoders from `index-to-encoder` map if '
+        'index-to-encoder, encoder-to-name and name-to-encoder are provided '
+        '(`index-to-encoder` map has high priority)', () {
       final encoderFactory = createCategoricalDataEncoderFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
@@ -60,6 +60,10 @@ void main() {
         1: CategoricalDataEncoderType.ordinal,
         2: CategoricalDataEncoderType.oneHot,
         3: CategoricalDataEncoderType.oneHot,
+      };
+
+      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
+        CategoricalDataEncoderType.oneHot: ['country', 'gender', 'age'],
       };
 
       final nameToEncoder = <String, CategoricalDataEncoderType>{
@@ -74,8 +78,9 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
-      final encoders = encoderProcessor.createEncoders(null, indexToEncoder,
-          nameToEncoder);
+      final encoders = encoderProcessor.createEncoders(indexToEncoder,
+          encoderToName, nameToEncoder);
+
       expect(encoders, equals({
         0: ordinalEncoderMock,
         1: ordinalEncoderMock,
@@ -84,8 +89,99 @@ void main() {
       }));
     });
 
-    test('should throw an error if inexistent column passed to be '
-        'processed', () {
+    test('should create encoders from `encoder-to-name` map if '
+        'encoder-to-name and name-to-encoder are provided '
+        '(`encoder-to-name` map has higher priority)', () {
+      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
+      final oneHotEncoderMock = OneHotEncoderMock();
+
+      final indexToEncoder = <int, CategoricalDataEncoderType>{};
+
+      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
+        CategoricalDataEncoderType.oneHot: ['country', 'gender',
+          'marital_status'],
+      };
+
+      final nameToEncoder = <String, CategoricalDataEncoderType>{
+        'country': CategoricalDataEncoderType.oneHot,
+        'gender': CategoricalDataEncoderType.oneHot,
+        'age': CategoricalDataEncoderType.ordinal,
+        'marital_status': CategoricalDataEncoderType.ordinal,
+      };
+
+      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+          .thenReturn(oneHotEncoderMock);
+
+      final encoders = encoderProcessor.createEncoders(indexToEncoder,
+          encoderToName, nameToEncoder);
+
+      verifyNever(encoderFactory.fromType(CategoricalDataEncoderType.ordinal,
+          any));
+      expect(encoders, equals({
+        0: oneHotEncoderMock,
+        1: oneHotEncoderMock,
+        3: oneHotEncoderMock,
+      }));
+    });
+
+    test('should properly process encoder-to-name map', () {
+      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
+      final oneHotEncoderMock = OneHotEncoderMock();
+      final ordinalEncoderMock = OrdinalEncoderMock();
+
+      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
+        CategoricalDataEncoderType.oneHot: ['country', 'gender'],
+        CategoricalDataEncoderType.ordinal: ['age'],
+      };
+
+      final indexToEncoder = <int, CategoricalDataEncoderType>{};
+      final nameToEncoder = <String, CategoricalDataEncoderType>{};
+
+      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+          .thenReturn(oneHotEncoderMock);
+      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+          .thenReturn(ordinalEncoderMock);
+
+      final actual = encoderProcessor.createEncoders(indexToEncoder,
+          encoderToName, nameToEncoder);
+
+      expect(actual, equals({
+        0: oneHotEncoderMock,
+        1: oneHotEncoderMock,
+        2: ordinalEncoderMock,
+      }));
+    });
+
+    test('should throw an exception if one column is going to be processed by '
+        'two different encoders', () {
+      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
+      final oneHotEncoderMock = OneHotEncoderMock();
+      final ordinalEncoderMock = OrdinalEncoderMock();
+
+      final indexToEncoder = <int, CategoricalDataEncoderType>{};
+
+      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
+        CategoricalDataEncoderType.oneHot: ['country', 'gender'],
+        CategoricalDataEncoderType.ordinal: ['gender'],
+      };
+
+      final nameToEncoder = <String, CategoricalDataEncoderType>{};
+
+      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+          .thenReturn(oneHotEncoderMock);
+      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+          .thenReturn(ordinalEncoderMock);
+
+      final actual = () => encoderProcessor.createEncoders(indexToEncoder,
+          encoderToName, nameToEncoder);
+
+      expect(actual, throwsException);
+    });
+
+    test('should throw an error if unexistent column to be processed', () {
       final encoderFactory = createCategoricalDataEncoderFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
@@ -107,6 +203,13 @@ void main() {
         () => encoderProcessor.createEncoders({}, {}, nameToEncoder),
         throwsException
       );
+    });
+
+    test('should return an empty map if no encoders provided', () {
+      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
+
+      expect(encoderProcessor.createEncoders(null, null, null), equals({}));
     });
   });
 }
