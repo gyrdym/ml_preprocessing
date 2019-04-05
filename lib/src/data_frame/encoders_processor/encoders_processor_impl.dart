@@ -18,6 +18,7 @@ class EncodersProcessorImpl implements EncodersProcessor {
 
   @override
   Map<int, CategoricalDataEncoder> createEncoders(
+      Map<CategoricalDataEncoderType, String> encoderTypesToNames,
       Map<int, CategoricalDataEncoderType> indexesToEncoderTypes,
       Map<String, CategoricalDataEncoderType> namesToEncoderTypes,
   ) {

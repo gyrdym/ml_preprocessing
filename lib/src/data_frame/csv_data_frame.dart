@@ -37,6 +37,7 @@ class CsvDataFrame implements DataFrame {
       int labelIdx,
       String labelName,
       bool headerExists = true,
+      Map<CategoricalDataEncoderType, String> encoders,
       Map<String, CategoricalDataEncoderType> categories,
       Map<int, CategoricalDataEncoderType> categoryIndices,
       List<ZRange> rows,
@@ -74,6 +75,7 @@ class CsvDataFrame implements DataFrame {
       _labelIdx = labelIdx,
       _labelName = labelName,
       _headerExists = headerExists,
+      _encoderTypeToName = encoders,
       _nameToEncoderType = categories ?? {},
       _indexToEncoderType = categoryIndices ?? {},
       _encoderFactory = encoderFactory,
@@ -112,6 +114,7 @@ class CsvDataFrame implements DataFrame {
   final VariablesExtractorFactory _variablesExtractorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
 
+  final Map<CategoricalDataEncoderType, String> _encoderTypeToName;
   final Map<String, CategoricalDataEncoderType> _nameToEncoderType;
   final Map<int, CategoricalDataEncoderType> _indexToEncoderType;
 
@@ -160,8 +163,8 @@ class CsvDataFrame implements DataFrame {
     final encodersProcessor = _encodersProcessorFactory.create(originalHeader,
         _encoderFactory, _dtype);
 
-    _encoders = encodersProcessor.createEncoders(_indexToEncoderType,
-        _nameToEncoderType);
+    _encoders = encodersProcessor.createEncoders(_encoderTypeToName,
+        _indexToEncoderType, _nameToEncoderType);
     _headerExtractor = _headerExtractorFactory.create(columnIndices);
     _variablesExtractor = _variablesExtractorFactory.create(records,
         columnIndices, rowIndices, _encoders, labelIdx, _valueConverter,

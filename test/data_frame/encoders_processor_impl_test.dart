@@ -14,7 +14,7 @@ void main() {
         'and the columns header is not empty', () {
       final encoderFactory = createCategoricalDataEncoderFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
-      final encoders = encoderProcessor.createEncoders({}, {});
+      final encoders = encoderProcessor.createEncoders({}, {}, {});
       expect(encoders, equals(<int, CategoricalDataEncoder>{}));
     });
 
@@ -37,7 +37,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
-      final encoders = encoderProcessor.createEncoders({}, nameToEncoder);
+      final encoders = encoderProcessor.createEncoders({}, {}, nameToEncoder);
 
       expect(encoders, equals({
         0: ordinalEncoderMock,
@@ -74,7 +74,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
-      final encoders = encoderProcessor.createEncoders(indexToEncoder,
+      final encoders = encoderProcessor.createEncoders(null, indexToEncoder,
           nameToEncoder);
       expect(encoders, equals({
         0: ordinalEncoderMock,
@@ -104,7 +104,7 @@ void main() {
           .thenReturn(oneHotEncoderMock);
 
       expect(
-        () => encoderProcessor.createEncoders({}, nameToEncoder),
+        () => encoderProcessor.createEncoders({}, {}, nameToEncoder),
         throwsException
       );
     });
