@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.0
+- `Categorical data processing`: `encoders` parameter added to `DataFrame.fromCsv` constructor
+
 ## 3.0.0
 - `xrange` library supported: it's possible to provide `ZRange` object now instead of `tuple2` to specify a range of 
 indices 
