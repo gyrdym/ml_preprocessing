@@ -37,7 +37,7 @@ class CsvDataFrame implements DataFrame {
       int labelIdx,
       String labelName,
       bool headerExists = true,
-      Map<CategoricalDataEncoderType, String> encoders,
+      Map<CategoricalDataEncoderType, Iterable<String>> encoders,
       Map<String, CategoricalDataEncoderType> categories,
       Map<int, CategoricalDataEncoderType> categoryIndices,
       List<ZRange> rows,
@@ -114,7 +114,7 @@ class CsvDataFrame implements DataFrame {
   final VariablesExtractorFactory _variablesExtractorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
 
-  final Map<CategoricalDataEncoderType, String> _encoderTypeToName;
+  final Map<CategoricalDataEncoderType, Iterable<String>> _encoderTypeToName;
   final Map<String, CategoricalDataEncoderType> _nameToEncoderType;
   final Map<int, CategoricalDataEncoderType> _indexToEncoderType;
 
