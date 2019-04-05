@@ -22,13 +22,14 @@ class EncodersProcessorImpl implements EncodersProcessor {
       Map<int, CategoricalDataEncoderType> indexesToEncoderTypes,
       Map<String, CategoricalDataEncoderType> namesToEncoderTypes,
   ) {
-    if (encoderTypesToNames?.isNotEmpty == true) {
-      return _createEncodersFromEncoderToName(encoderTypesToNames);
-    } else if (indexesToEncoderTypes?.isNotEmpty == true) {
+    if (indexesToEncoderTypes?.isNotEmpty == true) {
       return _createEncodersFromIndexToEncoder(indexesToEncoderTypes);
-    } else if (_colNameToIdx.isNotEmpty &&
-        namesToEncoderTypes?.isNotEmpty == true) {
-      return _createEncodersFromNameToEncoder(namesToEncoderTypes);
+    } else if (_colNameToIdx.isNotEmpty)  {
+      if (encoderTypesToNames?.isNotEmpty == true) {
+        return _createEncodersFromEncoderToName(encoderTypesToNames);
+      } else if (namesToEncoderTypes?.isNotEmpty == true) {
+        return _createEncodersFromNameToEncoder(namesToEncoderTypes);
+      }
     }
     return {};
   }
