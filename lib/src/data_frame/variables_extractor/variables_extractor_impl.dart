@@ -120,16 +120,16 @@ class VariablesExtractorImpl implements VariablesExtractor {
     });
     return Tuple2(
         featureColumns.isNotEmpty
-            ? _filterMatrix(Matrix.columns(featureColumns, dtype: _dtype))
+            ? _filterMatrix(Matrix.fromColumns(featureColumns, dtype: _dtype))
             : null,
         labelColumns.isNotEmpty
-            ? _filterMatrix(Matrix.columns(labelColumns, dtype: _dtype))
+            ? _filterMatrix(Matrix.fromColumns(labelColumns, dtype: _dtype))
             : null
     );
   }
 
   Matrix _filterMatrix(Matrix data) {
     if (!_hasCategoricalData) return data;
-    return Matrix.rows(_rowIndices.map(data.getRow).toList(growable: true));
+    return Matrix.fromRows(_rowIndices.map(data.getRow).toList(growable: true));
   }
 }
