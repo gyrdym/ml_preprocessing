@@ -13,7 +13,7 @@ mixin EncoderMixin implements CategoricalDataEncoder {
     }
     _sourceToEncoded = _createSourceToEncodedMap(values.toList(
         growable: false));
-    return Matrix.rows(
+    return Matrix.fromRows(
         values.map((value) => _sourceToEncoded[value]).toList(growable: false),
         dtype: dtype);
   }
