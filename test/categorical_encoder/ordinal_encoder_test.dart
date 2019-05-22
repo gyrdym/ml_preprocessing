@@ -59,7 +59,7 @@ void main() {
       final encoder = OrdinalEncoder();
       encoder.encode(['group B', 'group D', 'group B', 'group A',
         'group C', 'group C', 'group A']);
-      expect(encoder.decode(Matrix.from([
+      expect(encoder.decode(Matrix.fromList([
         [2.0],
         [3.0],
         [3.0],
@@ -71,7 +71,7 @@ void main() {
       final encoder = OrdinalEncoder();
       encoder.encode(['group B', 'group D', 'group B', 'group A',
       'group C', 'group C', 'group A']);
-      expect(() => encoder.decode(Matrix.from([
+      expect(() => encoder.decode(Matrix.fromList([
         [25.0],
       ])), throwsException);
     });

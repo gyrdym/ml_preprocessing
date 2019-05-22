@@ -1,14 +1,15 @@
 import 'dart:typed_data';
 
+import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_mixin.dart';
 
 class OneHotEncoder with EncoderMixin implements CategoricalDataEncoder {
-  OneHotEncoder([Type dtype = Float32x4]) : dtype = dtype;
+  OneHotEncoder([DType dtype = DType.float32]) : dtype = dtype;
 
   @override
-  final Type dtype;
+  final DType dtype;
 
   @override
   Vector encodeLabel(String value, Iterable<String> categoryLabels) {
@@ -17,6 +18,6 @@ class OneHotEncoder with EncoderMixin implements CategoricalDataEncoder {
         categoryLabels.length,
             (int idx) => idx == valueIdx ? 1.0 : 0.0
     );
-    return Vector.from(encodedCategorySource, dtype: dtype);
+    return Vector.fromList(encodedCategorySource, dtype: dtype);
   }
 }

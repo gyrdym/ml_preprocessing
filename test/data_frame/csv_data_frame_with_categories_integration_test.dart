@@ -247,7 +247,7 @@ void main() {
             2: CategoricalDataEncoderType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
-            final decoded = dataFrame.decode(Matrix.from([
+            final decoded = dataFrame.decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
               [0.0, 1.0, 0.0],
               [0.0, 0.0, 1.0],
@@ -276,7 +276,7 @@ void main() {
             2: CategoricalDataEncoderType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
-            expect(() => dataFrame.decode(Matrix.from([
+            expect(() => dataFrame.decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
               [0.0, 1.0, 0.0],
             ])), throwsException);
@@ -299,7 +299,7 @@ void main() {
             2: CategoricalDataEncoderType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
-            expect(() => dataFrame.decode(Matrix.from([
+            expect(() => dataFrame.decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
               [0.0, 1.0, 0.0],
             ]), colName: 'feature_1'), throwsException);
@@ -321,7 +321,7 @@ void main() {
             2: CategoricalDataEncoderType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
-            expect(() => dataFrame.decode(Matrix.from([
+            expect(() => dataFrame.decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
               [0.0, 1.0, 0.0],
             ]), colName: 'country'), throwsException);
@@ -343,7 +343,7 @@ void main() {
             2: CategoricalDataEncoderType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
-            expect(() => dataFrame.decode(Matrix.from([
+            expect(() => dataFrame.decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
               [0.0, 1.0, 0.0],
             ]), colIdx: 45), throwsRangeError);
@@ -365,7 +365,7 @@ void main() {
             2: CategoricalDataEncoderType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
-            expect(() => dataFrame.decode(Matrix.from([
+            expect(() => dataFrame.decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
               [0.0, 1.0, 0.0],
             ]), colIdx: 3), throwsException);
