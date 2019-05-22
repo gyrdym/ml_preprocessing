@@ -1,6 +1,6 @@
+import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor_impl.dart';
-import 'package:ml_linalg/matrix.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -104,7 +104,7 @@ void main() {
 
     test('should encode categorical features', () {
       final encoderMock = mocks.OneHotEncoderMock();
-      when(encoderMock.encode(any)).thenReturn(Matrix.from([
+      when(encoderMock.encode(any)).thenReturn(Matrix.fromList([
         [1000.0, 2000.0],
         [-1000.0, -2000.0],
         [100.0, 200.0],
@@ -135,7 +135,7 @@ void main() {
 
     test('should encode categorical labels', () {
       final encoderMock = mocks.OneHotEncoderMock();
-      when(encoderMock.encode(any)).thenReturn(Matrix.from([
+      when(encoderMock.encode(any)).thenReturn(Matrix.fromList([
         [1000],
         [5000],
         [6000],

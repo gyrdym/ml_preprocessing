@@ -1,3 +1,4 @@
+import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
@@ -10,7 +11,7 @@ class CategoricalDataEncoderFactoryImpl implements
 
   @override
   CategoricalDataEncoder fromType(CategoricalDataEncoderType encoderType,
-      [Type dtype]) {
+      [DType dtype]) {
     switch (encoderType) {
       case CategoricalDataEncoderType.oneHot:
         return OneHotEncoder(dtype);
@@ -23,8 +24,8 @@ class CategoricalDataEncoderFactoryImpl implements
   }
 
   @override
-  CategoricalDataEncoder oneHot([Type dtype]) => OneHotEncoder(dtype);
+  CategoricalDataEncoder oneHot([DType dtype]) => OneHotEncoder(dtype);
 
   @override
-  CategoricalDataEncoder ordinal([Type dtype]) => OrdinalEncoder(dtype);
+  CategoricalDataEncoder ordinal([DType dtype]) => OrdinalEncoder(dtype);
 }
