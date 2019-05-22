@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
+import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
@@ -68,7 +68,7 @@ class CsvDataFrame implements DataFrame {
       CsvCodecFactory csvCodecFactory =
         const CsvCodecFactoryImpl(),
     })  :
-      _dtype = dtype ?? Float32x4,
+      _dtype = dtype ?? DType.float32,
       _csvCodec =
         csvCodecFactory.create(eol: eol, fieldDelimiter: fieldDelimiter),
       _file = File(fileName),
@@ -100,7 +100,7 @@ class CsvDataFrame implements DataFrame {
     _initialization = _init(rows, columns);
   }
 
-  final Type _dtype;
+  final DType _dtype;
   final CsvCodec _csvCodec;
   final File _file;
   final int _labelIdx;

@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.3.0
+- `ml_linalg` 10.0.0 supported
+
 ## 3.2.0
 - `ml_linalg` 9.0.0 supported
 
