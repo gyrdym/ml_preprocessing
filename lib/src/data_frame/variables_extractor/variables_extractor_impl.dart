@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
@@ -16,7 +15,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
       this._encoders,
       this._labelIdx,
       this._toFloatConverter,
-      [Type dtype = Float32x4]) : _dtype = dtype {
+      [DType dtype = DType.float32]) : _dtype = dtype {
     if (_columnIndices.length > _observations.first.length) {
       throw Exception(columnIndicesWrongNumberMsg);
     }
@@ -33,7 +32,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
       'Row indices number should not be greater than actual rows number in the '
       'dataset!';
 
-  final Type _dtype;
+  final DType _dtype;
   final List<int> _rowIndices;
   final List<int> _columnIndices;
   final Map<int, CategoricalDataEncoder> _encoders;
@@ -108,7 +107,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
     };
     _columnIndices.forEach((columnIdx) {
       if (numericalColumns.containsKey(columnIdx)) {
-        updateColumns(columnIdx, Vector.from(numericalColumns[columnIdx],
+        updateColumns(columnIdx, Vector.fromList(numericalColumns[columnIdx],
             dtype: _dtype));
       } else if (categoricalColumns.containsKey(columnIdx)) {
         final encoded = _encoders[columnIdx]

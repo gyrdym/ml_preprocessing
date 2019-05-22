@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
@@ -7,12 +6,12 @@ import 'package:ml_preprocessing/src/data_frame/encoders_processor/encoders_proc
 
 class EncodersProcessorImpl implements EncodersProcessor {
   EncodersProcessorImpl(List<String> _columnNames, this._encoderFactory,
-      [Type dtype = Float32x4])
+      [DType dtype = DType.float32])
       : _colNameToIdx = _columnNames.asMap().map(
           (idx, name) => MapEntry(name, idx)),
         _dtype = dtype;
 
-  final Type _dtype;
+  final DType _dtype;
   final Map<String, int> _colNameToIdx;
   final CategoricalDataEncoderFactory _encoderFactory;
 

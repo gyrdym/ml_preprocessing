@@ -60,7 +60,7 @@ void main() {
       final encoder = OneHotEncoder();
       encoder.encode(['group B', 'group D', 'group B',
         'group A', 'group C', 'group C', 'group A']);
-      expect(encoder.decode(Matrix.from([
+      expect(encoder.decode(Matrix.fromList([
         [0, 1, 0, 0],
         [0, 1, 0, 0],
         [0, 0, 0, 1],
@@ -74,7 +74,7 @@ void main() {
       final encoder = OneHotEncoder();
       encoder.encode(['group B', 'group D', 'group B',
       'group A', 'group C', 'group C', 'group A']);
-      expect(() => encoder.decode(Matrix.from([
+      expect(() => encoder.decode(Matrix.fromList([
         [0, 2, 0, 0],
       ])), throwsException);
     });
