@@ -192,8 +192,8 @@ void main() {
             [210.0, 220.0, 230.0],
           ]));
 
-      expect(labels, isNull);
-    }, skip: true);
+      expect(labels, equals([]));
+    });
 
     test('should throw an error if number of column indices is greater than '
         'number of elements in an observation', () {
