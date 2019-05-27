@@ -24,8 +24,8 @@ void main() {
 
       final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.extractFeatures();
-      final labels = extractor.extractLabels();
+      final features = extractor.features;
+      final labels = extractor.labels;
 
       expect(
           features,
@@ -56,8 +56,8 @@ void main() {
 
       final extractor = VariablesExtractorImpl(data, columnsIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.extractFeatures();
-      final labels = extractor.extractLabels();
+      final features = extractor.features;
+      final labels = extractor.labels;
 
       expect(
           features,
@@ -82,8 +82,8 @@ void main() {
 
       final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.extractFeatures();
-      final labels = extractor.extractLabels();
+      final features = extractor.features;
+      final labels = extractor.labels;
 
       expect(
           features,
@@ -121,7 +121,7 @@ void main() {
 
       final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.extractFeatures();
+      final features = extractor.features;
 
       expect(
           features,
@@ -151,8 +151,8 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.extractFeatures();
-      final labels = extractor.extractLabels();
+      final features = extractor.features;
+      final labels = extractor.labels;
 
       expect(
           features,
@@ -180,8 +180,8 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.extractFeatures();
-      final labels = extractor.extractLabels();
+      final features = extractor.features;
+      final labels = extractor.labels;
 
       expect(
           features,
@@ -193,7 +193,7 @@ void main() {
           ]));
 
       expect(labels, isNull);
-    });
+    }, skip: true);
 
     test('should throw an error if number of column indices is greater than '
         'number of elements in an observation', () {
@@ -218,7 +218,7 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = VariablesExtractorImpl(data, columnsIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final actual = extractor.extractFeatures();
+      final actual = extractor.features;
 
       expect(
           actual,
