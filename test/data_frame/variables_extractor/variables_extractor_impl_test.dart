@@ -3,6 +3,7 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+import 'package:xrange/zrange.dart';
 
 import '../../mocks.dart' as mocks;
 
@@ -241,6 +242,51 @@ void main() {
           () => VariablesExtractorImpl(data, columnIndices, rowIndices,
               encoders, labelIdx, valueConverter),
           throwsException);
+    });
+
+    test('should extract ranges of categorical columns in numerical', () {
+      final column0EncoderMock = mocks.OneHotEncoderMock();
+      when(column0EncoderMock.encode(any)).thenReturn(Matrix.fromList([
+        [0, 0, 1],
+        [1, 0, 0],
+        [1, 0, 0],
+        [0, 1, 0],
+      ]));
+
+      final column2EncoderMock = mocks.OneHotEncoderMock();
+      when(column2EncoderMock.encode(any)).thenReturn(Matrix.fromList([
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+      ]));
+
+      final labelEncoderMock = mocks.OneHotEncoderMock();
+      when(labelEncoderMock.encode(any)).thenReturn(Matrix.fromList([
+        [1000],
+        [5000],
+        [6000],
+        [7000],
+      ]));
+
+      final rowIndices = <int>[0, 1, 2, 3];
+      final columnIndices = <int>[0, 1, 2, 3, 4];
+      final labelIdx = 4;
+      final encoders = <int, CategoricalDataEncoder>{
+        0: column0EncoderMock,
+        2: column2EncoderMock,
+        labelIdx: labelEncoderMock,
+      };
+      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+          encoders, labelIdx, valueConverter);
+      final actual = extractor.categoricalIndices;
+
+      expect(actual, equals([
+        ZRange.closed(0, 2),
+        ZRange.closed(4, 7),
+        ZRange.closed(9, 9),
+      ]));
     });
   });
 }
