@@ -57,6 +57,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
     if (_data == null) {
       final columnsData = _collectColumnsData();
       _data = _processColumns(columnsData.item1, columnsData.item2);
+
       // if categorical data exists in dataset, it means, that selection by
       // given [_rowIndices] hasn't taken place yet (we had to use the whole
       // dataset in order to collect all the categorical data values), so
@@ -122,17 +123,20 @@ class VariablesExtractorImpl implements VariablesExtractor {
           ? labelColumns.add(vectorColumn)
           : featureColumns.add(vectorColumn);
     };
+    int idx = 0;
     _columnIndices.forEach((columnIdx) {
       if (numericalColumns.containsKey(columnIdx)) {
         updateColumns(columnIdx, Vector.fromList(numericalColumns[columnIdx],
             dtype: _dtype));
+        idx++;
       } else if (categoricalColumns.containsKey(columnIdx)) {
         final encoded = _encoders[columnIdx]
             .encode(categoricalColumns[columnIdx]);
-//        categoricalIndices.add(ZRange.closed());
-        for (int col = 0; col < encoded.columnsNum; col++) {
-          updateColumns(columnIdx, encoded.getColumn(col));
+        for (final column in encoded.columns) {
+          updateColumns(columnIdx, column);
         }
+        categoricalIndices.add(ZRange.closed(idx, idx + encoded.columnsNum - 1));
+        idx += encoded.columnsNum;
       }
     });
 
