@@ -76,7 +76,7 @@ abstract class DataFrame {
   Future<Matrix> get labels;
 
   /// Categorical data columns indices after the data had been processed
-  Future<Set<ZRange>> get categoricalIndices;
+  Future<Set<ZRange>> get encodedColumnRanges;
 
   /// Decodes given categorical encoded column
   ///

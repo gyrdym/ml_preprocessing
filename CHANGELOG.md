@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.4.0
-- `DataFrame`: `categoricalIndices` added
+- `DataFrame`: `encodedColumnRanges` added
 
 ## 3.3.0
 - `ml_linalg` 10.0.0 supported

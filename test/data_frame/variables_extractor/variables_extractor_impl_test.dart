@@ -280,7 +280,7 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final actual = extractor.categoricalIndices;
+      final actual = extractor.encodedColumnRanges;
 
       expect(actual, equals([
         ZRange.closed(0, 2),

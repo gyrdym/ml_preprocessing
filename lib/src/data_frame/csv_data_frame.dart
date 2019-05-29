@@ -149,9 +149,9 @@ class CsvDataFrame implements DataFrame {
   }
 
   @override
-  Future<Set<ZRange>> get categoricalIndices async {
+  Future<Set<ZRange>> get encodedColumnRanges async {
     await _initialization;
-    return _categoricalIndices ??= _variablesExtractor.categoricalIndices;
+    return _categoricalIndices ??= _variablesExtractor.encodedColumnRanges;
   }
 
   Future<void> _init([Iterable<ZRange> rows, Iterable<ZRange> columns]) async {
