@@ -51,7 +51,7 @@ class VariablesExtractorImpl implements VariablesExtractor {
   Matrix get labels => _extract().item2;
 
   @override
-  Set<ZRange> get categoricalIndices => _extract().item3;
+  Set<ZRange> get encodedColumnRanges => _extract().item3;
 
   Tuple3<Matrix, Matrix, Set<ZRange>> _extract() {
     if (_data == null) {
