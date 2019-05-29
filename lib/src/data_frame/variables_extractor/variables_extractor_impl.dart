@@ -42,18 +42,35 @@ class VariablesExtractorImpl implements VariablesExtractor {
 
   bool get _hasCategoricalData => _encoders.isNotEmpty;
 
-  Tuple2<Matrix, Matrix> _data;
+  Tuple3<Matrix, Matrix, Set<ZRange>> _data;
 
   @override
-  Matrix extractFeatures() => _extract().item1;
+  Matrix get features => _extract().item1;
 
   @override
-  Matrix extractLabels() => _extract().item2;
+  Matrix get labels => _extract().item2;
 
-  Tuple2<Matrix, Matrix> _extract() {
+  @override
+  Set<ZRange> get encodedColumnRanges => _extract().item3;
+
+  Tuple3<Matrix, Matrix, Set<ZRange>> _extract() {
     if (_data == null) {
       final columnsData = _collectColumnsData();
       _data = _processColumns(columnsData.item1, columnsData.item2);
+
+      // if categorical data exists in dataset, it means, that selection by
+      // given [_rowIndices] hasn't taken place yet (we had to use the whole
+      // dataset in order to collect all the categorical data values), so
+      // we should select needed rows here
+      if (_hasCategoricalData) {
+        _data = Tuple3(
+            Matrix.fromRows(_rowIndices.map(_data.item1.getRow)
+                .toList(growable: false)),
+            Matrix.fromRows(_rowIndices.map(_data.item2.getRow)
+                .toList(growable: false)),
+            _data.item3,
+        );
+      }
     }
     return _data;
   }
@@ -94,41 +111,41 @@ class VariablesExtractorImpl implements VariablesExtractor {
     return Tuple2(numericalValues, categoricalValues);
   }
 
-  Tuple2<Matrix, Matrix> _processColumns(
+  Tuple3<Matrix, Matrix, Set<ZRange>> _processColumns(
     Map<int, List<double>> numericalColumns,
     Map<int, List<String>> categoricalColumns,
   ) {
     final featureColumns = <Vector>[];
     final labelColumns = <Vector>[];
+    final categoricalIndices = <ZRange>{};
     final updateColumns = (int i, Vector vectorColumn) {
       i == _labelIdx
           ? labelColumns.add(vectorColumn)
           : featureColumns.add(vectorColumn);
     };
-    _columnIndices.forEach((columnIdx) {
-      if (numericalColumns.containsKey(columnIdx)) {
-        updateColumns(columnIdx, Vector.fromList(numericalColumns[columnIdx],
-            dtype: _dtype));
-      } else if (categoricalColumns.containsKey(columnIdx)) {
-        final encoded = _encoders[columnIdx]
-            .encode(categoricalColumns[columnIdx]);
-        for (int col = 0; col < encoded.columnsNum; col++) {
-          updateColumns(columnIdx, encoded.getColumn(col));
+    int encodedColIdx = 0;
+    _columnIndices.forEach((sourceColIdx) {
+      if (numericalColumns.containsKey(sourceColIdx)) {
+        updateColumns(sourceColIdx,
+            Vector.fromList(numericalColumns[sourceColIdx], dtype: _dtype));
+        encodedColIdx++;
+      } else if (categoricalColumns.containsKey(sourceColIdx)) {
+        final encoded = _encoders[sourceColIdx]
+            .encode(categoricalColumns[sourceColIdx]);
+        for (final column in encoded.columns) {
+          updateColumns(sourceColIdx, column);
         }
+        final range = ZRange.closed(encodedColIdx,
+            encodedColIdx + encoded.columnsNum - 1);
+        categoricalIndices.add(range);
+        encodedColIdx += encoded.columnsNum;
       }
     });
-    return Tuple2(
-        featureColumns.isNotEmpty
-            ? _filterMatrix(Matrix.fromColumns(featureColumns, dtype: _dtype))
-            : null,
-        labelColumns.isNotEmpty
-            ? _filterMatrix(Matrix.fromColumns(labelColumns, dtype: _dtype))
-            : null
-    );
-  }
 
-  Matrix _filterMatrix(Matrix data) {
-    if (!_hasCategoricalData) return data;
-    return Matrix.fromRows(_rowIndices.map(data.getRow).toList(growable: true));
+    return Tuple3(
+        Matrix.fromColumns(featureColumns, dtype: _dtype),
+        Matrix.fromColumns(labelColumns, dtype: _dtype),
+        categoricalIndices,
+    );
   }
 }

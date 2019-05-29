@@ -124,6 +124,7 @@ class CsvDataFrame implements DataFrame {
   List<List<dynamic>> _data; // the whole dataset including header
   Matrix _features;
   Matrix _labels;
+  Set<ZRange> _categoricalIndices;
   List<String> _header;
   DataFrameHeaderExtractor _headerExtractor;
   VariablesExtractor _variablesExtractor;
@@ -138,13 +139,19 @@ class CsvDataFrame implements DataFrame {
   @override
   Future<Matrix> get features async {
     await _initialization;
-    return _features ??= _variablesExtractor.extractFeatures();
+    return _features ??= _variablesExtractor.features;
   }
 
   @override
   Future<Matrix> get labels async {
     await _initialization;
-    return _labels ??= _variablesExtractor.extractLabels();
+    return _labels ??= _variablesExtractor.labels;
+  }
+
+  @override
+  Future<Set<ZRange>> get encodedColumnRanges async {
+    await _initialization;
+    return _categoricalIndices ??= _variablesExtractor.encodedColumnRanges;
   }
 
   Future<void> _init([Iterable<ZRange> rows, Iterable<ZRange> columns]) async {
