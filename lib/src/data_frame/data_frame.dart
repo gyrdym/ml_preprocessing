@@ -75,6 +75,9 @@ abstract class DataFrame {
   /// labels (Target values, e.g. class labels or regression values)
   Future<Matrix> get labels;
 
+  /// Categorical data columns indices after the data had been processed
+  Future<Set<ZRange>> get encodedColumnRanges;
+
   /// Decodes given categorical encoded column
   ///
   /// [column] - a matrix, where each row is an encoded categorical value, e.g.
