@@ -123,20 +123,22 @@ class VariablesExtractorImpl implements VariablesExtractor {
           ? labelColumns.add(vectorColumn)
           : featureColumns.add(vectorColumn);
     };
-    int idx = 0;
-    _columnIndices.forEach((columnIdx) {
-      if (numericalColumns.containsKey(columnIdx)) {
-        updateColumns(columnIdx, Vector.fromList(numericalColumns[columnIdx],
-            dtype: _dtype));
-        idx++;
-      } else if (categoricalColumns.containsKey(columnIdx)) {
-        final encoded = _encoders[columnIdx]
-            .encode(categoricalColumns[columnIdx]);
+    int encodedColIdx = 0;
+    _columnIndices.forEach((sourceColIdx) {
+      if (numericalColumns.containsKey(sourceColIdx)) {
+        updateColumns(sourceColIdx,
+            Vector.fromList(numericalColumns[sourceColIdx], dtype: _dtype));
+        encodedColIdx++;
+      } else if (categoricalColumns.containsKey(sourceColIdx)) {
+        final encoded = _encoders[sourceColIdx]
+            .encode(categoricalColumns[sourceColIdx]);
         for (final column in encoded.columns) {
-          updateColumns(columnIdx, column);
+          updateColumns(sourceColIdx, column);
         }
-        categoricalIndices.add(ZRange.closed(idx, idx + encoded.columnsNum - 1));
-        idx += encoded.columnsNum;
+        final range = ZRange.closed(encodedColIdx,
+            encodedColIdx + encoded.columnsNum - 1);
+        categoricalIndices.add(range);
+        encodedColIdx += encoded.columnsNum;
       }
     });
 
