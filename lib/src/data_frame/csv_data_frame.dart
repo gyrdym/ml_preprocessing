@@ -184,6 +184,7 @@ class CsvDataFrame implements DataFrame {
 
   Future<List<List<dynamic>>> _extractData() =>
       _file.openRead()
+        .cast<List<int>>()
         .transform(utf8.decoder)
         .transform(_csvCodec.decoder)
         .toList();
