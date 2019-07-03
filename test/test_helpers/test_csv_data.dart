@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
-import 'package:ml_preprocessing/src/data_frame/csv_data_frame.dart';
-import 'package:ml_preprocessing/src/data_frame/validator/params_validator.dart';
+import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
+import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
 
@@ -24,7 +24,7 @@ Future testCsvData(
   validatorMock ??=
       createDataFrameParamsValidatorMock(validationShouldBeFailed: false);
 
-  final dataFrame = CsvDataFrame.fromFile(
+  final dataFrame = CsvPreprocessor.fromFile(
     fileName,
     labelIdx: labelIdx,
     columns: columns,
