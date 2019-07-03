@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
-import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter.dart';
-import 'package:ml_preprocessing/src/data_frame/validator/params_validator.dart';
+import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
+import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:mockito/mockito.dart';
 
 class EncoderMock extends Mock implements

@@ -4,8 +4,8 @@ import 'dart:math' as math;
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/one_hot_encoder.dart';
-import 'package:ml_preprocessing/src/data_frame/to_float_number_converter/to_float_number_converter_impl.dart';
-import 'package:ml_preprocessing/src/data_frame/variables_extractor/variables_extractor_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_impl.dart';
 
 class VariablesExtractorBenchmark extends BenchmarkBase {
   VariablesExtractorBenchmark() : super('VariablesExtractor benchmark');

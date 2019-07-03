@@ -2,7 +2,7 @@ import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
-  final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
+  final dataFrame = Preprocessor.csv('example/black_friday/black_friday.csv',
     labelName: 'Purchase\r',
     columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
     rows: [ZRange.closed(0, 20)],

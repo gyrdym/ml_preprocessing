@@ -20,7 +20,7 @@ Future main() async {
   //
   // `columns: [Tuple2<int, int>(0, 3)]` means, that we want to read range of
   // the csv's columns from 0 to third columns
-  final data = DataFrame.fromCsv('example/dataset.csv', labelIdx: 3,
+  final data = Preprocessor.csv('example/dataset.csv', labelIdx: 3,
     headerExists: true,
     categories: {
       'position': CategoricalDataEncoderType.oneHot,
