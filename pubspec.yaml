@@ -12,6 +12,7 @@ dependencies:
   ml_linalg: ^10.0.3
   tuple: ^1.0.2
   xrange: ^0.0.4
+  quiver: ^2.0.2
 
 dev_dependencies:
   benchmark_harness: ">=1.0.0 <2.0.0"
