@@ -1,16 +1,16 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/one_hot_encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/ordinal_encoder.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/one_hot_encoder.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/ordinal_encoder.dart';
 
 CategoricalDataCodec createEncoder({
   List<String> values,
-  CategoricalDataEncoderType type = CategoricalDataEncoderType.oneHot,
+  CategoricalDataEncodingType type = CategoricalDataEncodingType.oneHot,
 }) {
   switch (type) {
-    case CategoricalDataEncoderType.oneHot:
+    case CategoricalDataEncodingType.oneHot:
       return OneHotEncoder();
-    case CategoricalDataEncoderType.ordinal:
+    case CategoricalDataEncodingType.ordinal:
       return OrdinalEncoder();
     default:
       throw Error();

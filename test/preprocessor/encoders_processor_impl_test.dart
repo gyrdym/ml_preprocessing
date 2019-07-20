@@ -1,5 +1,5 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/codec.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -25,16 +25,16 @@ void main() {
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
 
-      final nameToEncoder = <String, CategoricalDataEncoderType>{
-        'gender': CategoricalDataEncoderType.oneHot,
-        'marital_status': CategoricalDataEncoderType.oneHot,
-        'age': CategoricalDataEncoderType.ordinal,
-        'country': CategoricalDataEncoderType.ordinal,
+      final nameToEncoder = <String, CategoricalDataEncodingType>{
+        'gender': CategoricalDataEncodingType.oneHot,
+        'marital_status': CategoricalDataEncodingType.oneHot,
+        'age': CategoricalDataEncodingType.ordinal,
+        'country': CategoricalDataEncodingType.ordinal,
       };
 
-      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
-      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
       final encoders = encoderProcessor.createEncoders({}, {}, nameToEncoder);
@@ -55,27 +55,27 @@ void main() {
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
 
-      final indexToEncoder = <int, CategoricalDataEncoderType>{
-        0: CategoricalDataEncoderType.ordinal,
-        1: CategoricalDataEncoderType.ordinal,
-        2: CategoricalDataEncoderType.oneHot,
-        3: CategoricalDataEncoderType.oneHot,
+      final indexToEncoder = <int, CategoricalDataEncodingType>{
+        0: CategoricalDataEncodingType.ordinal,
+        1: CategoricalDataEncodingType.ordinal,
+        2: CategoricalDataEncodingType.oneHot,
+        3: CategoricalDataEncodingType.oneHot,
       };
 
-      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
-        CategoricalDataEncoderType.oneHot: ['country', 'gender', 'age'],
+      final encoderToName = <CategoricalDataEncodingType, Iterable<String>>{
+        CategoricalDataEncodingType.oneHot: ['country', 'gender', 'age'],
       };
 
-      final nameToEncoder = <String, CategoricalDataEncoderType>{
-        'country': CategoricalDataEncoderType.oneHot,
-        'gender': CategoricalDataEncoderType.oneHot,
-        'age': CategoricalDataEncoderType.ordinal,
-        'marital_status': CategoricalDataEncoderType.ordinal,
+      final nameToEncoder = <String, CategoricalDataEncodingType>{
+        'country': CategoricalDataEncodingType.oneHot,
+        'gender': CategoricalDataEncodingType.oneHot,
+        'age': CategoricalDataEncodingType.ordinal,
+        'marital_status': CategoricalDataEncodingType.ordinal,
       };
 
-      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
-      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
       final encoders = encoderProcessor.createEncoders(indexToEncoder,
@@ -96,27 +96,27 @@ void main() {
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
 
-      final indexToEncoder = <int, CategoricalDataEncoderType>{};
+      final indexToEncoder = <int, CategoricalDataEncodingType>{};
 
-      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
-        CategoricalDataEncoderType.oneHot: ['country', 'gender',
+      final encoderToName = <CategoricalDataEncodingType, Iterable<String>>{
+        CategoricalDataEncodingType.oneHot: ['country', 'gender',
           'marital_status'],
       };
 
-      final nameToEncoder = <String, CategoricalDataEncoderType>{
-        'country': CategoricalDataEncoderType.oneHot,
-        'gender': CategoricalDataEncoderType.oneHot,
-        'age': CategoricalDataEncoderType.ordinal,
-        'marital_status': CategoricalDataEncoderType.ordinal,
+      final nameToEncoder = <String, CategoricalDataEncodingType>{
+        'country': CategoricalDataEncodingType.oneHot,
+        'gender': CategoricalDataEncodingType.oneHot,
+        'age': CategoricalDataEncodingType.ordinal,
+        'marital_status': CategoricalDataEncodingType.ordinal,
       };
 
-      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
       final encoders = encoderProcessor.createEncoders(indexToEncoder,
           encoderToName, nameToEncoder);
 
-      verifyNever(encoderFactory.fromType(CategoricalDataEncoderType.ordinal,
+      verifyNever(encoderFactory.fromType(CategoricalDataEncodingType.ordinal,
           any));
       expect(encoders, equals({
         0: oneHotEncoderMock,
@@ -131,17 +131,17 @@ void main() {
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
 
-      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
-        CategoricalDataEncoderType.oneHot: ['country', 'gender'],
-        CategoricalDataEncoderType.ordinal: ['age'],
+      final encoderToName = <CategoricalDataEncodingType, Iterable<String>>{
+        CategoricalDataEncodingType.oneHot: ['country', 'gender'],
+        CategoricalDataEncodingType.ordinal: ['age'],
       };
 
-      final indexToEncoder = <int, CategoricalDataEncoderType>{};
-      final nameToEncoder = <String, CategoricalDataEncoderType>{};
+      final indexToEncoder = <int, CategoricalDataEncodingType>{};
+      final nameToEncoder = <String, CategoricalDataEncodingType>{};
 
-      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
-      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
 
       final actual = encoderProcessor.createEncoders(indexToEncoder,
@@ -161,18 +161,18 @@ void main() {
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
 
-      final indexToEncoder = <int, CategoricalDataEncoderType>{};
+      final indexToEncoder = <int, CategoricalDataEncodingType>{};
 
-      final encoderToName = <CategoricalDataEncoderType, Iterable<String>>{
-        CategoricalDataEncoderType.oneHot: ['country', 'gender'],
-        CategoricalDataEncoderType.ordinal: ['gender'],
+      final encoderToName = <CategoricalDataEncodingType, Iterable<String>>{
+        CategoricalDataEncodingType.oneHot: ['country', 'gender'],
+        CategoricalDataEncodingType.ordinal: ['gender'],
       };
 
-      final nameToEncoder = <String, CategoricalDataEncoderType>{};
+      final nameToEncoder = <String, CategoricalDataEncodingType>{};
 
-      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
-      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
 
       final actual = () => encoderProcessor.createEncoders(indexToEncoder,
@@ -187,16 +187,16 @@ void main() {
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
 
-      final nameToEncoder = <String, CategoricalDataEncoderType>{
-        'country': CategoricalDataEncoderType.oneHot,
-        'gender': CategoricalDataEncoderType.oneHot,
-        'age': CategoricalDataEncoderType.ordinal,
-        'city': CategoricalDataEncoderType.ordinal,
+      final nameToEncoder = <String, CategoricalDataEncodingType>{
+        'country': CategoricalDataEncodingType.oneHot,
+        'gender': CategoricalDataEncodingType.oneHot,
+        'age': CategoricalDataEncodingType.ordinal,
+        'city': CategoricalDataEncodingType.ordinal,
       };
 
-      when(encoderFactory.fromType(CategoricalDataEncoderType.ordinal, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
-      when(encoderFactory.fromType(CategoricalDataEncoderType.oneHot, any))
+      when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
       expect(

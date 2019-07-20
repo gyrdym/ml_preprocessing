@@ -1,10 +1,9 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 
 abstract class EncodersProcessor {
-  Map<int, CategoricalDataEncoderType> createEncoders(
-      Map<int, CategoricalDataEncoderType> indexesToEncoderTypes,
-      Map<CategoricalDataEncoderType, Iterable<String>> encoderTypesToNames,
-      Map<String, CategoricalDataEncoderType> namesToEncoderTypes,
+  Map<int, CategoricalDataEncodingType> createEncoders(
+      Map<int, CategoricalDataEncodingType> indexesToEncoderTypes,
+      Map<CategoricalDataEncodingType, Iterable<String>> encoderTypesToNames,
+      Map<String, CategoricalDataEncodingType> namesToEncoderTypes,
   );
 }

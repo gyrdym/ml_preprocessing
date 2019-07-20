@@ -23,8 +23,8 @@ Future main() async {
   final preprocessor = Preprocessor.csv('example/dataset.csv', labelIdx: 3,
     headerExists: true,
     categories: {
-      'position': CategoricalDataEncoderType.oneHot,
-      'country': CategoricalDataEncoderType.ordinal,
+      'position': CategoricalDataEncodingType.oneHot,
+      'country': CategoricalDataEncodingType.ordinal,
     },
     rows: [ZRange.closed(0, 6)],
     columns: [ZRange.closed(0, 3)],

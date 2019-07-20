@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:xrange/range.dart';
 
 abstract class DataFrameParametersValidationErrorMessages {
@@ -12,7 +12,7 @@ abstract class DataFrameParametersValidationErrorMessages {
           '$categories';
 
   static String noHeaderProvidedForColumnEncodersMsg(
-          Map<dynamic, CategoricalDataEncoderType> encoders) =>
+          Map<dynamic, CategoricalDataEncodingType> encoders) =>
       'no header provided to define, which columns belongs to given ecnoders '
           '$encoders';
 

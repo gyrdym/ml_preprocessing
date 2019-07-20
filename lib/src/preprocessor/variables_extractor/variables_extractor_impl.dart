@@ -1,10 +1,10 @@
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory_impl.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor.dart';
 import 'package:xrange/zrange.dart';
@@ -17,7 +17,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
       this._columnToEncoder,
       this._toFloatConverter,
       {
-        CategoricalDataEncoderFactory encoderFactory =
+        CategoricalDataCodecFactory encoderFactory =
           const CategoricalDataCodecFactoryImpl(),
 
         DType dtype = DType.float32,
@@ -44,8 +44,8 @@ class RecordsProcessorImpl implements RecordsProcessor {
   final DType _dtype;
   final List<int> _rowIndices;
   final List<int> _columnIndices;
-  final Map<int, CategoricalDataEncoderType> _columnToEncoder;
-  final CategoricalDataEncoderFactory _encoderFactory;
+  final Map<int, CategoricalDataEncodingType> _columnToEncoder;
+  final CategoricalDataCodecFactory _encoderFactory;
   final ToFloatNumberConverter _toFloatConverter;
   final List<List<Object>> _observations;
 

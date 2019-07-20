@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/error_messages.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator_impl.dart';
 import 'package:test/test.dart';
@@ -305,7 +305,7 @@ void main() {
     test('should return proper error message if no `headerExists` param is '
         'provided, but `namesToEncoders` param exists', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final encoders = {'cat1': CategoricalDataEncoderType.ordinal};
+      final encoders = {'cat1': CategoricalDataEncodingType.ordinal};
       final actual = dataFrameParamsValidator.validate(
         labelIdx: 10,
         headerExists: false,

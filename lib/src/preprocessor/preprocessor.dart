@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
 import 'package:xrange/zrange.dart';
 
@@ -46,9 +46,9 @@ abstract class Preprocessor {
     String labelName,
     bool headerExists,
     String fieldDelimiter,
-    Map<String, CategoricalDataEncoderType> categories,
-    Map<int, CategoricalDataEncoderType> categoryIndices,
-    Map<CategoricalDataEncoderType, Iterable<String>> encoders,
+    Map<String, CategoricalDataEncodingType> categories,
+    Map<int, CategoricalDataEncodingType> categoryIndices,
+    Map<CategoricalDataEncodingType, Iterable<String>> encoders,
     List<ZRange> rows,
     List<ZRange> columns,
     Type dtype,

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:test/test.dart';
@@ -16,7 +16,7 @@ Future testCsvData(
     int expectedRowsNum,
     List<ZRange> rows,
     List<ZRange> columns,
-    CategoricalDataEncoderFactory categoricalDataFactoryMock,
+    CategoricalDataCodecFactory categoricalDataFactoryMock,
     DataFrameParamsValidator validatorMock,
     void testContentFn(
         Matrix features, Matrix labels, List<String> headers)}) async {

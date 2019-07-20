@@ -7,11 +7,11 @@ Future processDataSetWithCategoricalData() async {
     columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
     rows: [ZRange.closed(0, 20)],
     categories: {
-      'Gender': CategoricalDataEncoderType.oneHot,
-      'Age': CategoricalDataEncoderType.oneHot,
-      'City_Category': CategoricalDataEncoderType.oneHot,
-      'Stay_In_Current_City_Years': CategoricalDataEncoderType.oneHot,
-      'Marital_Status': CategoricalDataEncoderType.oneHot,
+      'Gender': CategoricalDataEncodingType.oneHot,
+      'Age': CategoricalDataEncodingType.oneHot,
+      'City_Category': CategoricalDataEncodingType.oneHot,
+      'Stay_In_Current_City_Years': CategoricalDataEncodingType.oneHot,
+      'Marital_Status': CategoricalDataEncodingType.oneHot,
     },
   );
 
