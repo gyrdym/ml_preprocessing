@@ -4,7 +4,7 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 
 abstract class CategoricalDataEncoderFactory {
   CategoricalDataEncoder fromType(CategoricalDataEncoderType encoderType,
-      [DType dtype]);
-  CategoricalDataEncoder oneHot([DType dtype]);
-  CategoricalDataEncoder ordinal([DType dtype]);
+      Iterable<String> values, [DType dtype]);
+  CategoricalDataEncoder oneHot(Iterable<String> values, [DType dtype]);
+  CategoricalDataEncoder ordinal(Iterable<String> values, [DType dtype]);
 }

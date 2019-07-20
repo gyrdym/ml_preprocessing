@@ -2,20 +2,29 @@ import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor.dart';
-import 'package:tuple/tuple.dart';
 import 'package:xrange/zrange.dart';
 
-class VariablesExtractorImpl implements VariablesExtractor {
-  VariablesExtractorImpl(
+class RecordsProcessorImpl implements RecordsProcessor {
+  RecordsProcessorImpl(
       this._observations,
       this._columnIndices,
       this._rowIndices,
-      this._encoders,
-      this._labelIdx,
+      this._columnToEncoder,
       this._toFloatConverter,
-      [DType dtype = DType.float32]) : _dtype = dtype {
+      {
+        CategoricalDataEncoderFactory encoderFactory =
+          const CategoricalDataEncoderFactoryImpl(),
+
+        DType dtype = DType.float32,
+      }) :
+        _encoderFactory = encoderFactory,
+        _dtype = dtype
+  {
     if (_columnIndices.length > _observations.first.length) {
       throw Exception(columnIndicesWrongNumberMsg);
     }
@@ -35,51 +44,46 @@ class VariablesExtractorImpl implements VariablesExtractor {
   final DType _dtype;
   final List<int> _rowIndices;
   final List<int> _columnIndices;
-  final Map<int, CategoricalDataEncoder> _encoders;
-  final int _labelIdx;
+  final Map<int, CategoricalDataEncoderType> _columnToEncoder;
+  final CategoricalDataEncoderFactory _encoderFactory;
   final ToFloatNumberConverter _toFloatConverter;
   final List<List<Object>> _observations;
 
-  bool get _hasCategoricalData => _encoders.isNotEmpty;
+  bool get _hasCategoricalData => _columnToEncoder.isNotEmpty;
 
-  Tuple3<Matrix, Matrix, Set<ZRange>> _data;
-
-  @override
-  Matrix get features => _extract().item1;
+  _EncodedDataInfo _encodedData;
 
   @override
-  Matrix get labels => _extract().item2;
+  Matrix extractRecords() => _encode().records;
 
   @override
-  Set<ZRange> get encodedColumnRanges => _extract().item3;
+  Map<ZRange, CategoricalDataEncoder> get rangeToEncoder =>
+      _encode().rangeToEncoder;
 
-  Tuple3<Matrix, Matrix, Set<ZRange>> _extract() {
-    if (_data == null) {
-      final columnsData = _collectColumnsData();
-      _data = _processColumns(columnsData.item1, columnsData.item2);
+  _EncodedDataInfo _encode() {
+    if (_encodedData == null) {
+      _encodedData = _encodeColumns(_collectColumnsData());
 
       // if categorical data exists in dataset, it means, that selection by
       // given [_rowIndices] hasn't taken place yet (we had to use the whole
       // dataset in order to collect all the categorical data values), so
       // we should select needed rows here
       if (_hasCategoricalData) {
-        _data = Tuple3(
-            Matrix.fromRows(_rowIndices.map(_data.item1.getRow)
+        _encodedData = _EncodedDataInfo(
+            Matrix.fromRows(_rowIndices.map(_encodedData.records.getRow)
                 .toList(growable: false)),
-            Matrix.fromRows(_rowIndices.map(_data.item2.getRow)
-                .toList(growable: false)),
-            _data.item3,
+            _encodedData.rangeToEncoder,
         );
       }
     }
-    return _data;
+    return _encodedData;
   }
 
-  Tuple2<Map<int, List<double>>, Map<int, List<String>>> _collectColumnsData() {
+  _ColumnsData _collectColumnsData() {
     // key here is a zero-based number of column in the [records]
-    final Map<int, List<String>> categoricalColumns = {};
+    final Map<int, List<String>> columnToCategoricalValues = {};
     // key here is a zero-based number of column in the [records]
-    final Map<int, List<double>> numericalColumns = {};
+    final Map<int, List<double>> columnToNumericalValues = {};
 
     // if categories exist - iterate through the whole data to collect all the
     // categorical values in order to fit categorical data encoders
@@ -88,64 +92,87 @@ class VariablesExtractorImpl implements VariablesExtractor {
 
     rowIndices.forEach((rowIdx) {
       final rowData = _processRow(_observations[rowIdx]);
-      rowData.item1.forEach((idx, value) =>
-          numericalColumns.putIfAbsent(idx, () => []).add(value));
-      rowData.item2.forEach((idx, value) =>
-          categoricalColumns.putIfAbsent(idx, () => []).add(value));
+      rowData.columnToNumericalValues.forEach((idx, value) =>
+          columnToNumericalValues.putIfAbsent(idx, () => []).add(value));
+      rowData.columnToCategoricalValues.forEach((idx, value) =>
+          columnToCategoricalValues.putIfAbsent(idx, () => []).add(value));
     });
 
-    return Tuple2(numericalColumns, categoricalColumns);
+    return _ColumnsData(columnToNumericalValues, columnToCategoricalValues);
   }
 
-  Tuple2<Map<int, double>, Map<int, String>> _processRow(
+  _RowData _processRow(
       List<Object> row) {
-    final Map<int, double> numericalValues = {};
-    final Map<int, String> categoricalValues = {};
+    final Map<int, double> columnToNumericalValues = {};
+    final Map<int, String> columnToCategoricalValues = {};
     _columnIndices.forEach((idx) {
-      if (_encoders.containsKey(idx)) {
-        categoricalValues[idx] = row[idx].toString();
+      if (_columnToEncoder.containsKey(idx)) {
+        columnToCategoricalValues[idx] = row[idx].toString();
       } else {
-        numericalValues[idx] = _toFloatConverter.convert(row[idx]);
+        columnToNumericalValues[idx] = _toFloatConverter.convert(row[idx]);
       }
     });
-    return Tuple2(numericalValues, categoricalValues);
+    return _RowData(columnToNumericalValues, columnToCategoricalValues);
   }
 
-  Tuple3<Matrix, Matrix, Set<ZRange>> _processColumns(
-    Map<int, List<double>> numericalColumns,
-    Map<int, List<String>> categoricalColumns,
-  ) {
-    final featureColumns = <Vector>[];
-    final labelColumns = <Vector>[];
-    final categoricalIndices = <ZRange>{};
-    final updateColumns = (int i, Vector vectorColumn) {
-      i == _labelIdx
-          ? labelColumns.add(vectorColumn)
-          : featureColumns.add(vectorColumn);
-    };
+  _EncodedDataInfo _encodeColumns(_ColumnsData columnsData) {
+    final columns = <Vector>[];
+    final rangeToEncoder = <ZRange, CategoricalDataEncoder>{};
+
     int encodedColIdx = 0;
+
     _columnIndices.forEach((sourceColIdx) {
-      if (numericalColumns.containsKey(sourceColIdx)) {
-        updateColumns(sourceColIdx,
-            Vector.fromList(numericalColumns[sourceColIdx], dtype: _dtype));
-        encodedColIdx++;
-      } else if (categoricalColumns.containsKey(sourceColIdx)) {
-        final encoded = _encoders[sourceColIdx]
-            .encode(categoricalColumns[sourceColIdx]);
+      if (columnsData.columnToCategoricalValues.containsKey(sourceColIdx)) {
+        final categoricalValues = columnsData
+            .columnToCategoricalValues[sourceColIdx];
+        final encoderType = _columnToEncoder[sourceColIdx];
+        final encoder = _encoderFactory.fromType(encoderType,
+            categoricalValues, _dtype);
+        final encoded = encoder.encode(categoricalValues);
         for (final column in encoded.columns) {
-          updateColumns(sourceColIdx, column);
+          columns.add(column);
         }
         final range = ZRange.closed(encodedColIdx,
             encodedColIdx + encoded.columnsNum - 1);
-        categoricalIndices.add(range);
+        rangeToEncoder[range] = encoder;
         encodedColIdx += encoded.columnsNum;
+      } else {
+        final numericalValues = columnsData
+            .columnToNumericalValues[sourceColIdx];
+        final column = Vector.fromList(numericalValues, dtype: _dtype);
+        columns.add(column);
+        encodedColIdx++;
       }
     });
 
-    return Tuple3(
-        Matrix.fromColumns(featureColumns, dtype: _dtype),
-        Matrix.fromColumns(labelColumns, dtype: _dtype),
-        categoricalIndices,
+    return _EncodedDataInfo(
+        Matrix.fromColumns(columns, dtype: _dtype),
+        rangeToEncoder,
     );
   }
 }
+
+class _ColumnsData {
+  _ColumnsData(this.columnToNumericalValues, this.columnToCategoricalValues);
+
+  // key here is a zero-based number of column in the [records]
+  final Map<int, List<double>> columnToNumericalValues;
+
+  // key here is a zero-based number of column in the [records]
+  final Map<int, List<String>> columnToCategoricalValues;
+}
+
+class _RowData {
+  _RowData(this.columnToNumericalValues, this.columnToCategoricalValues);
+
+  final Map<int, double> columnToNumericalValues;
+  final Map<int, String> columnToCategoricalValues;
+}
+
+class _EncodedDataInfo {
+  _EncodedDataInfo(this.records, this.rangeToEncoder);
+
+  final Matrix records;
+  final Map<ZRange, CategoricalDataEncoder> rangeToEncoder;
+}
+

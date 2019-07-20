@@ -8,10 +8,10 @@ import '../../mocks.dart';
 void main() {
   group('VariablesExtractorFactoryImpl', () {
     test('should create a proper variable extractor instance', () {
-      final factory = const VariablesExtractorFactoryImpl();
+      final factory = const RecordsProcessorFactoryImpl();
       final extractor = factory.create([[1, 2, 3]], [], [], {}, 0,
           ToFloatNumberConverterMock(), DType.float32);
-      expect(extractor.runtimeType, VariablesExtractorImpl);
+      expect(extractor.runtimeType, RecordsProcessorImpl);
     });
   });
 }

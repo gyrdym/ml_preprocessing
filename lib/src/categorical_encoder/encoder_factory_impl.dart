@@ -11,12 +11,12 @@ class CategoricalDataEncoderFactoryImpl implements
 
   @override
   CategoricalDataEncoder fromType(CategoricalDataEncoderType encoderType,
-      [DType dtype]) {
+      Iterable<String> values, [DType dtype]) {
     switch (encoderType) {
       case CategoricalDataEncoderType.oneHot:
-        return OneHotEncoder(dtype);
+        return OneHotEncoder(values, dtype);
       case CategoricalDataEncoderType.ordinal:
-        return OrdinalEncoder(dtype);
+        return OrdinalEncoder(values, dtype);
       default:
         throw Exception('Unknown categorical data encoder type has been '
             'provided');
@@ -24,8 +24,10 @@ class CategoricalDataEncoderFactoryImpl implements
   }
 
   @override
-  CategoricalDataEncoder oneHot([DType dtype]) => OneHotEncoder(dtype);
+  CategoricalDataEncoder oneHot(Iterable<String> values, [DType dtype]) =>
+      OneHotEncoder(values, dtype);
 
   @override
-  CategoricalDataEncoder ordinal([DType dtype]) => OrdinalEncoder(dtype);
+  CategoricalDataEncoder ordinal(Iterable<String> values, [DType dtype]) =>
+      OrdinalEncoder(values, dtype);
 }

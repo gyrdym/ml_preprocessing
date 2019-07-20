@@ -33,7 +33,7 @@ Future testCsvData(
     paramsValidator: validatorMock,
   );
   final header = await dataFrame.header;
-  final features = await dataFrame.features;
+  final features = await dataFrame.data;
   final labels = await dataFrame.labels;
 
   if (columns == null) {

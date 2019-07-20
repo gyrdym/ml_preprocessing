@@ -27,14 +27,15 @@ void main() {
       ]
     };
 
-    final dataSet = DataSet(observations, outcomeRange, rangeToEncoded);
+    final dataSet = DataSet(observations, outcomeColumnRange: outcomeRange,
+        rangeToEncoded: rangeToEncoded);
 
     test('should store nominal feature ranges with their encoded values', () {
       expect(dataSet.rangeToEncoded, equals(rangeToEncoded));
     });
 
     test('should store outcome variable column range', () {
-      expect(dataSet.outcomeRange, equals(outcomeRange));
+      expect(dataSet.outcomeColumnRange, equals(outcomeRange));
     });
 
     test('should generate ranges for all feature columns (for both numerical '

@@ -15,20 +15,22 @@ Future processDataSetWithCategoricalData() async {
     },
   );
 
-  final features = await dataFrame.features;
-  final genderEncoded = features.submatrix(columns: ZRange.closed(0, 1));
-  final ageEncoded = features.submatrix(columns: ZRange.closed(2, 8));
-  final cityCategoryEncoded = features.submatrix(columns: ZRange.closed(9, 11));
-  final stayInCityEncoded = features.submatrix(columns: ZRange.closed(12, 16));
-  final maritalStatusEncoded = features
+  final observations = (await dataFrame.data).toMatrix();
+  final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
+  final ageEncoded = observations.submatrix(columns: ZRange.closed(2, 8));
+  final cityCategoryEncoded = observations
+      .submatrix(columns: ZRange.closed(9, 11));
+  final stayInCityEncoded = observations
+      .submatrix(columns: ZRange.closed(12, 16));
+  final maritalStatusEncoded = observations
       .submatrix(columns: ZRange.closed(17, 18));
 
   print('Features:');
 
-  print(features);
+  print(observations);
 
-  print('feature matrix dimensions: ${features.rowsNum} x '
-      '${features.columnsNum};');
+  print('feature matrix dimensions: ${observations.rowsNum} x '
+      '${observations.columnsNum};');
 
   print('==============================');
 
