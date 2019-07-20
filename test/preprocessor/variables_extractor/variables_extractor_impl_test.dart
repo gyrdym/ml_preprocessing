@@ -23,9 +23,9 @@ void main() {
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.features;
+      final features = extractor.extractRecords;
       final labels = extractor.labels;
 
       expect(
@@ -55,9 +55,9 @@ void main() {
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, columnsIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnsIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.features;
+      final features = extractor.extractRecords;
       final labels = extractor.labels;
 
       expect(
@@ -81,9 +81,9 @@ void main() {
       final labelIdx = 1;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.features;
+      final features = extractor.extractRecords;
       final labels = extractor.labels;
 
       expect(
@@ -120,9 +120,9 @@ void main() {
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
-      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.features;
+      final features = extractor.extractRecords;
 
       expect(
           features,
@@ -150,9 +150,9 @@ void main() {
         labelIdx: encoderMock,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.features;
+      final features = extractor.extractRecords;
       final labels = extractor.labels;
 
       expect(
@@ -179,9 +179,9 @@ void main() {
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final features = extractor.features;
+      final features = extractor.extractRecords;
       final labels = extractor.labels;
 
       expect(
@@ -205,7 +205,7 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
       expect(
-          () => VariablesExtractorImpl(data, columnIndices, rowIndices,
+          () => RecordsProcessorImpl(data, columnIndices, rowIndices,
               encoders, labelIdx, valueConverter),
           throwsException);
     });
@@ -217,9 +217,9 @@ void main() {
       final encoders = <int, CategoricalDataEncoder>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final extractor = VariablesExtractorImpl(data, columnsIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnsIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final actual = extractor.features;
+      final actual = extractor.extractRecords;
 
       expect(
           actual,
@@ -239,7 +239,7 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
       expect(
-          () => VariablesExtractorImpl(data, columnIndices, rowIndices,
+          () => RecordsProcessorImpl(data, columnIndices, rowIndices,
               encoders, labelIdx, valueConverter),
           throwsException);
     });
@@ -278,9 +278,9 @@ void main() {
         labelIdx: labelEncoderMock,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final extractor = VariablesExtractorImpl(data, columnIndices, rowIndices,
+      final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final actual = extractor.encodedColumnRanges;
+      final actual = extractor.rangeToEncoder;
 
       expect(actual, equals([
         ZRange.closed(0, 2),

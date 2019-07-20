@@ -2,8 +2,7 @@
 import 'dart:math' as math;
 
 import 'package:benchmark_harness/benchmark_harness.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/one_hot_encoder.dart';
+import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_impl.dart';
 
@@ -17,7 +16,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
   List<List<Object>> observations;
   List<int> rowIndices;
   List<int> columnIndices;
-  Map<int, CategoricalDataEncoder> encoders;
+  Map<int, CategoricalDataEncoderType> encoders;
 
   List<List<Object>> generateObservations() {
     final list = <List<Object>>[];
@@ -37,14 +36,13 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
 
   @override
   void run() {
-    VariablesExtractorImpl(
+    RecordsProcessorImpl(
       observations,
       columnIndices,
       rowIndices,
       encoders,
-      numOfColumns - 1,
       toFloatConverter,
-    ).features;
+    ).extractRecords();
   }
 
   @override
@@ -55,7 +53,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
     encoders = Map.fromIterable(
       List.generate((numOfColumns * categoricalColumnsRatio).round(), (i) => i),
       key: (el) => el,
-      value: (el) => OneHotEncoder(),
+      value: (el) => CategoricalDataEncoderType.oneHot,
     );
   }
 }

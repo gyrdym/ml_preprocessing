@@ -1,30 +1,37 @@
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:xrange/zrange.dart';
 import 'package:quiver/iterables.dart';
 
 class DataSet {
-  DataSet(this._samples, this.outcomeRange, [this.rangeToEncoded]) {
-    final indices = count().take(_samples.columnsNum);
+  DataSet(this._records, {
+    ZRange outcomeColumnRange,
+    this.rangeToEncoded,
+  }) : outcomeColumnRange =
+      outcomeColumnRange ?? ZRange.singleton(_records.columnsNum - 1)
+  {
+    final indices = count().take(_records.columnsNum);
     final nominalRanges = rangeToEncoded != null
         ? rangeToEncoded.keys
         : <ZRange>[];
     final allRanges = indices.map(
             (idx) => nominalRanges.firstWhere((range) => range.contains(idx),
                 orElse: () => ZRange.singleton(idx)))
-        .where((range) => range != outcomeRange);
+        .where((range) => range != outcomeColumnRange);
 
     _featureRanges = Set.from(allRanges);
 
-    _features = _samples
-        .submatrix(columns: ZRange.closedOpen(0, outcomeRange.firstValue));
+    _features = _records
+        .submatrix(columns: ZRange.closedOpen(0, outcomeColumnRange
+        .firstValue));
 
-    _outcome = _samples.submatrix(columns: outcomeRange);
+    _outcome = _records.submatrix(columns: outcomeColumnRange);
   }
 
-  final ZRange outcomeRange;
+  final ZRange outcomeColumnRange;
   final Map<ZRange, List<Vector>> rangeToEncoded;
-  final Matrix _samples;
+  final Matrix _records;
 
   Iterable<ZRange> get featureRanges => _featureRanges;
   Iterable<ZRange> _featureRanges;
@@ -38,5 +45,5 @@ class DataSet {
   bool isColumnNominal(ZRange range)  => rangeToEncoded
       ?.containsKey(range) == true;
 
-  Matrix toMatrix() => _samples;
+  Matrix toMatrix() => _records;
 }

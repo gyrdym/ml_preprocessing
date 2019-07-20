@@ -29,7 +29,7 @@ Future testCsvWithCategories(
       categoryIndices: categoryIndices,
   );
   final header = await dataFrame.header;
-  final features = await dataFrame.features;
+  final features = await dataFrame.data;
   final labels = await dataFrame.labels;
 
   expect(features.rowsNum, equals(rowNum));

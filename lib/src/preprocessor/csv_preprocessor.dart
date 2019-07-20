@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:ml_linalg/dtype.dart';
+import 'package:ml_linalg/linalg.dart';
 import 'package:ml_linalg/matrix.dart';
+import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory_impl.dart';
@@ -56,8 +58,8 @@ class CsvPreprocessor implements Preprocessor {
       DataFrameHeaderExtractorFactory headerExtractorFactory =
         const DataFrameHeaderExtractorFactoryImpl(),
 
-      VariablesExtractorFactory featuresExtractorFactory =
-        const VariablesExtractorFactoryImpl(),
+      RecordsProcessorFactory featuresExtractorFactory =
+        const RecordsProcessorFactoryImpl(),
 
       IndexRangesCombinerFactory indexRangesCombinerFactory =
         const IndexRangesCombinerFactoryImpl(),
@@ -72,7 +74,7 @@ class CsvPreprocessor implements Preprocessor {
       _csvCodec =
         csvCodecFactory.create(eol: eol, fieldDelimiter: fieldDelimiter),
       _file = File(fileName),
-      _labelIdx = labelIdx,
+      _labelIdxFromArgs = labelIdx,
       _labelName = labelName,
       _headerExists = headerExists,
       _encoderTypeToName = encoders,
@@ -82,7 +84,7 @@ class CsvPreprocessor implements Preprocessor {
       _paramsValidator = paramsValidator,
       _valueConverter = valueConverter,
       _headerExtractorFactory = headerExtractorFactory,
-      _variablesExtractorFactory = featuresExtractorFactory,
+      _recordsProcessorFactory = featuresExtractorFactory,
       _indexRangesCombinerFactory = indexRangesCombinerFactory,
       _encodersProcessorFactory = encodersProcessorFactory {
     final errorMsg = _paramsValidator.validate(
@@ -103,7 +105,7 @@ class CsvPreprocessor implements Preprocessor {
   final DType _dtype;
   final CsvCodec _csvCodec;
   final File _file;
-  final int _labelIdx;
+  final int _labelIdxFromArgs;
   final String _labelName;
   final bool _headerExists;
   final CategoricalDataEncoderFactory _encoderFactory;
@@ -111,7 +113,7 @@ class CsvPreprocessor implements Preprocessor {
   final ToFloatNumberConverter _valueConverter;
   final IndexRangesCombinerFactory _indexRangesCombinerFactory;
   final DataFrameHeaderExtractorFactory _headerExtractorFactory;
-  final VariablesExtractorFactory _variablesExtractorFactory;
+  final RecordsProcessorFactory _recordsProcessorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
 
   final Map<CategoricalDataEncoderType, Iterable<String>> _encoderTypeToName;
@@ -122,40 +124,28 @@ class CsvPreprocessor implements Preprocessor {
 
   Future _initialization;
   List<List<dynamic>> _data; // the whole dataset including header
-  Matrix _features;
-  Matrix _labels;
-  Set<ZRange> _categoricalIndices;
+  Matrix _observations;
+  Map<ZRange, CategoricalDataEncoder> _rangeToEncoder;
+  Map<ZRange, List<Vector>> _rangeToEncoded;
   List<String> _header;
-  DataFrameHeaderExtractor _headerExtractor;
-  VariablesExtractor _variablesExtractor;
-  Map<int, CategoricalDataEncoder> _encoders;
+  RecordsProcessor _recordsProcessor;
+  ZRange _labelColumnRange;
 
   @override
-  Future<List<String>> get header async {
+  Future<DataSet> get data async {
     await _initialization;
-    return _header ??= _headerExists ? _headerExtractor.extract(_data) : null;
+    return DataSet(_observations,
+        outcomeColumnRange: _labelColumnRange, rangeToEncoded: _rangeToEncoded);
   }
 
   @override
-  Future<Matrix> get features async {
+  Future<Map<ZRange, CategoricalDataEncoder>> get columnRangeToEncoder async {
     await _initialization;
-    return _features ??= _variablesExtractor.features;
-  }
-
-  @override
-  Future<Matrix> get labels async {
-    await _initialization;
-    return _labels ??= _variablesExtractor.labels;
-  }
-
-  @override
-  Future<Set<ZRange>> get encodedColumnRanges async {
-    await _initialization;
-    return _categoricalIndices ??= _variablesExtractor.encodedColumnRanges;
+    return _rangeToEncoder;
   }
 
   Future<void> _init([Iterable<ZRange> rows, Iterable<ZRange> columns]) async {
-    _data = await _extractData();
+    _data = await _extractDataFromFile();
 
     final rowsNum = _data.length;
     final columnsNum = _data.last.length;
@@ -169,20 +159,28 @@ class CsvPreprocessor implements Preprocessor {
     final records = _data.sublist(_headerExists ? 1 : 0);
     final encodersProcessor = _encodersProcessorFactory.create(originalHeader,
         _encoderFactory, _dtype);
+    final indexToEncoderType = encodersProcessor.createEncoders(
+        _indexToEncoderType, _encoderTypeToName, _nameToEncoderType);
+    final _headerExtractor = _headerExtractorFactory.create(columnIndices);
 
-    _encoders = encodersProcessor.createEncoders(_indexToEncoderType,
-        _encoderTypeToName, _nameToEncoderType);
-    _headerExtractor = _headerExtractorFactory.create(columnIndices);
-    _variablesExtractor = _variablesExtractorFactory.create(records,
-        columnIndices, rowIndices, _encoders, labelIdx, _valueConverter,
+    _recordsProcessor = _recordsProcessorFactory.create(records,
+        columnIndices, rowIndices, indexToEncoderType, _valueConverter,
         _dtype);
+
+    _observations = _recordsProcessor.extractRecords();
+    _rangeToEncoder = _recordsProcessor.rangeToEncoder;
+    _labelColumnRange = _rangeToEncoded.keys
+        .firstWhere((range) => range.contains(labelIdx));
+    _rangeToEncoded = _rangeToEncoder.map((range, encoder) =>
+        MapEntry(range, encoder.originalToEncoded.values));
+    _header = _headerExtractor.extract(_data);
   }
 
   List<String> _getOriginalHeader(List<List> data) => _headerExists
       ? data[0].map((dynamic el) => el.toString()).toList(growable: false)
       : <String>[];
 
-  Future<List<List<dynamic>>> _extractData() =>
+  Future<List<List<dynamic>>> _extractDataFromFile() =>
       _file.openRead()
         .cast<List<int>>()
         .transform(utf8.decoder)
@@ -190,12 +188,12 @@ class CsvPreprocessor implements Preprocessor {
         .toList();
 
   int _getLabelIdx(List<String> originalHeader, int columnsNum) {
-    if (_labelIdx != null) {
-      if (_labelIdx >= columnsNum || _labelIdx < 0) {
-        throw RangeError.range(_labelIdx, 0, columnsNum - 1, null,
+    if (_labelIdxFromArgs != null) {
+      if (_labelIdxFromArgs >= columnsNum || _labelIdxFromArgs < 0) {
+        throw RangeError.range(_labelIdxFromArgs, 0, columnsNum - 1, null,
             _wrapErrorMessage('Invalid label column index'));
       }
-      return _labelIdx;
+      return _labelIdxFromArgs;
     }
 
     if (originalHeader.isNotEmpty) {
@@ -211,40 +209,5 @@ class CsvPreprocessor implements Preprocessor {
         'are provided'));
   }
 
-  @override
-  Iterable<String> decode(Matrix encoded, {String colName, int colIdx}) {
-    if (colName == null && colIdx == null) {
-      throw Exception(_wrapErrorMessage('Neither column name, nor column index '
-          'are provided'));
-    }
-    if (colName != null) {
-      if (!_headerExists) {
-        throw Exception(_wrapErrorMessage('Column name `$colName` provided, '
-            'but the data frame does not have a header'));
-      }
-      if (!_header.contains(colName)) {
-        throw Exception(_wrapErrorMessage('Provided column name `$colName` is '
-            'not in the header. Maybe provided column has been cutted out '
-            'during data preparation?'));
-      }
-    }
-
-    if (colIdx != null && (colIdx < 0 || colIdx >= _data.first.length)) {
-      throw RangeError.index(colIdx, _data.first,
-          _wrapErrorMessage('Wrong column index is provided'));
-    }
-
-    final idx = colIdx != null ? colIdx : _header.indexOf(colName);
-    if (!_encoders.containsKey(idx)) {
-      throw Exception(
-          _wrapErrorMessage('Provided column is not a categorical column'));
-    }
-    return _encoders[idx].decode(encoded);
-  }
-
   String _wrapErrorMessage(String text) => '$_loggerPrefix: $text';
-
-  @override
-  Future<Preprocessor> shuffle() => throw UnimplementedError('Shuffle method is'
-      'not implemented yet');
 }
