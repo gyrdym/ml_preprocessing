@@ -3,7 +3,7 @@ import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/one_hot_encoder.dart';
 import 'package:ml_preprocessing/src/categorical_encoder/ordinal_encoder.dart';
 
-CategoricalDataEncoder createEncoder({
+CategoricalDataCodec createEncoder({
   List<String> values,
   CategoricalDataEncoderType type = CategoricalDataEncoderType.oneHot,
 }) {

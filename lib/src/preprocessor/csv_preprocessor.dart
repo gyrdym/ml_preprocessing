@@ -47,7 +47,7 @@ class CsvPreprocessor implements Preprocessor {
 
       // private parameters, they are hidden by the factory
       CategoricalDataEncoderFactory encoderFactory =
-        const CategoricalDataEncoderFactoryImpl(),
+        const CategoricalDataCodecFactoryImpl(),
 
       DataFrameParamsValidator paramsValidator =
         const DataFrameParamsValidatorImpl(),
@@ -125,7 +125,7 @@ class CsvPreprocessor implements Preprocessor {
   Future _initialization;
   List<List<dynamic>> _data; // the whole dataset including header
   Matrix _observations;
-  Map<ZRange, CategoricalDataEncoder> _rangeToEncoder;
+  Map<ZRange, CategoricalDataCodec> _rangeToEncoder;
   Map<ZRange, List<Vector>> _rangeToEncoded;
   List<String> _header;
   RecordsProcessor _recordsProcessor;
@@ -139,7 +139,7 @@ class CsvPreprocessor implements Preprocessor {
   }
 
   @override
-  Future<Map<ZRange, CategoricalDataEncoder>> get columnRangeToEncoder async {
+  Future<Map<ZRange, CategoricalDataCodec>> get columnRangeToEncoder async {
     await _initialization;
     return _rangeToEncoder;
   }

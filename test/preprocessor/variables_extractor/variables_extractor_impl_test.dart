@@ -19,7 +19,7 @@ void main() {
     test('should extract variables according to passed colum indices', () {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 2, 4];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
@@ -51,7 +51,7 @@ void main() {
     test('should extract variables according to passed row indices', () {
       final rowIndices = <int>[0, 3];
       final columnsIndices = <int>[0, 1, 2, 3, 4];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
@@ -77,7 +77,7 @@ void main() {
         () {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 1;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
@@ -114,7 +114,7 @@ void main() {
 
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4];
-      final encoders = <int, CategoricalDataEncoder>{
+      final encoders = <int, CategoricalDataCodec>{
         2: encoderMock,
       };
       final labelIdx = 4;
@@ -146,7 +146,7 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4];
       final labelIdx = 4;
-      final encoders = <int, CategoricalDataEncoder>{
+      final encoders = <int, CategoricalDataCodec>{
         labelIdx: encoderMock,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
@@ -176,7 +176,7 @@ void main() {
         'number of elements in an observation', () {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
@@ -200,7 +200,7 @@ void main() {
         'number of elements in an observation', () {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4, 5];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
@@ -214,7 +214,7 @@ void main() {
         'number of rows in dataset', () {
       final rowIndices = <int>[0, 1, 2];
       final columnsIndices = <int>[0, 1, 2, 3, 4];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = RecordsProcessorImpl(data, columnsIndices, rowIndices,
@@ -234,7 +234,7 @@ void main() {
         'number of rows in dataset', () {
       final rowIndices = <int>[0, 1, 2, 3, 4, 5];
       final columnIndices = <int>[0, 1, 2, 3, 4];
-      final encoders = <int, CategoricalDataEncoder>{};
+      final encoders = <int, CategoricalDataCodec>{};
       final labelIdx = 4;
       final valueConverter = mocks.ToFloatNumberConverterMock();
 
@@ -272,7 +272,7 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4];
       final labelIdx = 4;
-      final encoders = <int, CategoricalDataEncoder>{
+      final encoders = <int, CategoricalDataCodec>{
         0: column0EncoderMock,
         2: column2EncoderMock,
         labelIdx: labelEncoderMock,

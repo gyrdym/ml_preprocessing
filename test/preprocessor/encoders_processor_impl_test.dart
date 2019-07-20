@@ -15,7 +15,7 @@ void main() {
       final encoderFactory = createCategoricalDataEncoderFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final encoders = encoderProcessor.createEncoders({}, {}, {});
-      expect(encoders, equals(<int, CategoricalDataEncoder>{}));
+      expect(encoders, equals(<int, CategoricalDataCodec>{}));
     });
 
     test('should create encoders from `name-to-encoder` map and header is not '
