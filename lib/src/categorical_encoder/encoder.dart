@@ -5,7 +5,7 @@ import 'package:quiver/collection.dart';
 
 /// A categorical data encoder. Contains names and values of the categories
 /// that supposed to be encoded and provides method for data encoding
-abstract class CategoricalDataEncoder {
+abstract class CategoricalDataCodec {
   DType get dtype;
 
   HashBiMap<String, Vector> get originalToEncoded;
@@ -15,10 +15,7 @@ abstract class CategoricalDataEncoder {
 
   /// Decodes passed categorical encoded data to a source string representation
   Iterable<String> decode(Matrix values);
-
-  /// Encodes a single categorical label
-  Vector encodeSingle(String label);
-
-  /// Decodes a single encoded categorical label
-  String decodeSingle(Vector encoded);
 }
+
+typedef EncodeLabelFn = Vector Function(String value,
+    Iterable<String> categoryLabels, DType dtype);

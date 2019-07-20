@@ -18,7 +18,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
       this._toFloatConverter,
       {
         CategoricalDataEncoderFactory encoderFactory =
-          const CategoricalDataEncoderFactoryImpl(),
+          const CategoricalDataCodecFactoryImpl(),
 
         DType dtype = DType.float32,
       }) :
@@ -57,7 +57,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
   Matrix extractRecords() => _encode().records;
 
   @override
-  Map<ZRange, CategoricalDataEncoder> get rangeToEncoder =>
+  Map<ZRange, CategoricalDataCodec> get rangeToEncoder =>
       _encode().rangeToEncoder;
 
   _EncodedDataInfo _encode() {
@@ -117,7 +117,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
 
   _EncodedDataInfo _encodeColumns(_ColumnsData columnsData) {
     final columns = <Vector>[];
-    final rangeToEncoder = <ZRange, CategoricalDataEncoder>{};
+    final rangeToEncoder = <ZRange, CategoricalDataCodec>{};
 
     int encodedColIdx = 0;
 
@@ -173,6 +173,6 @@ class _EncodedDataInfo {
   _EncodedDataInfo(this.records, this.rangeToEncoder);
 
   final Matrix records;
-  final Map<ZRange, CategoricalDataEncoder> rangeToEncoder;
+  final Map<ZRange, CategoricalDataCodec> rangeToEncoder;
 }
 

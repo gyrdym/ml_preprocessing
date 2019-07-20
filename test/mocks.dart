@@ -5,11 +5,11 @@ import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dar
 import 'package:mockito/mockito.dart';
 
 class EncoderMock extends Mock implements
-    CategoricalDataEncoder {}
+    CategoricalDataCodec {}
 
-class OneHotEncoderMock extends Mock implements CategoricalDataEncoder {}
+class OneHotEncoderMock extends Mock implements CategoricalDataCodec {}
 
-class OrdinalEncoderMock extends Mock implements CategoricalDataEncoder {}
+class OrdinalEncoderMock extends Mock implements CategoricalDataCodec {}
 
 class CategoricalDataEncoderFactoryMock extends Mock implements
     CategoricalDataEncoderFactory {}
@@ -24,8 +24,8 @@ class ToFloatNumberConverterMock extends Mock implements
 }
 
 CategoricalDataEncoderFactory createCategoricalDataEncoderFactoryMock({
-  CategoricalDataEncoder oneHotEncoderMock,
-  CategoricalDataEncoder ordinalEncoderMock,
+  CategoricalDataCodec oneHotEncoderMock,
+  CategoricalDataCodec ordinalEncoderMock,
 }) {
   oneHotEncoderMock ??= OneHotEncoderMock();
   ordinalEncoderMock ??= OrdinalEncoderMock();

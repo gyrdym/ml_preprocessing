@@ -66,5 +66,5 @@ abstract class Preprocessor {
   /// used instead of column index because encoded categorical value may
   /// consist of more than one element, therefore one categorical column in
   /// original data may consist of several columns in processed dataset)
-  Future<Map<ZRange, CategoricalDataEncoder>> get columnRangeToEncoder;
+  Future<Map<ZRange, CategoricalDataCodec>> get columnRangeToEncoder;
 }
