@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/error_messages.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:xrange/zrange.dart';
@@ -13,8 +13,8 @@ class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
     Iterable<ZRange> rows,
     Iterable<ZRange> columns,
     bool headerExists = true,
-    Map<String, CategoricalDataEncoderType> namesToEncoders,
-    Map<int, CategoricalDataEncoderType> indexToEncoder,
+    Map<String, CategoricalDataEncodingType> namesToEncoders,
+    Map<int, CategoricalDataEncodingType> indexToEncoder,
   }) {
     final validators = [
       () => _validateHeaderExistsParam(headerExists),
@@ -41,7 +41,7 @@ class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
   }
 
   String _validateNamesToEncoders(
-      Map<String, CategoricalDataEncoderType> namesToEncoders,
+      Map<String, CategoricalDataEncodingType> namesToEncoders,
       bool headerExists) {
     if (namesToEncoders?.isEmpty == true) {
       return DataFrameParametersValidationErrorMessages.emptyEncodersMsg();

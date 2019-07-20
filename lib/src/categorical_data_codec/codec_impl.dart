@@ -1,7 +1,7 @@
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:quiver/collection.dart';
 
 class CategoricalDataCodecImpl implements CategoricalDataCodec {

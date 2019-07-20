@@ -1,6 +1,6 @@
 import 'package:ml_linalg/dtype.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor.dart';
 
 class EncodersProcessorImpl implements EncodersProcessor {
@@ -12,13 +12,13 @@ class EncodersProcessorImpl implements EncodersProcessor {
 
   final DType _dtype;
   final Map<String, int> _colNameToIdx;
-  final CategoricalDataEncoderFactory _encoderFactory;
+  final CategoricalDataCodecFactory _encoderFactory;
 
   @override
-  Map<int, CategoricalDataEncoderType> createEncoders(
-      Map<int, CategoricalDataEncoderType> indexesToEncoderTypes,
-      Map<CategoricalDataEncoderType, Iterable<String>> encoderTypesToNames,
-      Map<String, CategoricalDataEncoderType> namesToEncoderTypes,
+  Map<int, CategoricalDataEncodingType> createEncoders(
+      Map<int, CategoricalDataEncodingType> indexesToEncoderTypes,
+      Map<CategoricalDataEncodingType, Iterable<String>> encoderTypesToNames,
+      Map<String, CategoricalDataEncodingType> namesToEncoderTypes,
   ) {
     if (indexesToEncoderTypes?.isNotEmpty == true) {
       return indexesToEncoderTypes;
@@ -32,9 +32,9 @@ class EncodersProcessorImpl implements EncodersProcessor {
     return {};
   }
 
-  Map<int, CategoricalDataEncoderType> _createEncodersFromEncoderToName(
-      Map<CategoricalDataEncoderType, Iterable<String>> encoderToName) {
-    final encoders = <int, CategoricalDataEncoderType>{};
+  Map<int, CategoricalDataEncodingType> _createEncodersFromEncoderToName(
+      Map<CategoricalDataEncodingType, Iterable<String>> encoderToName) {
+    final encoders = <int, CategoricalDataEncodingType>{};
     for (final entry in encoderToName.entries) {
       for (final name in entry.value.toSet()) {
         final idxToEncoder = _createEntry(name, entry.key);
@@ -48,13 +48,13 @@ class EncodersProcessorImpl implements EncodersProcessor {
     return encoders;
   }
 
-  Map<int, CategoricalDataEncoderType> _createEncodersFromNameToEncoder(
-          Map<String, CategoricalDataEncoderType> nameToEncoder) =>
+  Map<int, CategoricalDataEncodingType> _createEncodersFromNameToEncoder(
+          Map<String, CategoricalDataEncodingType> nameToEncoder) =>
     nameToEncoder.map((colName, encoderType) =>
         _createEntry(colName, encoderType));
 
-  MapEntry<int, CategoricalDataEncoderType> _createEntry(String colName,
-      CategoricalDataEncoderType encoderType) {
+  MapEntry<int, CategoricalDataEncodingType> _createEntry(String colName,
+      CategoricalDataEncodingType encoderType) {
     if (!_colNameToIdx.containsKey(colName)) {
       throw Exception('Column named `$colName` does not exist, please, '
           'double check your dataset column names');

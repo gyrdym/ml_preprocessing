@@ -1,5 +1,5 @@
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/codec.dart';
 import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';

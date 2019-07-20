@@ -1,8 +1,7 @@
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:xrange/zrange.dart';
 import 'package:quiver/iterables.dart';
+import 'package:xrange/zrange.dart';
 
 class DataSet {
   DataSet(this._records, {

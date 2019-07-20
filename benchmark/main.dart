@@ -16,7 +16,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
   List<List<Object>> observations;
   List<int> rowIndices;
   List<int> columnIndices;
-  Map<int, CategoricalDataEncoderType> encoders;
+  Map<int, CategoricalDataEncodingType> encoders;
 
   List<List<Object>> generateObservations() {
     final list = <List<Object>>[];
@@ -53,7 +53,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
     encoders = Map.fromIterable(
       List.generate((numOfColumns * categoricalColumnsRatio).round(), (i) => i),
       key: (el) => el,
-      value: (el) => CategoricalDataEncoderType.oneHot,
+      value: (el) => CategoricalDataEncodingType.oneHot,
     );
   }
 }

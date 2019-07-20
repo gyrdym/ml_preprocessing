@@ -1,6 +1,6 @@
 /// Types of categorical data encoders
 ///
-/// [CategoricalDataEncoderType.oneHot] One-hot encoder. Encodes every
+/// [CategoricalDataEncodingType.oneHot] One-hot encoder. Encodes every
 /// categorical value to a list of length, that is equal to the number of all
 /// possible category's values. Each element of the list is a binary value: `1`
 /// for the current value, `0` - for the rest values.
@@ -28,10 +28,10 @@
 /// [[1.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 /// ```
 ///
-/// [CategoricalDataEncoderType.ordinal] Ordinal encoder. Encodes every
+/// [CategoricalDataEncodingType.ordinal] Ordinal encoder. Encodes every
 /// categorical value to an ordinal number.
 ///
-enum CategoricalDataEncoderType {
+enum CategoricalDataEncodingType {
   ordinal,
   oneHot,
 }

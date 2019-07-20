@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
@@ -151,10 +151,10 @@ void main() {
         columns: [ZRange.closed(0, 3), ZRange.closed(5, 7)],
         rows: [ZRange.closed(0, 0)],
         categories: {
-          'country': CategoricalDataEncoderType.oneHot,
-          'confederation': CategoricalDataEncoderType.oneHot,
-          'gdp_source': CategoricalDataEncoderType.oneHot,
-          'popu_source': CategoricalDataEncoderType.oneHot,
+          'country': CategoricalDataEncodingType.oneHot,
+          'confederation': CategoricalDataEncodingType.oneHot,
+          'gdp_source': CategoricalDataEncodingType.oneHot,
+          'popu_source': CategoricalDataEncodingType.oneHot,
         },
       );
       final actual = await data.labels;

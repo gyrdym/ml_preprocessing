@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:xrange/zrange.dart';
 
 abstract class DataFrameParamsValidator {
@@ -8,7 +8,7 @@ abstract class DataFrameParamsValidator {
     Iterable<ZRange> rows,
     Iterable<ZRange> columns,
     bool headerExists,
-    Map<String, CategoricalDataEncoderType> namesToEncoders,
-    Map<int, CategoricalDataEncoderType> indexToEncoder,
+    Map<String, CategoricalDataEncodingType> namesToEncoders,
+    Map<int, CategoricalDataEncodingType> indexToEncoder,
   });
 }

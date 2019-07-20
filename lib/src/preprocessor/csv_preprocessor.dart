@@ -7,20 +7,19 @@ import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/linalg.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory_impl.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_codec_factory/csv_codec_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_codec_factory/csv_codec_factory_impl.dart';
-import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
 import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor_factory_impl.dart';
-import 'package:ml_preprocessing/src/preprocessor/header_extractor/header_extractor.dart';
 import 'package:ml_preprocessing/src/preprocessor/header_extractor/header_extractor_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/header_extractor/header_extractor_factory_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/index_ranges_combiner/index_ranges_combiner_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/index_ranges_combiner/index_ranges_combiner_factory_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
@@ -39,14 +38,14 @@ class CsvPreprocessor implements Preprocessor {
       int labelIdx,
       String labelName,
       bool headerExists = true,
-      Map<CategoricalDataEncoderType, Iterable<String>> encoders,
-      Map<String, CategoricalDataEncoderType> categories,
-      Map<int, CategoricalDataEncoderType> categoryIndices,
+      Map<CategoricalDataEncodingType, Iterable<String>> encoders,
+      Map<String, CategoricalDataEncodingType> categories,
+      Map<int, CategoricalDataEncodingType> categoryIndices,
       List<ZRange> rows,
       List<ZRange> columns,
 
       // private parameters, they are hidden by the factory
-      CategoricalDataEncoderFactory encoderFactory =
+      CategoricalDataCodecFactory encoderFactory =
         const CategoricalDataCodecFactoryImpl(),
 
       DataFrameParamsValidator paramsValidator =
@@ -108,7 +107,7 @@ class CsvPreprocessor implements Preprocessor {
   final int _labelIdxFromArgs;
   final String _labelName;
   final bool _headerExists;
-  final CategoricalDataEncoderFactory _encoderFactory;
+  final CategoricalDataCodecFactory _encoderFactory;
   final DataFrameParamsValidator _paramsValidator;
   final ToFloatNumberConverter _valueConverter;
   final IndexRangesCombinerFactory _indexRangesCombinerFactory;
@@ -116,9 +115,9 @@ class CsvPreprocessor implements Preprocessor {
   final RecordsProcessorFactory _recordsProcessorFactory;
   final EncodersProcessorFactory _encodersProcessorFactory;
 
-  final Map<CategoricalDataEncoderType, Iterable<String>> _encoderTypeToName;
-  final Map<String, CategoricalDataEncoderType> _nameToEncoderType;
-  final Map<int, CategoricalDataEncoderType> _indexToEncoderType;
+  final Map<CategoricalDataEncodingType, Iterable<String>> _encoderTypeToName;
+  final Map<String, CategoricalDataEncodingType> _nameToEncoderType;
+  final Map<int, CategoricalDataEncodingType> _indexToEncoderType;
 
   static const String _loggerPrefix = 'CsvDataFrame';
 

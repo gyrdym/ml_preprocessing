@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/categorical_encoder/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
 import 'package:test/test.dart';
@@ -14,9 +14,9 @@ Future testCsvWithCategories(
     int rowNum,
     List<ZRange> columns,
     List<ZRange> rows,
-    Map<CategoricalDataEncoderType, Iterable<String>> encoders,
-    Map<String, CategoricalDataEncoderType> categories,
-    Map<int, CategoricalDataEncoderType> categoryIndices,
+    Map<CategoricalDataEncodingType, Iterable<String>> encoders,
+    Map<String, CategoricalDataEncodingType> categories,
+    Map<int, CategoricalDataEncodingType> categoryIndices,
     void testContentFn(Matrix features, Matrix labels, List<String> headers,
         Preprocessor dataFrame)}) async {
   final dataFrame = CsvPreprocessor.fromFile(fileName,
@@ -50,9 +50,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categories: {
-            'feature_1': CategoricalDataEncoderType.oneHot,
-            'feature_2': CategoricalDataEncoderType.ordinal,
-            'feature_3': CategoricalDataEncoderType.oneHot,
+            'feature_1': CategoricalDataEncodingType.oneHot,
+            'feature_2': CategoricalDataEncodingType.ordinal,
+            'feature_3': CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(header,
@@ -97,9 +97,9 @@ void main() {
             ZRange.closed(0, 0),
           ],
           categories: {
-            'feature_1': CategoricalDataEncoderType.oneHot,
-            'feature_2': CategoricalDataEncoderType.ordinal,
-            'feature_3': CategoricalDataEncoderType.oneHot,
+            'feature_1': CategoricalDataEncodingType.oneHot,
+            'feature_2': CategoricalDataEncodingType.ordinal,
+            'feature_3': CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(header,
@@ -126,9 +126,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(header,
@@ -165,8 +165,8 @@ void main() {
                 ZRange.closed(0, 3),
               ],
               encoders: {
-                CategoricalDataEncoderType.oneHot: ['feature_1', 'feature_3'],
-                CategoricalDataEncoderType.ordinal: ['feature_2'],
+                CategoricalDataEncodingType.oneHot: ['feature_1', 'feature_3'],
+                CategoricalDataEncodingType.ordinal: ['feature_2'],
               },
               testContentFn: (features, labels, header, dataFrame) {
                 expect(header,
@@ -204,9 +204,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(header, isNull);
@@ -242,9 +242,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             final decoded = dataFrame.decode(Matrix.fromList([
@@ -271,9 +271,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(() => dataFrame.decode(Matrix.fromList([
@@ -294,9 +294,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(() => dataFrame.decode(Matrix.fromList([
@@ -316,9 +316,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(() => dataFrame.decode(Matrix.fromList([
@@ -338,9 +338,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(() => dataFrame.decode(Matrix.fromList([
@@ -360,9 +360,9 @@ void main() {
             ZRange.closed(0, 3),
           ],
           categoryIndices: {
-            0: CategoricalDataEncoderType.oneHot,
-            1: CategoricalDataEncoderType.ordinal,
-            2: CategoricalDataEncoderType.oneHot,
+            0: CategoricalDataEncodingType.oneHot,
+            1: CategoricalDataEncodingType.ordinal,
+            2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (features, labels, header, dataFrame) {
             expect(() => dataFrame.decode(Matrix.fromList([

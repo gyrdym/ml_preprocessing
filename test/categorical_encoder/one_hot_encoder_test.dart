@@ -1,7 +1,7 @@
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -9,7 +9,7 @@ void main() {
     final values = ['group A', 'group B', 'group C', 'group D', 'group A',
       'group B', 'group D'];
     final encoder = CategoricalDataCodecFactoryImpl()
-        .fromType(CategoricalDataEncoderType.oneHot, values);
+        .fromType(CategoricalDataEncodingType.oneHot, values);
 
     test('should extract all unique categorical values and create a map with '
         '`<label> - <encoded>` key pairs', () {
