@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoding_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
 import 'package:test/test.dart';

@@ -1,6 +1,6 @@
 import 'package:ml_linalg/dtype.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_factory_impl.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_factory_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
 import 'package:test/test.dart';
 
 import '../../mocks.dart';

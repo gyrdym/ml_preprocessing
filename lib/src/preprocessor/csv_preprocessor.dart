@@ -20,13 +20,13 @@ import 'package:ml_preprocessing/src/preprocessor/header_extractor/header_extrac
 import 'package:ml_preprocessing/src/preprocessor/index_ranges_combiner/index_ranges_combiner_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/index_ranges_combiner/index_ranges_combiner_factory_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_factory.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_factory_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator_impl.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_factory.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_factory_impl.dart';
 import 'package:xrange/zrange.dart';
 
 class CsvPreprocessor implements Preprocessor {
@@ -167,7 +167,7 @@ class CsvPreprocessor implements Preprocessor {
         _dtype);
 
     _observations = _recordsProcessor.extractRecords();
-    _rangeToEncoder = _recordsProcessor.rangeToEncoder;
+    _rangeToEncoder = _recordsProcessor.rangeToCodec;
     _labelColumnRange = _rangeToEncoded.keys
         .firstWhere((range) => range.contains(labelIdx));
     _rangeToEncoded = _rangeToEncoder.map((range, encoder) =>

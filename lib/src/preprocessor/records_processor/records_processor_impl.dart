@@ -5,8 +5,8 @@ import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor.dart';
 import 'package:xrange/zrange.dart';
 
 class RecordsProcessorImpl implements RecordsProcessor {
@@ -57,7 +57,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
   Matrix extractRecords() => _encode().records;
 
   @override
-  Map<ZRange, CategoricalDataCodec> get rangeToEncoder =>
+  Map<ZRange, CategoricalDataCodec> get rangeToCodec =>
       _encode().rangeToEncoder;
 
   _EncodedDataInfo _encode() {

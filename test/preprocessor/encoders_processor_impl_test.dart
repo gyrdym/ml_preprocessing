@@ -1,5 +1,5 @@
-import 'package:ml_preprocessing/src/categorical_encoder/codec.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/encoding_type.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';

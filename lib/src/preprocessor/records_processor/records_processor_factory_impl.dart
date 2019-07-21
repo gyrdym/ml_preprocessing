@@ -1,9 +1,9 @@
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_factory.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_factory.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_impl.dart';
 
 class RecordsProcessorFactoryImpl implements RecordsProcessorFactory {
   const RecordsProcessorFactoryImpl();

@@ -1,6 +1,6 @@
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/categorical_encoder/codec.dart';
-import 'package:ml_preprocessing/src/preprocessor/variables_extractor/variables_extractor_impl.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
@@ -280,7 +280,7 @@ void main() {
       final valueConverter = mocks.ToFloatNumberConverterMock();
       final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           encoders, labelIdx, valueConverter);
-      final actual = extractor.rangeToEncoder;
+      final actual = extractor.rangeToCodec;
 
       expect(actual, equals([
         ZRange.closed(0, 2),
