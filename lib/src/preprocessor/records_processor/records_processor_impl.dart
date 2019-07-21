@@ -3,7 +3,6 @@ import 'package:ml_linalg/matrix.dart';
 import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
-import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
@@ -16,15 +15,10 @@ class RecordsProcessorImpl implements RecordsProcessor {
       this._rowIndices,
       this._columnToEncoder,
       this._toFloatConverter,
+      this._encoderFactory,
       {
-        CategoricalDataCodecFactory encoderFactory =
-          const CategoricalDataCodecFactoryImpl(),
-
         DType dtype = DType.float32,
-      }) :
-        _encoderFactory = encoderFactory,
-        _dtype = dtype
-  {
+      }) : _dtype = dtype {
     if (_columnIndices.length > _observations.first.length) {
       throw Exception(columnIndicesWrongNumberMsg);
     }

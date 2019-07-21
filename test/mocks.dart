@@ -1,17 +1,13 @@
+import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:mockito/mockito.dart';
 
-class EncoderMock extends Mock implements
-    CategoricalDataCodec {}
+class CodecMock extends Mock implements CategoricalDataCodec {}
 
-class OneHotEncoderMock extends Mock implements CategoricalDataCodec {}
-
-class OrdinalEncoderMock extends Mock implements CategoricalDataCodec {}
-
-class CategoricalDataEncoderFactoryMock extends Mock implements
+class CategoricalDataCodecFactoryMock extends Mock implements
     CategoricalDataCodecFactory {}
 
 class DataFrameParamsValidatorMock extends Mock implements
@@ -24,15 +20,11 @@ class ToFloatNumberConverterMock extends Mock implements
 }
 
 CategoricalDataCodecFactory createCategoricalDataEncoderFactoryMock({
-  CategoricalDataCodec oneHotEncoderMock,
-  CategoricalDataCodec ordinalEncoderMock,
+  Map<CategoricalDataEncodingType, CategoricalDataCodec> encodingTypeToCodec,
 }) {
-  oneHotEncoderMock ??= OneHotEncoderMock();
-  ordinalEncoderMock ??= OrdinalEncoderMock();
-
-  final factory = CategoricalDataEncoderFactoryMock();
-  when(factory.oneHot(any)).thenReturn(oneHotEncoderMock);
-  when(factory.ordinal(any)).thenReturn(ordinalEncoderMock);
+  final factory = CategoricalDataCodecFactoryMock();
+  encodingTypeToCodec.forEach((type, codec) =>
+      when(factory.fromType(type, any)).thenReturn(codec));
   return factory;
 }
 
