@@ -42,7 +42,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
       rowIndices,
       encoders,
       toFloatConverter,
-    ).extractRecords();
+    ).encodeRecords();
   }
 
   @override
