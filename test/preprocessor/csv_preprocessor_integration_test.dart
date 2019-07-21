@@ -15,7 +15,7 @@ void main() {
           labelIdx: 8,
           expectedColsNum: 8,
           expectedRowsNum: 768,
-          testContentFn: (features, labels, header) {
+          testContentFn: (features, labels) {
             expect(
                 features.getRow(0),
                 vectorAlmostEqualTo(
@@ -39,7 +39,7 @@ void main() {
           labelIdx: 1,
           expectedColsNum: 8,
           expectedRowsNum: 768,
-          testContentFn: (features, labels, header) {
+          testContentFn: (features, labels) {
             expect(
                 features.getRow(0),
                 vectorAlmostEqualTo(
@@ -64,7 +64,7 @@ void main() {
           labelIdx: 0,
           expectedColsNum: 8,
           expectedRowsNum: 768,
-          testContentFn: (features, labels, header) {
+          testContentFn: (features, labels) {
             expect(
                 features.getRow(0),
                 vectorAlmostEqualTo(
@@ -79,31 +79,6 @@ void main() {
                   [10.0],
                   [2.0]
             ]));
-          });
-    });
-
-    test('should extract header test_data if the latter is specified',
-        () async {
-      await testCsvData(
-          fileName:
-              'test/test_data/pima_indians_diabetes_database.csv',
-          labelIdx: 0,
-          expectedColsNum: 8,
-          expectedRowsNum: 768,
-          testContentFn: (features, labels, header) {
-            expect(
-                header,
-                equals([
-                  'number of times pregnant',
-                  'plasma glucose concentration a 2 hours in an oral glucose tolerance test',
-                  'diastolic blood pressure (mm Hg)',
-                  'triceps skin fold thickness (mm)',
-                  '2-Hour serum insulin (mu U/ml)',
-                  'body mass index (weight in kg/(height in m)^2)',
-                  'diabetes pedigree function',
-                  'age (years)',
-                  'class variable (0 or 1)',
-                ]));
           });
     });
 
@@ -131,17 +106,6 @@ void main() {
       );
     });
 
-    test('should throw an error if label name does not present in the data '
-        'frame header', () async {
-      final data = CsvPreprocessor.fromFile(
-        'test/test_data/elo_blatter.csv',
-        labelIdx: null,
-        labelName: 'some_unknown_column',
-        columns: [ZRange.closed(2, 3), ZRange.closed(5, 7)],
-      );
-      expect(() async => await data.header, throwsException);
-    });
-
     test('should not throw an error if label name does not present in the data '
         'frame header, but valid label index is provided', () async {
       final data = CsvPreprocessor.fromFile(
@@ -157,8 +121,8 @@ void main() {
           'popu_source': CategoricalDataEncodingType.oneHot,
         },
       );
-      final actual = await data.labels;
-      expect(actual, equals([[993.0]]));
+      final actual = (await data.data);
+      expect(actual.outcome, equals([[993.0]]));
     });
 
     test('should cut out selected columns', () async {
@@ -174,7 +138,7 @@ void main() {
             ZRange.closed(3, 4),
             ZRange.closed(6, 8)
           ],
-          testContentFn: (features, labels, header) {
+          testContentFn: (features, labels) {
             expect(
                 features.getRow(0),
                 vectorAlmostEqualTo(
@@ -214,7 +178,7 @@ void main() {
           rows: [ZRange.closed(0, 767)],
           expectedColsNum: 8,
           expectedRowsNum: 768,
-          testContentFn: (features, labels, header) {
+          testContentFn: (features, labels) {
             expect(
                 features.getRow(0),
                 vectorAlmostEqualTo(
@@ -245,7 +209,7 @@ void main() {
           ],
           expectedColsNum: 8,
           expectedRowsNum: 11,
-          testContentFn: (features, labels, header) {
+          testContentFn: (features, labels) {
             expect(
                 features,
                 matrixAlmostEqualTo([

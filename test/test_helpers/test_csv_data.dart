@@ -19,8 +19,8 @@ Future testCsvData(
     CategoricalDataCodecFactory categoricalDataFactoryMock,
     DataFrameParamsValidator validatorMock,
     void testContentFn(
-        Matrix features, Matrix labels, List<String> headers)}) async {
-  categoricalDataFactoryMock ??= createCategoricalDataCodecFactoryMock();
+        Matrix features, Matrix labels)}) async {
+  categoricalDataFactoryMock ??= createCategoricalDataCodecFactoryMock([]);
   validatorMock ??=
       createDataFrameParamsValidatorMock(validationShouldBeFailed: false);
 
@@ -32,17 +32,15 @@ Future testCsvData(
     encoderFactory: categoricalDataFactoryMock,
     paramsValidator: validatorMock,
   );
-  final header = await dataFrame.header;
-  final features = await dataFrame.data;
-  final labels = await dataFrame.labels;
+  final dataSet = await dataFrame.data;
+  final labels = dataSet.outcome;
 
   if (columns == null) {
-    expect(header.length, equals(expectedColsNum + 1));
-    expect(features.columnsNum, equals(expectedColsNum));
+    expect(dataSet.features.columnsNum, equals(expectedColsNum));
   }
 
-  expect(features.rowsNum, equals(expectedRowsNum));
+  expect(dataSet.features.rowsNum, equals(expectedRowsNum));
   expect(labels.rowsNum, equals(expectedRowsNum));
 
-  testContentFn(features, labels, header);
+  testContentFn(dataSet.features, labels);
 }
