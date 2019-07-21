@@ -4,6 +4,8 @@ import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
+import 'package:tuple/tuple.dart';
 
 class CodecMock extends Mock implements CategoricalDataCodec {}
 
@@ -22,11 +24,11 @@ class ToFloatNumberConverterMock extends Mock implements
 /// Order of codecs in every map's value is important: the less the codec's
 /// position number, the earlier the codec will be called
 CategoricalDataCodecFactory createCategoricalDataCodecFactoryMock(
-    Map<CategoricalDataEncodingType, Iterable<CategoricalDataCodec>> encodingTypeToCodec) {
+    List<Tuple3<CategoricalDataEncodingType, Iterable<String>, CategoricalDataCodec>> codecData) {
   final factory = CategoricalDataCodecFactoryMock();
-  encodingTypeToCodec.forEach((type, codecs) =>
-      codecs.forEach((codec) =>
-          when(factory.fromType(type, any, any)).thenReturn(codec)));
+  codecData.forEach((data) =>
+      when(factory.fromType(data.item1, argThat(equals(data.item2)), any))
+          .thenReturn(data.item3));
   return factory;
 }
 

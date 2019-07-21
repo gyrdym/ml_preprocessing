@@ -3,6 +3,7 @@ import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+import 'package:tuple/tuple.dart';
 import 'package:xrange/zrange.dart';
 
 import '../../mocks.dart' as mocks;
@@ -71,9 +72,13 @@ void main() {
         2: CategoricalDataEncodingType.oneHot,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final codecFactory = mocks.createCategoricalDataCodecFactoryMock({
-        CategoricalDataEncodingType.oneHot: [codec],
-      });
+      final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
+        Tuple3(
+            CategoricalDataEncodingType.oneHot,
+            ['30.0', '300.0', '130.0', '230.0'],
+            codec,
+        ),
+      ]);
       final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
       final observations = processor.encodeRecords();
@@ -103,9 +108,13 @@ void main() {
         4: CategoricalDataEncodingType.ordinal,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final codecFactory = mocks.createCategoricalDataCodecFactoryMock({
-        CategoricalDataEncodingType.ordinal: [codec],
-      });
+      final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
+        Tuple3(
+          CategoricalDataEncodingType.ordinal,
+          ['50.0', '500.0', '150.0', '250.0'],
+          codec,
+        ),
+      ]);
       final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
       final observations = extractor.encodeRecords();
@@ -222,11 +231,23 @@ void main() {
         4: CategoricalDataEncodingType.ordinal,
       };
       final valueConverter = mocks.ToFloatNumberConverterMock();
-      final codecFactory = mocks.createCategoricalDataCodecFactoryMock({
-        CategoricalDataEncodingType.oneHot: [column0CodecMock,
-          column2CodecMock],
-        CategoricalDataEncodingType.ordinal: [column4CodecMock],
-      });
+      final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
+        Tuple3(
+          CategoricalDataEncodingType.oneHot,
+          ['10.0', '100.0', '110.0', '210.0'],
+          column0CodecMock,
+        ),
+        Tuple3(
+          CategoricalDataEncodingType.oneHot,
+          ['30.0', '300.0', '130.0', '230.0'],
+          column2CodecMock,
+        ),
+        Tuple3(
+          CategoricalDataEncodingType.ordinal,
+          ['50.0', '500.0', '150.0', '250.0'],
+          column4CodecMock,
+        ),
+      ]);
       final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
       final actual = processor.rangeToCodec;
