@@ -20,7 +20,7 @@ Future testCsvData(
     DataFrameParamsValidator validatorMock,
     void testContentFn(
         Matrix features, Matrix labels, List<String> headers)}) async {
-  categoricalDataFactoryMock ??= createCategoricalDataEncoderFactoryMock();
+  categoricalDataFactoryMock ??= createCategoricalDataCodecFactoryMock();
   validatorMock ??=
       createDataFrameParamsValidatorMock(validationShouldBeFailed: false);
 

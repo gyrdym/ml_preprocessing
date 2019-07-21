@@ -166,7 +166,7 @@ class CsvPreprocessor implements Preprocessor {
         columnIndices, rowIndices, indexToEncoderType, _valueConverter,
         _codecFactory, _dtype);
 
-    _observations = _recordsProcessor.extractRecords();
+    _observations = _recordsProcessor.encodeRecords();
     _rangeToEncoder = _recordsProcessor.rangeToCodec;
     _labelColumnRange = _rangeToEncoded.keys
         .firstWhere((range) => range.contains(labelIdx));

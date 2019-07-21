@@ -12,7 +12,7 @@ void main() {
   group('EncodersProcessorImpl', () {
     test('should return empty map if there are no specific encoders provided '
         'and the columns header is not empty', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final encoders = encoderProcessor.createEncoders({}, {}, {});
       expect(encoders, equals(<int, CategoricalDataCodec>{}));
@@ -20,7 +20,7 @@ void main() {
 
     test('should create encoders from `name-to-encoder` map and header is not '
         'empty', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
@@ -50,7 +50,7 @@ void main() {
     test('should create encoders from `index-to-encoder` map if '
         'index-to-encoder, encoder-to-name and name-to-encoder are provided '
         '(`index-to-encoder` map has high priority)', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
@@ -92,7 +92,7 @@ void main() {
     test('should create encoders from `encoder-to-name` map if '
         'encoder-to-name and name-to-encoder are provided '
         '(`encoder-to-name` map has higher priority)', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
 
@@ -126,7 +126,7 @@ void main() {
     });
 
     test('should properly process encoder-to-name map', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
@@ -156,7 +156,7 @@ void main() {
 
     test('should throw an exception if one column is going to be processed by '
         'two different encoders', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
@@ -182,7 +182,7 @@ void main() {
     });
 
     test('should throw an error if unexistent column to be processed', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
       final oneHotEncoderMock = OneHotEncoderMock();
       final ordinalEncoderMock = OrdinalEncoderMock();
@@ -206,7 +206,7 @@ void main() {
     });
 
     test('should return an empty map if no encoders provided', () {
-      final encoderFactory = createCategoricalDataEncoderFactoryMock();
+      final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
 
       expect(encoderProcessor.createEncoders(null, null, null), equals({}));

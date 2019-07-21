@@ -19,12 +19,14 @@ class ToFloatNumberConverterMock extends Mock implements
   double convert(Object value, [double fallbackValue]) => value as double;
 }
 
-CategoricalDataCodecFactory createCategoricalDataEncoderFactoryMock({
-  Map<CategoricalDataEncodingType, CategoricalDataCodec> encodingTypeToCodec,
-}) {
+/// Order of codecs in every map's value is important: the less the codec's
+/// position number, the earlier the codec will be called
+CategoricalDataCodecFactory createCategoricalDataCodecFactoryMock(
+    Map<CategoricalDataEncodingType, Iterable<CategoricalDataCodec>> encodingTypeToCodec) {
   final factory = CategoricalDataCodecFactoryMock();
-  encodingTypeToCodec.forEach((type, codec) =>
-      when(factory.fromType(type, any)).thenReturn(codec));
+  encodingTypeToCodec.forEach((type, codecs) =>
+      codecs.forEach((codec) =>
+          when(factory.fromType(type, any, any)).thenReturn(codec)));
   return factory;
 }
 

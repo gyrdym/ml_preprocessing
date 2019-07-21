@@ -10,7 +10,7 @@ import 'package:xrange/zrange.dart';
 
 class RecordsProcessorImpl implements RecordsProcessor {
   RecordsProcessorImpl(
-      this._observations,
+      this._rawRecords,
       this._columnIndices,
       this._rowIndices,
       this._columnToEncoder,
@@ -19,10 +19,10 @@ class RecordsProcessorImpl implements RecordsProcessor {
       {
         DType dtype = DType.float32,
       }) : _dtype = dtype {
-    if (_columnIndices.length > _observations.first.length) {
+    if (_columnIndices.length > _rawRecords.first.length) {
       throw Exception(columnIndicesWrongNumberMsg);
     }
-    if (_rowIndices.length > _observations.length) {
+    if (_rowIndices.length > _rawRecords.length) {
       throw Exception(rowIndicesWrongNumberMsg);
     }
   }
@@ -41,14 +41,14 @@ class RecordsProcessorImpl implements RecordsProcessor {
   final Map<int, CategoricalDataEncodingType> _columnToEncoder;
   final CategoricalDataCodecFactory _encoderFactory;
   final ToFloatNumberConverter _toFloatConverter;
-  final List<List<Object>> _observations;
+  final List<List<Object>> _rawRecords;
 
   bool get _hasCategoricalData => _columnToEncoder.isNotEmpty;
 
   _EncodedDataInfo _encodedData;
 
   @override
-  Matrix extractRecords() => _encode().records;
+  Matrix encodeRecords() => _encode().records;
 
   @override
   Map<ZRange, CategoricalDataCodec> get rangeToCodec =>
@@ -82,10 +82,10 @@ class RecordsProcessorImpl implements RecordsProcessor {
     // if categories exist - iterate through the whole data to collect all the
     // categorical values in order to fit categorical data encoders
     final rowIndices = _hasCategoricalData
-        ? ZRange.closedOpen(0, _observations.length).values() : _rowIndices;
+        ? ZRange.closedOpen(0, _rawRecords.length).values() : _rowIndices;
 
     rowIndices.forEach((rowIdx) {
-      final rowData = _processRow(_observations[rowIdx]);
+      final rowData = _processRow(_rawRecords[rowIdx]);
       rowData.columnToNumericalValues.forEach((idx, value) =>
           columnToNumericalValues.putIfAbsent(idx, () => []).add(value));
       rowData.columnToCategoricalValues.forEach((idx, value) =>
