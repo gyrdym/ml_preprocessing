@@ -79,7 +79,7 @@ class CsvPreprocessor implements Preprocessor {
       _encoderTypeToName = encoders,
       _nameToEncoderType = categories ?? {},
       _indexToEncoderType = categoryIndices ?? {},
-      _encoderFactory = encoderFactory,
+      _codecFactory = encoderFactory,
       _paramsValidator = paramsValidator,
       _valueConverter = valueConverter,
       _headerExtractorFactory = headerExtractorFactory,
@@ -107,7 +107,7 @@ class CsvPreprocessor implements Preprocessor {
   final int _labelIdxFromArgs;
   final String _labelName;
   final bool _headerExists;
-  final CategoricalDataCodecFactory _encoderFactory;
+  final CategoricalDataCodecFactory _codecFactory;
   final DataFrameParamsValidator _paramsValidator;
   final ToFloatNumberConverter _valueConverter;
   final IndexRangesCombinerFactory _indexRangesCombinerFactory;
@@ -157,14 +157,14 @@ class CsvPreprocessor implements Preprocessor {
     final labelIdx = _getLabelIdx(originalHeader, columnsNum);
     final records = _data.sublist(_headerExists ? 1 : 0);
     final encodersProcessor = _encodersProcessorFactory.create(originalHeader,
-        _encoderFactory, _dtype);
+        _codecFactory, _dtype);
     final indexToEncoderType = encodersProcessor.createEncoders(
         _indexToEncoderType, _encoderTypeToName, _nameToEncoderType);
     final _headerExtractor = _headerExtractorFactory.create(columnIndices);
 
     _recordsProcessor = _recordsProcessorFactory.create(records,
         columnIndices, rowIndices, indexToEncoderType, _valueConverter,
-        _dtype);
+        _codecFactory, _dtype);
 
     _observations = _recordsProcessor.extractRecords();
     _rangeToEncoder = _recordsProcessor.rangeToCodec;

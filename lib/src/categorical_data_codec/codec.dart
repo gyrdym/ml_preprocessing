@@ -6,6 +6,8 @@ import 'package:quiver/collection.dart';
 /// Contains names and values of the categories that supposed to be encoded
 /// and provides method for data encoding/decoding
 abstract class CategoricalDataCodec {
+//  factory
+
   DType get dtype;
 
   HashBiMap<String, Vector> get originalToEncoded;

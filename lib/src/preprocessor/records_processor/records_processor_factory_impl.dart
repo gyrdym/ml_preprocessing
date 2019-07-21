@@ -1,4 +1,5 @@
 import 'package:ml_linalg/dtype.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_factory.dart';
@@ -13,9 +14,10 @@ class RecordsProcessorFactoryImpl implements RecordsProcessorFactory {
           List<List<Object>> records,
           List<int> columnIndices,
           List<int> rowIndices,
-          Map<int, CategoricalDataEncodingType> encoders,
+          Map<int, CategoricalDataEncodingType> columnToEncodingType,
           ToFloatNumberConverter valueConverter,
-          DType dtype) =>
-      RecordsProcessorImpl(records, columnIndices, rowIndices, encoders,
-          valueConverter, dtype: dtype);
+          CategoricalDataCodecFactory codecFactory,
+          [DType dtype = DType.float32]) =>
+    RecordsProcessorImpl(records, columnIndices, rowIndices,
+        columnToEncodingType, valueConverter, codecFactory, dtype: dtype);
 }
