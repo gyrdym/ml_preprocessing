@@ -3,7 +3,7 @@ import 'categorical_encoder/ordinal_encoder_test.dart' as ordinal_encoder_test;
 import 'data_set/data_set_test.dart' as data_set_test;
 import 'preprocessor/preprocessor_impl_test.dart'
   as csv_preprocessor_integration_test;
-import 'preprocessor/csv_preprocessor_with_categories_integration_test.dart'
+import 'preprocessor/preprocessor_impl_with_categories_test.dart'
   as csv_preprocessor_with_categories_integration_test;
 import 'preprocessor/encoders_processor_impl_test.dart' as encoder_processor_test;
 import 'preprocessor/index_ranges_combiner_impl_test.dart' as index_ranges_combiner_test;

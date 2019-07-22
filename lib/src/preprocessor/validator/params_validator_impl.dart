@@ -3,7 +3,7 @@ import 'package:ml_preprocessing/src/preprocessor/validator/error_messages.dart'
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:xrange/zrange.dart';
 
-class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
+class DataFrameParamsValidatorImpl implements PreprocessorArgumentsValidator {
   const DataFrameParamsValidatorImpl();
 
   @override
@@ -34,47 +34,47 @@ class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
 
   String _validateHeaderExistsParam(bool headerExists) {
     if (headerExists == null) {
-      return DataFrameParametersValidationErrorMessages
+      return PreprocessorArgumentsValidationErrorMessages
           .noHeaderExistsParameterProvidedMsg();
     }
-    return DataFrameParametersValidationErrorMessages.noErrorMsg;
+    return PreprocessorArgumentsValidationErrorMessages.noErrorMsg;
   }
 
   String _validateNamesToEncoders(
       Map<String, CategoricalDataEncodingType> namesToEncoders,
       bool headerExists) {
     if (namesToEncoders?.isEmpty == true) {
-      return DataFrameParametersValidationErrorMessages.emptyEncodersMsg();
+      return PreprocessorArgumentsValidationErrorMessages.emptyEncodersMsg();
     }
     if (!headerExists && namesToEncoders?.isNotEmpty == true) {
-      return DataFrameParametersValidationErrorMessages
+      return PreprocessorArgumentsValidationErrorMessages
           .noHeaderProvidedForColumnEncodersMsg(namesToEncoders);
     }
-    return DataFrameParametersValidationErrorMessages.noErrorMsg;
+    return PreprocessorArgumentsValidationErrorMessages.noErrorMsg;
   }
 
   String _validateLabelPosition(int labelIdx, String labelName,
       bool headerExists) {
     if (labelIdx == null && labelName == null) {
-      return DataFrameParametersValidationErrorMessages.noLabelPositionMsg();
+      return PreprocessorArgumentsValidationErrorMessages.noLabelPositionMsg();
     }
     if (labelName != null && headerExists == false) {
-      return DataFrameParametersValidationErrorMessages
+      return PreprocessorArgumentsValidationErrorMessages
           .labelNameWithoutHeader();
     }
-    return DataFrameParametersValidationErrorMessages.noErrorMsg;
+    return PreprocessorArgumentsValidationErrorMessages.noErrorMsg;
   }
 
   String _validateRanges(Iterable<ZRange> ranges, [int labelIdx]) {
     if (ranges == null || ranges.isEmpty == true) {
-      return DataFrameParametersValidationErrorMessages.noErrorMsg;
+      return PreprocessorArgumentsValidationErrorMessages.noErrorMsg;
     }
     ZRange prevRange;
     bool isLabelInRanges = false;
 
     for (final range in ranges) {
       if (prevRange?.connectedTo(range) == true) {
-        return DataFrameParametersValidationErrorMessages
+        return PreprocessorArgumentsValidationErrorMessages
             .intersectingRangesMsg(prevRange, range);
       }
       if (labelIdx != null && range.contains(labelIdx)) {
@@ -84,9 +84,9 @@ class DataFrameParamsValidatorImpl implements DataFrameParamsValidator {
     }
 
     if (labelIdx != null && !isLabelInRanges) {
-      return DataFrameParametersValidationErrorMessages
+      return PreprocessorArgumentsValidationErrorMessages
           .labelIsNotInRangesMsg(labelIdx, ranges);
     }
-    return DataFrameParametersValidationErrorMessages.noErrorMsg;
+    return PreprocessorArgumentsValidationErrorMessages.noErrorMsg;
   }
 }

@@ -47,7 +47,7 @@ abstract class Preprocessor {
     String eol,
     int labelIdx,
     String labelName,
-    bool headerExists,
+    bool headerExists = true,
     String columnDelimiter,
     Map<String, CategoricalDataEncodingType> columnNameToEncodingType,
     Map<int, CategoricalDataEncodingType> columnIndexToEncodingType,

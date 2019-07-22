@@ -40,7 +40,7 @@ class PreprocessorImpl implements Preprocessor {
       CategoricalDataCodecFactory codecFactory =
         const CategoricalDataCodecFactoryImpl(),
 
-      DataFrameParamsValidator argumentsValidator =
+      PreprocessorArgumentsValidator argumentsValidator =
         const DataFrameParamsValidatorImpl(),
 
       NumericalConverter valueConverter =
@@ -95,7 +95,7 @@ class PreprocessorImpl implements Preprocessor {
   final String _labelName;
   final bool _headerExists;
   final CategoricalDataCodecFactory _codecFactory;
-  final DataFrameParamsValidator _argumentsValidator;
+  final PreprocessorArgumentsValidator _argumentsValidator;
   final NumericalConverter _valueConverter;
   final IndexRangesCombinerFactory _indexRangesCombinerFactory;
   final DataFrameHeaderExtractorFactory _headerExtractorFactory;
@@ -179,7 +179,7 @@ class PreprocessorImpl implements Preprocessor {
       final labelIdx = originalHeader.indexOf(_labelName);
       if (labelIdx == -1) {
         throw Exception(_wrapErrorMessage('There is no column named '
-            '`$_labelName`'));
+            '$_labelName'));
       }
       return labelIdx;
     }

@@ -14,7 +14,7 @@ class CategoricalDataCodecFactoryMock extends Mock implements
     CategoricalDataCodecFactory {}
 
 class PreprocessorArgumentsValidatorMock extends Mock implements
-    DataFrameParamsValidator {}
+    PreprocessorArgumentsValidator {}
 
 class NumericalConverterMock extends Mock implements
     NumericalConverter {
@@ -35,12 +35,13 @@ CategoricalDataCodecFactory createCategoricalDataCodecFactoryMock(
   return factory;
 }
 
-DataFrameParamsValidator createDataFrameParamsValidatorMock({
+PreprocessorArgumentsValidator createPreprocessorArgumentsValidatorMock({
   bool validationShouldBeFailed}) {
   final validator = PreprocessorArgumentsValidatorMock();
   if (validationShouldBeFailed != null) {
     when(validator.validate(
       labelIdx: anyNamed('labelIdx'),
+      labelName: anyNamed('labelName'),
       rows: anyNamed('rows'),
       columns: anyNamed('columns'),
       headerExists: anyNamed('headerExists'),

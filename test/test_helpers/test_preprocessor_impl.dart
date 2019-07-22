@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
@@ -14,15 +13,17 @@ import '../mocks.dart';
 Future testPreprocessor({
   List<List<dynamic>> dataFromReader,
   int labelIdx,
+  String labelName,
   List<ZRange> rows,
   List<ZRange> columns,
   CategoricalDataCodecFactory categoricalDataFactoryMock,
-  DataFrameParamsValidator validatorMock,
+  PreprocessorArgumentsValidator validatorMock,
+  Matcher throwErrorMatcher,
   void testOutputFn(DataSet dataSet)
 }) async {
   categoricalDataFactoryMock ??= createCategoricalDataCodecFactoryMock([]);
   validatorMock ??=
-      createDataFrameParamsValidatorMock(validationShouldBeFailed: false);
+      createPreprocessorArgumentsValidatorMock(validationShouldBeFailed: false);
 
   final reader = DataReaderMock();
 
@@ -32,11 +33,14 @@ Future testPreprocessor({
   final preprocessor = PreprocessorImpl(
     reader,
     labelIdx: labelIdx,
-    columns: columns,
+    labelName: labelName,
     rows: rows,
+    columns: columns,
     codecFactory: categoricalDataFactoryMock,
     argumentsValidator: validatorMock,
   );
 
-  testOutputFn(await preprocessor.data);
+  throwErrorMatcher != null
+      ? expect(() => preprocessor.data, throwErrorMatcher)
+      : testOutputFn(await preprocessor.data);
 }
