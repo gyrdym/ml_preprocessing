@@ -6,7 +6,7 @@ Future processDataSetWithCategoricalData() async {
     labelName: 'Purchase\r',
     columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
     rows: [ZRange.closed(0, 20)],
-    categories: {
+    columnNameToEncodingType: {
       'Gender': CategoricalDataEncodingType.oneHot,
       'Age': CategoricalDataEncodingType.oneHot,
       'City_Category': CategoricalDataEncodingType.oneHot,

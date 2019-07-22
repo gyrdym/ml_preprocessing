@@ -22,7 +22,7 @@ Future main() async {
   // the csv's columns from 0 to third columns
   final preprocessor = Preprocessor.csv('example/dataset.csv', labelIdx: 3,
     headerExists: true,
-    categories: {
+    columnNameToEncodingType: {
       'position': CategoricalDataEncodingType.oneHot,
       'country': CategoricalDataEncodingType.ordinal,
     },

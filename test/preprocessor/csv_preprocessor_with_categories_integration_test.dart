@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
-import 'package:ml_preprocessing/src/preprocessor/csv_preprocessor.dart';
+import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
@@ -19,7 +19,7 @@ Future testCsvWithCategories(
     Map<int, CategoricalDataEncodingType> categoryIndices,
     void testContentFn(Matrix features, Matrix labels, List<String> headers,
         Preprocessor dataFrame)}) async {
-  final dataFrame = CsvPreprocessor.fromFile(fileName,
+  final dataFrame = PreprocessorImpl(
       labelIdx: labelIdx,
       columns: columns,
       rows: rows,

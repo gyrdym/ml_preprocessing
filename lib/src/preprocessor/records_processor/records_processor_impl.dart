@@ -5,7 +5,7 @@ import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor.dart';
-import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
+import 'package:ml_preprocessing/src/preprocessor/numerical_converter/numerical_converter.dart';
 import 'package:xrange/zrange.dart';
 
 class RecordsProcessorImpl implements RecordsProcessor {
@@ -14,8 +14,8 @@ class RecordsProcessorImpl implements RecordsProcessor {
       this._columnIndices,
       this._rowIndices,
       this._columnToEncoder,
-      this._toFloatConverter,
-      this._encoderFactory,
+      this._numericalConverter,
+      this._codecFactory,
       {
         DType dtype = DType.float32,
       }) : _dtype = dtype {
@@ -39,20 +39,20 @@ class RecordsProcessorImpl implements RecordsProcessor {
   final List<int> _rowIndices;
   final List<int> _columnIndices;
   final Map<int, CategoricalDataEncodingType> _columnToEncoder;
-  final CategoricalDataCodecFactory _encoderFactory;
-  final ToFloatNumberConverter _toFloatConverter;
-  final List<List<Object>> _rawRecords;
+  final CategoricalDataCodecFactory _codecFactory;
+  final NumericalConverter _numericalConverter;
+  final List<List<dynamic>> _rawRecords;
 
   bool get _hasCategoricalData => _columnToEncoder.isNotEmpty;
 
   _EncodedDataInfo _encodedData;
 
   @override
-  Matrix encodeRecords() => _encode().records;
+  Matrix convertAndEncodeRecords() => _encode().records;
 
   @override
   Map<ZRange, CategoricalDataCodec> get rangeToCodec =>
-      _encode().rangeToEncoder;
+      _encode().rangeToCodec;
 
   _EncodedDataInfo _encode() {
     if (_encodedData == null) {
@@ -66,7 +66,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
         _encodedData = _EncodedDataInfo(
             Matrix.fromRows(_rowIndices.map(_encodedData.records.getRow)
                 .toList(growable: false)),
-            _encodedData.rangeToEncoder,
+            _encodedData.rangeToCodec,
         );
       }
     }
@@ -103,7 +103,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
       if (_columnToEncoder.containsKey(idx)) {
         columnToCategoricalValues[idx] = row[idx].toString();
       } else {
-        columnToNumericalValues[idx] = _toFloatConverter.convert(row[idx]);
+        columnToNumericalValues[idx] = _numericalConverter.convert(row[idx]);
       }
     });
     return _RowData(columnToNumericalValues, columnToCategoricalValues);
@@ -111,7 +111,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
 
   _EncodedDataInfo _encodeColumns(_ColumnsData columnsData) {
     final columns = <Vector>[];
-    final rangeToEncoder = <ZRange, CategoricalDataCodec>{};
+    final rangeToCodec = <ZRange, CategoricalDataCodec>{};
 
     int encodedColIdx = 0;
 
@@ -120,15 +120,15 @@ class RecordsProcessorImpl implements RecordsProcessor {
         final categoricalValues = columnsData
             .columnToCategoricalValues[sourceColIdx];
         final encoderType = _columnToEncoder[sourceColIdx];
-        final encoder = _encoderFactory.fromType(encoderType,
-            categoricalValues, _dtype);
-        final encoded = encoder.encode(categoricalValues);
+        final codec = _codecFactory.fromType(encoderType, categoricalValues,
+            _dtype);
+        final encoded = codec.encode(categoricalValues);
         for (final column in encoded.columns) {
           columns.add(column);
         }
         final range = ZRange.closed(encodedColIdx,
             encodedColIdx + encoded.columnsNum - 1);
-        rangeToEncoder[range] = encoder;
+        rangeToCodec[range] = codec;
         encodedColIdx += encoded.columnsNum;
       } else {
         final numericalValues = columnsData
@@ -141,7 +141,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
 
     return _EncodedDataInfo(
         Matrix.fromColumns(columns, dtype: _dtype),
-        rangeToEncoder,
+        rangeToCodec,
     );
   }
 }
@@ -164,9 +164,9 @@ class _RowData {
 }
 
 class _EncodedDataInfo {
-  _EncodedDataInfo(this.records, this.rangeToEncoder);
+  _EncodedDataInfo(this.records, this.rangeToCodec);
 
   final Matrix records;
-  final Map<ZRange, CategoricalDataCodec> rangeToEncoder;
+  final Map<ZRange, CategoricalDataCodec> rangeToCodec;
 }
 

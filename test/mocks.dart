@@ -1,7 +1,8 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
-import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
+import 'package:ml_preprocessing/src/preprocessor/data_reader/data_reader.dart';
+import 'package:ml_preprocessing/src/preprocessor/numerical_converter/numerical_converter.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -12,14 +13,16 @@ class CodecMock extends Mock implements CategoricalDataCodec {}
 class CategoricalDataCodecFactoryMock extends Mock implements
     CategoricalDataCodecFactory {}
 
-class DataFrameParamsValidatorMock extends Mock implements
+class PreprocessorArgumentsValidatorMock extends Mock implements
     DataFrameParamsValidator {}
 
-class ToFloatNumberConverterMock extends Mock implements
-    ToFloatNumberConverter {
+class NumericalConverterMock extends Mock implements
+    NumericalConverter {
   @override
   double convert(Object value, [double fallbackValue]) => value as double;
 }
+
+class DataReaderMock extends Mock implements DataReader {}
 
 /// Order of codecs in every map's value is important: the less the codec's
 /// position number, the earlier the codec will be called
@@ -34,7 +37,7 @@ CategoricalDataCodecFactory createCategoricalDataCodecFactoryMock(
 
 DataFrameParamsValidator createDataFrameParamsValidatorMock({
   bool validationShouldBeFailed}) {
-  final validator = DataFrameParamsValidatorMock();
+  final validator = PreprocessorArgumentsValidatorMock();
   if (validationShouldBeFailed != null) {
     when(validator.validate(
       labelIdx: anyNamed('labelIdx'),

@@ -20,7 +20,7 @@ void main() {
           columnIndices,
           rowIndices,
           columnToEncodingType,
-          ToFloatNumberConverterMock(),
+          NumericalConverterMock(),
           CategoricalDataCodecFactoryMock(),
           DType.float32);
 
