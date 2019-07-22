@@ -1,7 +1,7 @@
 import 'categorical_encoder/one_hot_encoder_test.dart' as one_hot_encoder_test;
 import 'categorical_encoder/ordinal_encoder_test.dart' as ordinal_encoder_test;
 import 'data_set/data_set_test.dart' as data_set_test;
-import 'preprocessor/csv_preprocessor_integration_test.dart'
+import 'preprocessor/preprocessor_impl_test.dart'
   as csv_preprocessor_integration_test;
 import 'preprocessor/csv_preprocessor_with_categories_integration_test.dart'
   as csv_preprocessor_with_categories_integration_test;

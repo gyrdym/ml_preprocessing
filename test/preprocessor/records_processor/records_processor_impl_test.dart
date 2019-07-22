@@ -21,12 +21,12 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 2, 4];
       final columnToEncodingType = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
       final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
-      final observations = processor.encodeRecords();
+      final observations = processor.convertAndEncodeRecords();
 
       expect(
           observations,
@@ -42,12 +42,12 @@ void main() {
       final rowIndices = <int>[0, 3];
       final columnsIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
       final extractor = RecordsProcessorImpl(data, columnsIndices, rowIndices,
           encoders, valueConverter, codecFactory);
-      final observations = extractor.encodeRecords();
+      final observations = extractor.convertAndEncodeRecords();
 
       expect(
           observations,
@@ -71,7 +71,7 @@ void main() {
       final columnToEncodingType = <int, CategoricalDataEncodingType>{
         2: CategoricalDataEncodingType.oneHot,
       };
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
         Tuple3(
             CategoricalDataEncodingType.oneHot,
@@ -81,7 +81,7 @@ void main() {
       ]);
       final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
-      final observations = processor.encodeRecords();
+      final observations = processor.convertAndEncodeRecords();
 
       expect(
           observations,
@@ -107,7 +107,7 @@ void main() {
       final columnToEncodingType = <int, CategoricalDataEncodingType>{
         4: CategoricalDataEncodingType.ordinal,
       };
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
         Tuple3(
           CategoricalDataEncodingType.ordinal,
@@ -117,7 +117,7 @@ void main() {
       ]);
       final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
-      final observations = extractor.encodeRecords();
+      final observations = extractor.convertAndEncodeRecords();
 
       expect(
           observations,
@@ -134,11 +134,11 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2];
       final columnToEncodingType = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
       final extractor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
-      final observations = extractor.encodeRecords();
+      final observations = extractor.convertAndEncodeRecords();
 
       expect(
           observations,
@@ -155,7 +155,7 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4, 5];
       final columnToEncodingType = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
       expect(
@@ -169,11 +169,11 @@ void main() {
       final rowIndices = <int>[0, 1, 2];
       final columnsIndices = <int>[0, 1, 2, 3, 4];
       final columnToEncodingType = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
       final extractor = RecordsProcessorImpl(data, columnsIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
-      final actual = extractor.encodeRecords();
+      final actual = extractor.convertAndEncodeRecords();
 
       expect(
           actual,
@@ -189,7 +189,7 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3, 4, 5];
       final columnIndices = <int>[0, 1, 2, 3, 4];
       final encoders = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
       expect(
@@ -230,7 +230,7 @@ void main() {
         2: CategoricalDataEncodingType.oneHot,
         4: CategoricalDataEncodingType.ordinal,
       };
-      final valueConverter = mocks.ToFloatNumberConverterMock();
+      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
         Tuple3(
           CategoricalDataEncodingType.oneHot,

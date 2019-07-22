@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
-import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/numerical_converter_impl.dart';
 
 class VariablesExtractorBenchmark extends BenchmarkBase {
   VariablesExtractorBenchmark() : super('VariablesExtractor benchmark');
@@ -12,7 +12,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
   final numOfRows = 10000;
   final numOfColumns = 40;
   final categoricalColumnsRatio = .5;
-  final toFloatConverter = ToFloatNumberConverterImpl();
+  final toFloatConverter = NumericalConverterImpl();
   List<List<Object>> observations;
   List<int> rowIndices;
   List<int> columnIndices;
@@ -42,7 +42,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
       rowIndices,
       encoders,
       toFloatConverter,
-    ).encodeRecords();
+    ).convertAndEncodeRecords();
   }
 
   @override

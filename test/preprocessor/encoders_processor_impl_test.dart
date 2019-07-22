@@ -14,7 +14,7 @@ void main() {
         'and the columns header is not empty', () {
       final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
-      final encoders = encoderProcessor.createEncoders({}, {}, {});
+      final encoders = encoderProcessor.getIndexToEncodingTypeMapping({}, {}, {});
       expect(encoders, equals(<int, CategoricalDataCodec>{}));
     });
 
@@ -37,7 +37,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
-      final encoders = encoderProcessor.createEncoders({}, {}, nameToEncoder);
+      final encoders = encoderProcessor.getIndexToEncodingTypeMapping({}, {}, nameToEncoder);
 
       expect(encoders, equals({
         0: ordinalEncoderMock,
@@ -78,7 +78,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
-      final encoders = encoderProcessor.createEncoders(indexToEncoder,
+      final encoders = encoderProcessor.getIndexToEncodingTypeMapping(indexToEncoder,
           encoderToName, nameToEncoder);
 
       expect(encoders, equals({
@@ -113,7 +113,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncodingType.oneHot, any))
           .thenReturn(oneHotEncoderMock);
 
-      final encoders = encoderProcessor.createEncoders(indexToEncoder,
+      final encoders = encoderProcessor.getIndexToEncodingTypeMapping(indexToEncoder,
           encoderToName, nameToEncoder);
 
       verifyNever(encoderFactory.fromType(CategoricalDataEncodingType.ordinal,
@@ -144,7 +144,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
 
-      final actual = encoderProcessor.createEncoders(indexToEncoder,
+      final actual = encoderProcessor.getIndexToEncodingTypeMapping(indexToEncoder,
           encoderToName, nameToEncoder);
 
       expect(actual, equals({
@@ -175,7 +175,7 @@ void main() {
       when(encoderFactory.fromType(CategoricalDataEncodingType.ordinal, any))
           .thenReturn(ordinalEncoderMock);
 
-      final actual = () => encoderProcessor.createEncoders(indexToEncoder,
+      final actual = () => encoderProcessor.getIndexToEncodingTypeMapping(indexToEncoder,
           encoderToName, nameToEncoder);
 
       expect(actual, throwsException);
@@ -200,7 +200,7 @@ void main() {
           .thenReturn(oneHotEncoderMock);
 
       expect(
-        () => encoderProcessor.createEncoders({}, {}, nameToEncoder),
+        () => encoderProcessor.getIndexToEncodingTypeMapping({}, {}, nameToEncoder),
         throwsException
       );
     });
@@ -209,7 +209,7 @@ void main() {
       final encoderFactory = createCategoricalDataCodecFactoryMock();
       final encoderProcessor = EncodersProcessorImpl(header, encoderFactory);
 
-      expect(encoderProcessor.createEncoders(null, null, null), equals({}));
+      expect(encoderProcessor.getIndexToEncodingTypeMapping(null, null, null), equals({}));
     });
   });
 }

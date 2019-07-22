@@ -1,7 +1,7 @@
-import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/to_float_number_converter.dart';
+import 'package:ml_preprocessing/src/preprocessor/numerical_converter/numerical_converter.dart';
 
-class ToFloatNumberConverterImpl implements ToFloatNumberConverter {
-  const ToFloatNumberConverterImpl();
+class NumericalConverterImpl implements NumericalConverter {
+  const NumericalConverterImpl();
 
   @override
   double convert(Object value, [double fallbackValue = 0.0]) {
