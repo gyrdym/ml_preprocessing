@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:xrange/range.dart';
 
-abstract class DataFrameParametersValidationErrorMessages {
+abstract class PreprocessorArgumentsValidationErrorMessages {
   static const noErrorMsg = '';
 
   static String noHeaderExistsParameterProvidedMsg() =>

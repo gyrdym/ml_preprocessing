@@ -3,11 +3,12 @@ import 'dart:math' as math;
 
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/numerical_converter/numerical_converter_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
-import 'package:ml_preprocessing/src/preprocessor/to_float_number_converter/numerical_converter_impl.dart';
 
-class VariablesExtractorBenchmark extends BenchmarkBase {
-  VariablesExtractorBenchmark() : super('VariablesExtractor benchmark');
+class RecordsProcessorBenchmark extends BenchmarkBase {
+  RecordsProcessorBenchmark() : super('RecordsProcessor benchmark');
 
   final numOfRows = 10000;
   final numOfColumns = 40;
@@ -31,7 +32,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
   }
 
   static void main() {
-    VariablesExtractorBenchmark().report();
+    RecordsProcessorBenchmark().report();
   }
 
   @override
@@ -42,6 +43,7 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
       rowIndices,
       encoders,
       toFloatConverter,
+      CategoricalDataCodecFactoryImpl(),
     ).convertAndEncodeRecords();
   }
 
@@ -59,5 +61,5 @@ class VariablesExtractorBenchmark extends BenchmarkBase {
 }
 
 Future main() async {
-  VariablesExtractorBenchmark.main();
+  RecordsProcessorBenchmark.main();
 }

@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
 
 void main() {
-  group('DataFrameParamsValidatorImpl (`rows` param)', () {
+  group('PreprocessorArgumentsValidatorImpl (`rows` param)', () {
     test('should return no error message if no row ranges are provided', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
       final actual = dataFrameParamsValidator.validate(
@@ -14,7 +14,7 @@ void main() {
         columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
 
@@ -27,7 +27,7 @@ void main() {
         columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
 
@@ -44,7 +44,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .intersectingRangesMsg(rowRange1, rowRange2)));
     });
 
@@ -61,7 +61,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .intersectingRangesMsg(rowRange1, rowRange2)));
     });
 
@@ -77,7 +77,7 @@ void main() {
         columns: [ZRange.closed(0, 1)],
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
   });
@@ -91,7 +91,7 @@ void main() {
         columns: null,
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
 
@@ -104,7 +104,7 @@ void main() {
         columns: [],
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
 
@@ -121,7 +121,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .intersectingRangesMsg(colRange1, colRange2)));
     });
 
@@ -138,7 +138,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .intersectingRangesMsg(colRange1, colRange2)));
     });
 
@@ -155,7 +155,7 @@ void main() {
         headerExists: true,
       );
       expect(actual,
-          equals(DataFrameParametersValidationErrorMessages.noErrorMsg));
+          equals(PreprocessorArgumentsValidationErrorMessages.noErrorMsg));
     });
   });
 
@@ -167,7 +167,7 @@ void main() {
         headerExists: true,
       );
       expect(actual,
-          equals(DataFrameParametersValidationErrorMessages.noErrorMsg));
+          equals(PreprocessorArgumentsValidationErrorMessages.noErrorMsg));
     });
 
     test('should return proper error message if no label index is provided',
@@ -177,7 +177,7 @@ void main() {
         labelIdx: null,
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noLabelPositionMsg()));
     });
 
@@ -196,7 +196,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .labelIsNotInRangesMsg(labelIdx, ranges)));
     });
 
@@ -213,7 +213,7 @@ void main() {
         columns: ranges,
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noLabelPositionMsg()));
     });
 
@@ -230,7 +230,7 @@ void main() {
         columns: ranges,
         headerExists: false,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .labelNameWithoutHeader()));
     });
 
@@ -248,7 +248,7 @@ void main() {
         columns: ranges,
         headerExists: false,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .labelNameWithoutHeader()));
     });
   });
@@ -261,7 +261,7 @@ void main() {
         labelIdx: 10,
         headerExists: true,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
 
@@ -274,7 +274,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .noHeaderExistsParameterProvidedMsg()));
     });
   });
@@ -287,7 +287,7 @@ void main() {
         labelIdx: 10,
         namesToEncoders: null,
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .noErrorMsg));
     });
 
@@ -298,7 +298,7 @@ void main() {
         labelIdx: 10,
         namesToEncoders: {},
       );
-      expect(actual, equals(DataFrameParametersValidationErrorMessages
+      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
           .emptyEncodersMsg()));
     });
 
@@ -313,7 +313,7 @@ void main() {
       );
       expect(
           actual,
-          equals(DataFrameParametersValidationErrorMessages
+          equals(PreprocessorArgumentsValidationErrorMessages
               .noHeaderProvidedForColumnEncodersMsg(encoders)));
     });
   });

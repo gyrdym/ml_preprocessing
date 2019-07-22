@@ -1,5 +1,3 @@
-import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
@@ -11,7 +9,7 @@ import '../test_helpers/test_preprocessor_impl.dart';
 void main() {
   group('PreprocessorImpl (categories-less)', () {
     final dataFromReader = [
-      ['column_1', 'column_2', 'colun_3', 'column_4', 'column_5', 'outcome'],
+      ['column_1', 'column_2', 'column_3', 'column_4', 'column_5', 'outcome'],
       [100.0, 200.0, 300.0, 400.0, 215.0, 333.0],
       [ 10.0,  20.0,  30.0,  40.0,  25.0,  33.0],
       [500.0, 700.0, 101.0, 403.0, 117.0, 111.0],
@@ -55,6 +53,7 @@ void main() {
     test('should parse data reader output data with specified label column '
         'position, case 2', () async {
       await testPreprocessor(
+          dataFromReader: dataFromReader,
           labelIdx: 0,
           testOutputFn: (dataSet) {
             expect(
@@ -97,43 +96,34 @@ void main() {
 
     test('should not throw an error if label name does not present in the data '
         'header, but valid label index is provided', () async {
-      final processor = PreprocessorImpl(
-        DataReaderMock(),
+      testPreprocessor(
+        dataFromReader: dataFromReader,
         labelIdx: 1,
         labelName: 'some_unknown_column',
-        columns: [ZRange.closed(0, 3), ZRange.closed(5, 7)],
-        rows: [ZRange.closed(0, 0)],
-        columnNameToEncodingType: {
-          'country': CategoricalDataEncodingType.oneHot,
-          'confederation': CategoricalDataEncodingType.oneHot,
-          'gdp_source': CategoricalDataEncodingType.oneHot,
-          'popu_source': CategoricalDataEncodingType.oneHot,
-        },
+        testOutputFn: (dataSet) {
+          expect(dataSet.outcome, equals([[200.0], [20.0], [700.0]]));
+        }
       );
-      final actual = (await processor.data);
-      expect(actual.outcome, equals([[993.0]]));
     });
 
     test('should cut out selected columns', () async {
       await testPreprocessor(
           dataFromReader: dataFromReader,
-          labelIdx: 8,
+          labelIdx: 3,
           columns: [
             ZRange.closed(0, 1),
-            ZRange.closed(2, 2),
             ZRange.closed(3, 4),
-            ZRange.closed(6, 8)
           ],
           testOutputFn: (dataSet) {
             expect(
               dataSet.toMatrix(),
               matrixAlmostEqualTo([
-                [100.0, 200.0, 300.0, 400.0, 215.0, 333.0],
-                [ 10.0,  20.0,  30.0,  40.0,  25.0,  33.0],
-                [500.0, 700.0, 101.0, 403.0, 117.0, 111.0],
+                [100.0, 200.0, 400.0, 215.0],
+                [ 10.0,  20.0,  40.0,  25.0],
+                [500.0, 700.0, 403.0, 117.0],
               ]),
             );
-            expect(dataSet.outcome, equals([[100.0], [10.0], [500.0]]));
+            expect(dataSet.outcome, equals([[215.0], [25.0], [117.0]]));
           });
     });
 
@@ -154,8 +144,9 @@ void main() {
 
     test('should cut out selected rows, all rows in one range', () async {
       await testPreprocessor(
-          labelIdx: 8,
-          rows: [ZRange.closed(0, 767)],
+          dataFromReader: dataFromReader,
+          labelIdx: 5,
+          rows: [ZRange.closed(0, 2)],
           testOutputFn: (dataSet) {
             expect(
               dataSet.toMatrix(),
@@ -165,44 +156,33 @@ void main() {
                 [500.0, 700.0, 101.0, 403.0, 117.0, 111.0],
               ]),
             );
-            expect(dataSet.outcome, equals([[100.0], [10.0], [500.0]]));
-//            expect(() => labels[768], throwsRangeError);
+            expect(dataSet.outcome, equals([[333.0], [33.0], [111.0]]));
           });
     });
 
     test('should cut out selected rows, several row ranges', () async {
       await testPreprocessor(
-          labelIdx: 8,
+          dataFromReader: dataFromReader,
+          labelIdx: 5,
           rows: [
-            ZRange.closed(0, 2),
-            ZRange.closed(3, 4),
-            ZRange.closed(10, 15),
+            ZRange.singleton(0),
+            ZRange.singleton(2),
           ],
           testOutputFn: (dataSet) {
             expect(
               dataSet.toMatrix(),
               matrixAlmostEqualTo([
                 [100.0, 200.0, 300.0, 400.0, 215.0, 333.0],
-                [ 10.0,  20.0,  30.0,  40.0,  25.0,  33.0],
                 [500.0, 700.0, 101.0, 403.0, 117.0, 111.0],
               ]),
             );
-            expect(dataSet.outcome, equals([[100.0], [10.0], [500.0]]));
-//            expect(() => features.getRow(11), throwsRangeError);
-//            expect(() => features.getRow(768), throwsRangeError);
-//
-//            expect(labels.rowsNum, 11);
-//            expect(labels.columnsNum, 1);
-//            expect(labels.getColumn(0),
-//                equals([1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1]));
-//            expect(() => labels[11], throwsRangeError);
-//            expect(() => labels[768], throwsRangeError);
+            expect(dataSet.outcome, equals([[333.0], [111.0]]));
           });
     });
 
     test('should throw an error if params validation fails', () {
       final validatorMock =
-          createDataFrameParamsValidatorMock(validationShouldBeFailed: true);
+          createPreprocessorArgumentsValidatorMock(validationShouldBeFailed: true);
       final actual = () => PreprocessorImpl(
             DataReaderMock(),
             argumentsValidator: validatorMock,

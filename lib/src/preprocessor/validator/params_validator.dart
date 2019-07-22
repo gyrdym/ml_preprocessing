@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:xrange/zrange.dart';
 
-abstract class DataFrameParamsValidator {
+abstract class PreprocessorArgumentsValidator {
   String validate({
     int labelIdx,
     String labelName,
