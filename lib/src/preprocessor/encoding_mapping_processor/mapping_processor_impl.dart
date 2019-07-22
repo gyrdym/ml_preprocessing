@@ -1,8 +1,8 @@
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
-import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor.dart';
+import 'package:ml_preprocessing/src/preprocessor/encoding_mapping_processor/mapping_processor.dart';
 
-class EncodersProcessorImpl implements EncodersProcessor {
-  EncodersProcessorImpl(List<String> _columnNames) :
+class EncodingMappingProcessorImpl implements EncodingMappingProcessor {
+  EncodingMappingProcessorImpl(List<String> _columnNames) :
         _colNameToIdx = _columnNames
             .asMap().map((idx, name) => MapEntry(name, idx));
 
@@ -27,7 +27,8 @@ class EncodersProcessorImpl implements EncodersProcessor {
   }
 
   Map<int, CategoricalDataEncodingType> _typeToNameIntoIndexToType(
-      Map<CategoricalDataEncodingType, Iterable<String>> encodingTypeToColumnName) {
+      Map<CategoricalDataEncodingType,
+          Iterable<String>> encodingTypeToColumnName) {
     final encoders = <int, CategoricalDataEncodingType>{};
     for (final entry in encodingTypeToColumnName.entries) {
       for (final name in entry.value.toSet()) {
