@@ -7,8 +7,8 @@ import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/data_reader/data_reader.dart';
-import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor_factory.dart';
-import 'package:ml_preprocessing/src/preprocessor/encoders_processor/encoders_processor_factory_impl.dart';
+import 'package:ml_preprocessing/src/preprocessor/encoding_mapping_processor/mapping_processor_factory.dart';
+import 'package:ml_preprocessing/src/preprocessor/encoding_mapping_processor/mapping_processor_factory_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/header_extractor/header_extractor_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/index_ranges_combiner/index_ranges_combiner_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/index_ranges_combiner/index_ranges_combiner_factory_impl.dart';
@@ -55,8 +55,8 @@ class PreprocessorImpl implements Preprocessor {
       IndexRangesCombinerFactory indexRangesCombinerFactory =
         const IndexRangesCombinerFactoryImpl(),
 
-      EncodersProcessorFactory encodersProcessorFactory =
-        const EncodersProcessorFactoryImpl(),
+      EncodingMappingProcessorFactory encodersProcessorFactory =
+        const EncodingMappingProcessorFactoryImpl(),
     }) :
       _dtype = dtype ?? DType.float32,
       _labelIdxFromArgs = labelIdx,
@@ -100,7 +100,7 @@ class PreprocessorImpl implements Preprocessor {
   final IndexRangesCombinerFactory _indexRangesCombinerFactory;
   final DataFrameHeaderExtractorFactory _headerExtractorFactory;
   final RecordsProcessorFactory _recordsProcessorFactory;
-  final EncodersProcessorFactory _encodersProcessorFactory;
+  final EncodingMappingProcessorFactory _encodersProcessorFactory;
 
   final Map<CategoricalDataEncodingType, Iterable<String>> _encodingTypeToColumnName;
   final Map<String, CategoricalDataEncodingType> _columnNameToEncodingType;
