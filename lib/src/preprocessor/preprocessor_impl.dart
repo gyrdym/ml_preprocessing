@@ -1,7 +1,7 @@
+import 'package:ml_dataframe/data_frame.dart';
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/linalg.dart';
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory_impl.dart';
@@ -118,9 +118,9 @@ class PreprocessorImpl implements Preprocessor {
   ZRange _labelColumnRange;
 
   @override
-  Future<DataSet> get data async {
+  Future<DataFrame> get data async {
     await _initialization;
-    return DataSet(_observations,
+    return DataFrame(_observations,
         outcomeColumnRange: _labelColumnRange, rangeToEncoded: _rangeToEncoded);
   }
 
@@ -153,7 +153,7 @@ class PreprocessorImpl implements Preprocessor {
         _codecFactory, _dtype);
 
     _observations = _recordsProcessor.convertAndEncodeRecords();
-    _rangeToCodec = _recordsProcessor.rangeToCodec;
+    _rangeToCodec = _recordsProcessor.columnRangeToCodec;
     _rangeToEncoded = _rangeToCodec.map((range, codec) =>
         MapEntry(range,
             codec.originalToEncoded.values.toList(growable: false)));

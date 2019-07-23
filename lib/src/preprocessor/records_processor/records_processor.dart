@@ -4,5 +4,5 @@ import 'package:xrange/zrange.dart';
 
 abstract class RecordsProcessor {
   Matrix convertAndEncodeRecords();
-  Map<ZRange, CategoricalDataCodec> get rangeToCodec;
+  Map<ZRange, CategoricalDataCodec> get columnRangeToCodec;
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_dataframe/data_frame.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
@@ -19,7 +19,7 @@ Future testPreprocessor({
   CategoricalDataCodecFactory categoricalDataFactoryMock,
   PreprocessorArgumentsValidator validatorMock,
   Matcher throwErrorMatcher,
-  void testOutputFn(DataSet dataSet)
+  void testOutputFn(DataFrame dataSet)
 }) async {
   categoricalDataFactoryMock ??= createCategoricalDataCodecFactoryMock([]);
   validatorMock ??=
