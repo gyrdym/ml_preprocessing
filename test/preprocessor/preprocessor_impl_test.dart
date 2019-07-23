@@ -7,7 +7,7 @@ import '../test_helpers/floating_point_iterable_matchers.dart';
 import '../test_helpers/test_preprocessor_impl.dart';
 
 void main() {
-  group('PreprocessorImpl (categories-less)', () {
+  group('PreprocessorImpl', () {
     final dataFromReader = [
       ['column_1', 'column_2', 'column_3', 'column_4', 'column_5', 'outcome'],
       [100.0, 200.0, 300.0, 400.0, 215.0, 333.0],

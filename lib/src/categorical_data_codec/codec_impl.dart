@@ -17,6 +17,7 @@ class CategoricalDataCodecImpl implements CategoricalDataCodec {
 
   final DType dtype;
 
+  @override
   HashBiMap<String, Vector> get originalToEncoded => _originalToEncoded;
   HashBiMap<String, Vector> _originalToEncoded;
 

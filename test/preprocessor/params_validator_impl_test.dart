@@ -291,17 +291,6 @@ void main() {
           .noErrorMsg));
     });
 
-    test('should return proper error message if `namesToEncoders` is '
-        'empty', () {
-      final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();
-      final actual = dataFrameParamsValidator.validate(
-        labelIdx: 10,
-        namesToEncoders: {},
-      );
-      expect(actual, equals(PreprocessorArgumentsValidationErrorMessages
-          .emptyEncodersMsg()));
-    });
-
     test('should return proper error message if no `headerExists` param is '
         'provided, but `namesToEncoders` param exists', () {
       final dataFrameParamsValidator = const DataFrameParamsValidatorImpl();

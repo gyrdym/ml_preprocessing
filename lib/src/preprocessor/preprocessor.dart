@@ -12,7 +12,7 @@ import 'package:xrange/zrange.dart';
 /// A parser for raw data
 abstract class Preprocessor {
   /**
-   * Creates a csv-data instance from file.
+   * Creates a csv preprocessor.
    *
    * [fileName] Target csv-file name
    *
@@ -65,7 +65,7 @@ abstract class Preprocessor {
     headerExists: headerExists,
     columnNameToEncodingType: columnNameToEncodingType,
     columnIndexToEncodingType: columnIndexToEncodingType,
-    encodingTypeToColumnName: encodingTypeToColumnNames,
+    encodingTypeToColumnNames: encodingTypeToColumnNames,
     rows: rows,
     columns: columns,
     dtype: dtype,
@@ -83,5 +83,5 @@ abstract class Preprocessor {
   /// used instead of column index because encoded categorical value may
   /// consist of more than one element, therefore one categorical column in
   /// original data may consist of several columns in processed dataset)
-  Future<Map<ZRange, CategoricalDataCodec>> get columnRangeToEncoder;
+  Future<Map<ZRange, CategoricalDataCodec>> get columnRangeToCodec;
 }
