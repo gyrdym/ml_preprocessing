@@ -31,7 +31,7 @@ class PreprocessorImpl implements Preprocessor {
       int labelIdx,
       String labelName,
       bool headerExists = true,
-      Map<CategoricalDataEncodingType, Iterable<String>> encodingTypeToColumnName,
+      Map<CategoricalDataEncodingType, Iterable<String>> encodingTypeToColumnNames,
       Map<String, CategoricalDataEncodingType> columnNameToEncodingType,
       Map<int, CategoricalDataEncodingType> columnIndexToEncodingType,
       List<ZRange> rows,
@@ -62,7 +62,7 @@ class PreprocessorImpl implements Preprocessor {
       _labelIdxFromArgs = labelIdx,
       _labelName = labelName,
       _headerExists = headerExists,
-      _encodingTypeToColumnName = encodingTypeToColumnName,
+      _encodingTypeToColumnNames = encodingTypeToColumnNames,
       _columnNameToEncodingType = columnNameToEncodingType ?? {},
       _columnIndexToEncodingType = columnIndexToEncodingType ?? {},
       _codecFactory = codecFactory,
@@ -102,7 +102,7 @@ class PreprocessorImpl implements Preprocessor {
   final RecordsProcessorFactory _recordsProcessorFactory;
   final EncodingMappingProcessorFactory _encodersProcessorFactory;
 
-  final Map<CategoricalDataEncodingType, Iterable<String>> _encodingTypeToColumnName;
+  final Map<CategoricalDataEncodingType, Iterable<String>> _encodingTypeToColumnNames;
   final Map<String, CategoricalDataEncodingType> _columnNameToEncodingType;
   final Map<int, CategoricalDataEncodingType> _columnIndexToEncodingType;
 
@@ -125,7 +125,7 @@ class PreprocessorImpl implements Preprocessor {
   }
 
   @override
-  Future<Map<ZRange, CategoricalDataCodec>> get columnRangeToEncoder async {
+  Future<Map<ZRange, CategoricalDataCodec>> get columnRangeToCodec async {
     await _initialization;
     return _rangeToCodec;
   }
@@ -145,7 +145,7 @@ class PreprocessorImpl implements Preprocessor {
     final records = _data.sublist(_headerExists ? 1 : 0);
     final encodersProcessor = _encodersProcessorFactory.create(originalHeader);
     final indexToEncodingType = encodersProcessor.getIndexToEncodingTypeMapping(
-        _columnIndexToEncodingType, _encodingTypeToColumnName, _columnNameToEncodingType);
+        _columnIndexToEncodingType, _encodingTypeToColumnNames, _columnNameToEncodingType);
     final _headerExtractor = _headerExtractorFactory.create(columnIndices);
 
     _recordsProcessor = _recordsProcessorFactory.create(records,
@@ -154,8 +154,9 @@ class PreprocessorImpl implements Preprocessor {
 
     _observations = _recordsProcessor.convertAndEncodeRecords();
     _rangeToCodec = _recordsProcessor.rangeToCodec;
-    _rangeToEncoded = _rangeToCodec.map((range, encoder) =>
-        MapEntry(range, encoder.originalToEncoded.values));
+    _rangeToEncoded = _rangeToCodec.map((range, codec) =>
+        MapEntry(range,
+            codec.originalToEncoded.values.toList(growable: false)));
     _labelColumnRange = _rangeToEncoded.isNotEmpty
         ? _rangeToEncoded.keys.firstWhere((range) => range.contains(labelIdx))
         : ZRange.singleton(labelIdx);

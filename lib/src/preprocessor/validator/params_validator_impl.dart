@@ -43,9 +43,6 @@ class DataFrameParamsValidatorImpl implements PreprocessorArgumentsValidator {
   String _validateNamesToEncoders(
       Map<String, CategoricalDataEncodingType> namesToEncoders,
       bool headerExists) {
-    if (namesToEncoders?.isEmpty == true) {
-      return PreprocessorArgumentsValidationErrorMessages.emptyEncodersMsg();
-    }
     if (!headerExists && namesToEncoders?.isNotEmpty == true) {
       return PreprocessorArgumentsValidationErrorMessages
           .noHeaderProvidedForColumnEncodersMsg(namesToEncoders);
