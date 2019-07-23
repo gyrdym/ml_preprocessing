@@ -8,8 +8,11 @@ environment:
   sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
-  csv: ^4.0.0
   ml_linalg: ^10.0.3
+  ml_dataframe:
+    git:
+      url: https://github.com/gyrdym/ml_dataframe.git
+  csv: ^4.0.0
   tuple: ^1.0.2
   xrange: ^0.0.4
   quiver: ^2.0.2

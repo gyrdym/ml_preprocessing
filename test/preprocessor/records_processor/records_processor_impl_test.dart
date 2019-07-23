@@ -250,7 +250,7 @@ void main() {
       ]);
       final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
           columnToEncodingType, valueConverter, codecFactory);
-      final actual = processor.rangeToCodec;
+      final actual = processor.columnRangeToCodec;
 
       expect(actual, equals({
         ZRange.closed(0, 2): column0CodecMock,

@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:ml_dataframe/data_frame.dart';
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
-import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
 import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
+import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
@@ -257,7 +257,7 @@ Future testCsvWithCategories({
   Map<CategoricalDataEncodingType, Iterable<String>> encodingToColumns,
   Map<String, CategoricalDataEncodingType> columnToEncoding,
   Map<int, CategoricalDataEncodingType> indexToEncoding,
-  void testContentFn(DataSet dataset, Preprocessor preprocessor)
+  void testContentFn(DataFrame dataset, Preprocessor preprocessor)
 }) async {
   final dataReader = DataReaderMock();
 

@@ -51,7 +51,7 @@ class RecordsProcessorImpl implements RecordsProcessor {
   Matrix convertAndEncodeRecords() => _encode().records;
 
   @override
-  Map<ZRange, CategoricalDataCodec> get rangeToCodec =>
+  Map<ZRange, CategoricalDataCodec> get columnRangeToCodec =>
       _encode().rangeToCodec;
 
   _EncodedDataInfo _encode() {

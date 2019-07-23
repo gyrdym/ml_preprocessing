@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:csv/csv.dart';
+import 'package:ml_dataframe/data_frame.dart';
 import 'package:ml_linalg/dtype.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
 import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/preprocessor/data_reader/csv_data_reader.dart';
@@ -76,7 +76,7 @@ abstract class Preprocessor {
   /// Keep in mind, that the number of columns of the feature matrix
   /// may differ from the number of elements in [header] because of categorical
   /// data, that might present in the source dataset
-  Future<DataSet> get data;
+  Future<DataFrame> get data;
 
   /// If categorical data presents in the processed dataset, the field contains
   /// categorical encoders per appropriate categorical column range (range is
