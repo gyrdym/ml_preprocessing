@@ -1,18 +1,14 @@
 import 'dart:async';
 
-import 'package:ml_dataframe/data_frame.dart';
+import 'package:ml_dataframe/data_set.dart';
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
-import 'package:ml_preprocessing/src/preprocessor/preprocessor.dart';
-import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
-import 'package:mockito/mockito.dart';
+import 'package:ml_preprocessing/src/dataframe/dataframe.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoding_type.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
 
-import '../mocks.dart';
-
 void main() {
-  final dataFromReader = <List<dynamic>>[
+  final rawData = <List<dynamic>>[
     ['feature_1', 'feature_2', 'feature_3', 'score'],
     ['value_1_1', 'value_2_7', 'value_3_3', 1],
     ['value_1_2', 'value_2_2', 'value_3_2', 10],
@@ -25,9 +21,9 @@ void main() {
 
   group('PreprocessorImpl', () {
     test('should encode categorical data using column name to encoding type '
-        'mapping', () async {
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader,
+        'mapping', () {
+      testCsvWithCategories(
+          rawData: rawData,
           labelIdx: 3,
           rowsNum: 7,
           columns: [
@@ -35,7 +31,7 @@ void main() {
           ],
           columnToEncoding: {
             'feature_1': CategoricalDataEncodingType.oneHot,
-            'feature_2': CategoricalDataEncodingType.ordinal,
+            'feature_2': CategoricalDataEncodingType.label,
             'feature_3': CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (dataset, preprocessor) {
@@ -56,11 +52,11 @@ void main() {
 
     test('should encode categorical data using column name to encoding type '
         'mapping, number of rows to read is less than category values '
-        'number', () async {
+        'number', () {
       // feature_1 - category values: value_1_1, value_1_2, value_1_3 -
       // in total - 3 values, needed to read just 1 row
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader,
+      testCsvWithCategories(
+          rawData: rawData,
           labelIdx: 3,
           rowsNum: 1,
           columns: [
@@ -71,7 +67,7 @@ void main() {
           ],
           columnToEncoding: {
             'feature_1': CategoricalDataEncodingType.oneHot,
-            'feature_2': CategoricalDataEncodingType.ordinal,
+            'feature_2': CategoricalDataEncodingType.label,
             'feature_3': CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (dataset, preprocessor) {
@@ -85,9 +81,9 @@ void main() {
     });
 
     test('should encode categorical data using column index to encoding type '
-        'mapping', () async {
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader,
+        'mapping', () {
+      testCsvWithCategories(
+          rawData: rawData,
           labelIdx: 3,
           rowsNum: 7,
           columns: [
@@ -95,7 +91,7 @@ void main() {
           ],
           indexToEncoding: {
             0: CategoricalDataEncodingType.oneHot,
-            1: CategoricalDataEncodingType.ordinal,
+            1: CategoricalDataEncodingType.label,
             2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (dataset, preprocessor) {
@@ -114,9 +110,9 @@ void main() {
     });
 
     test('should encode categorical data using encoding type to column names '
-        'mapping', () async {
-          await testCsvWithCategories(
-              dataFromReader: dataFromReader,
+        'mapping', () {
+          testCsvWithCategories(
+              rawData: rawData,
               labelIdx: 3,
               rowsNum: 7,
               columns: [
@@ -124,7 +120,7 @@ void main() {
               ],
               encodingToColumns: {
                 CategoricalDataEncodingType.oneHot: ['feature_1', 'feature_3'],
-                CategoricalDataEncodingType.ordinal: ['feature_2'],
+                CategoricalDataEncodingType.label: ['feature_2'],
               },
               testContentFn: (dataset, preprocessor) {
                 expect(
@@ -141,9 +137,9 @@ void main() {
               });
         });
 
-    test('should encode categorical data in headless dataset', () async {
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader.skip(1).toList(),
+    test('should encode categorical data in headless dataset', () {
+      testCsvWithCategories(
+          rawData: rawData.skip(1).toList(),
           headerExist: false,
           labelIdx: 3,
           rowsNum: 7,
@@ -152,7 +148,7 @@ void main() {
           ],
           indexToEncoding: {
             0: CategoricalDataEncodingType.oneHot,
-            1: CategoricalDataEncodingType.ordinal,
+            1: CategoricalDataEncodingType.label,
             2: CategoricalDataEncodingType.oneHot,
           },
           testContentFn: (dataset, preprocessor) {
@@ -170,9 +166,9 @@ void main() {
           });
     });
 
-    test('should provide codec for categorical data', () async {
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader,
+    test('should provide codec for categorical data', () {
+      testCsvWithCategories(
+          rawData: rawData,
           labelIdx: 3,
           rowsNum: 7,
           columns: [
@@ -180,11 +176,11 @@ void main() {
           ],
           indexToEncoding: {
             0: CategoricalDataEncodingType.oneHot,
-            1: CategoricalDataEncodingType.ordinal,
+            1: CategoricalDataEncodingType.label,
             2: CategoricalDataEncodingType.oneHot,
           },
-          testContentFn: (dataset, preprocessor) async {
-            final columnRangeToCodec = await preprocessor.columnRangeToCodec;
+          testContentFn: (dataset, preprocessor) {
+            final columnRangeToCodec = preprocessor.columnRangeToCodec;
             final decoded = columnRangeToCodec[ZRange.closed(0, 2)]
                 .decode(Matrix.fromList([
               [1.0, 0.0, 0.0],
@@ -201,9 +197,9 @@ void main() {
     });
 
     test('should return null instead of categorical codec if improper column '
-        'range is provided', () async {
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader,
+        'range is provided', () {
+      testCsvWithCategories(
+          rawData: rawData,
           labelIdx: 3,
           rowsNum: 7,
           columns: [
@@ -211,19 +207,19 @@ void main() {
           ],
           indexToEncoding: {
             0: CategoricalDataEncodingType.oneHot,
-            1: CategoricalDataEncodingType.ordinal,
+            1: CategoricalDataEncodingType.label,
             2: CategoricalDataEncodingType.oneHot,
           },
-          testContentFn: (dataset, preprocessor) async {
-            final columnRangeToCodec = await preprocessor.columnRangeToCodec;
+          testContentFn: (dataset, preprocessor) {
+            final columnRangeToCodec = preprocessor.columnRangeToCodec;
             expect(columnRangeToCodec[ZRange.singleton(45)], isNull);
           });
     });
 
     test('should throw an exception if one tries to decode a data providing '
-        'index of non-categorical column', () async {
-      await testCsvWithCategories(
-          dataFromReader: dataFromReader,
+        'index of non-categorical column', () {
+      testCsvWithCategories(
+          rawData: rawData,
           labelIdx: 3,
           rowsNum: 7,
           columns: [
@@ -231,11 +227,11 @@ void main() {
           ],
           indexToEncoding: {
             0: CategoricalDataEncodingType.oneHot,
-            1: CategoricalDataEncodingType.ordinal,
+            1: CategoricalDataEncodingType.label,
             2: CategoricalDataEncodingType.oneHot,
           },
-          testContentFn: (dataset, preprocessor) async {
-            final columnRangeToCodec = await preprocessor.columnRangeToCodec;
+          testContentFn: (dataset, preprocessor) {
+            final columnRangeToCodec = preprocessor.columnRangeToCodec;
             expect(() => columnRangeToCodec[ZRange.singleton(3)].decode(
                 Matrix.fromList([
                   [1.0, 0.0, 0.0],
@@ -248,7 +244,7 @@ void main() {
 }
 
 Future testCsvWithCategories({
-  List<List<dynamic>> dataFromReader,
+  List<List<dynamic>> rawData,
   bool headerExist = true,
   int labelIdx,
   int rowsNum,
@@ -257,15 +253,10 @@ Future testCsvWithCategories({
   Map<CategoricalDataEncodingType, Iterable<String>> encodingToColumns,
   Map<String, CategoricalDataEncodingType> columnToEncoding,
   Map<int, CategoricalDataEncodingType> indexToEncoding,
-  void testContentFn(DataFrame dataset, Preprocessor preprocessor)
-}) async {
-  final dataReader = DataReaderMock();
-
-  when(dataReader.extractData())
-      .thenAnswer((_) => Future.value(dataFromReader));
-
-  final preprocessor = PreprocessorImpl(
-    dataReader,
+  void testContentFn(DataSet dataset, DataFrame preprocessor)
+}) {
+  final preprocessor = DataFrameImpl(
+    rawData,
     labelIdx: labelIdx,
     columns: columns,
     rows: rows,
@@ -275,7 +266,7 @@ Future testCsvWithCategories({
     columnIndexToEncodingType: indexToEncoding,
   );
 
-  final dataset = await preprocessor.data;
+  final dataset = preprocessor.data;
 
   expect(dataset.toMatrix().rowsNum, rowsNum);
 

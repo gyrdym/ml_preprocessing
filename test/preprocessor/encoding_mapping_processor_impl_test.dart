@@ -1,6 +1,6 @@
-import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
-import 'package:ml_preprocessing/src/categorical_data_codec/encoding_type.dart';
-import 'package:ml_preprocessing/src/preprocessor/encoding_mapping_processor/mapping_processor_impl.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoding_type.dart';
+import 'package:ml_preprocessing/src/encoder/encoding_mapping_processor/mapping_processor_impl.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,17 +21,17 @@ void main() {
       final nameToEncoder = <String, CategoricalDataEncodingType>{
         'gender': CategoricalDataEncodingType.oneHot,
         'marital_status': CategoricalDataEncodingType.oneHot,
-        'age': CategoricalDataEncodingType.ordinal,
-        'country': CategoricalDataEncodingType.ordinal,
+        'age': CategoricalDataEncodingType.label,
+        'country': CategoricalDataEncodingType.label,
       };
 
       final encoders = encoderProcessor
           .getIndexToEncodingTypeMapping({}, {}, nameToEncoder);
 
       expect(encoders, equals({
-        0: CategoricalDataEncodingType.ordinal,
+        0: CategoricalDataEncodingType.label,
         1: CategoricalDataEncodingType.oneHot,
-        2: CategoricalDataEncodingType.ordinal,
+        2: CategoricalDataEncodingType.label,
         3: CategoricalDataEncodingType.oneHot,
       }));
     });
@@ -42,8 +42,8 @@ void main() {
       final encoderProcessor = EncodingMappingProcessorImpl(header);
 
       final indexToEncoder = <int, CategoricalDataEncodingType>{
-        0: CategoricalDataEncodingType.ordinal,
-        1: CategoricalDataEncodingType.ordinal,
+        0: CategoricalDataEncodingType.label,
+        1: CategoricalDataEncodingType.label,
         2: CategoricalDataEncodingType.oneHot,
         3: CategoricalDataEncodingType.oneHot,
       };
@@ -55,16 +55,16 @@ void main() {
       final nameToEncoder = <String, CategoricalDataEncodingType>{
         'country': CategoricalDataEncodingType.oneHot,
         'gender': CategoricalDataEncodingType.oneHot,
-        'age': CategoricalDataEncodingType.ordinal,
-        'marital_status': CategoricalDataEncodingType.ordinal,
+        'age': CategoricalDataEncodingType.label,
+        'marital_status': CategoricalDataEncodingType.label,
       };
 
       final encoders = encoderProcessor.getIndexToEncodingTypeMapping(indexToEncoder,
           encoderToName, nameToEncoder);
 
       expect(encoders, equals({
-        0: CategoricalDataEncodingType.ordinal,
-        1: CategoricalDataEncodingType.ordinal,
+        0: CategoricalDataEncodingType.label,
+        1: CategoricalDataEncodingType.label,
         2: CategoricalDataEncodingType.oneHot,
         3: CategoricalDataEncodingType.oneHot,
       }));
@@ -83,8 +83,8 @@ void main() {
       final nameToEncoder = <String, CategoricalDataEncodingType>{
         'country': CategoricalDataEncodingType.oneHot,
         'gender': CategoricalDataEncodingType.oneHot,
-        'age': CategoricalDataEncodingType.ordinal,
-        'marital_status': CategoricalDataEncodingType.ordinal,
+        'age': CategoricalDataEncodingType.label,
+        'marital_status': CategoricalDataEncodingType.label,
       };
 
       final encoders = encoderProcessor.getIndexToEncodingTypeMapping(indexToEncoder,
@@ -102,7 +102,7 @@ void main() {
 
       final encoderToName = <CategoricalDataEncodingType, Iterable<String>>{
         CategoricalDataEncodingType.oneHot: ['country', 'gender'],
-        CategoricalDataEncodingType.ordinal: ['age'],
+        CategoricalDataEncodingType.label: ['age'],
       };
 
       final indexToEncoder = <int, CategoricalDataEncodingType>{};
@@ -114,7 +114,7 @@ void main() {
       expect(actual, equals({
         0: CategoricalDataEncodingType.oneHot,
         1: CategoricalDataEncodingType.oneHot,
-        2: CategoricalDataEncodingType.ordinal,
+        2: CategoricalDataEncodingType.label,
       }));
     });
 
@@ -125,7 +125,7 @@ void main() {
 
       final encoderToName = <CategoricalDataEncodingType, Iterable<String>>{
         CategoricalDataEncodingType.oneHot: ['country', 'gender'],
-        CategoricalDataEncodingType.ordinal: ['gender'],
+        CategoricalDataEncodingType.label: ['gender'],
       };
 
       final nameToEncoder = <String, CategoricalDataEncodingType>{};
@@ -142,8 +142,8 @@ void main() {
       final nameToEncoder = <String, CategoricalDataEncodingType>{
         'country': CategoricalDataEncodingType.oneHot,
         'gender': CategoricalDataEncodingType.oneHot,
-        'age': CategoricalDataEncodingType.ordinal,
-        'city': CategoricalDataEncodingType.ordinal,
+        'age': CategoricalDataEncodingType.label,
+        'city': CategoricalDataEncodingType.label,
       };
 
       expect(
