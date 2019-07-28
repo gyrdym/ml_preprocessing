@@ -1,9 +1,7 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/categorical_data_codec/codec.dart';
-import 'package:ml_preprocessing/src/categorical_data_codec/codec_factory.dart';
-import 'package:ml_preprocessing/src/preprocessor/data_reader/data_reader.dart';
-import 'package:ml_preprocessing/src/preprocessor/numerical_converter/numerical_converter.dart';
-import 'package:ml_preprocessing/src/preprocessor/validator/params_validator.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/codec_factory.dart';
+import 'package:ml_preprocessing/src/encoder/numerical_converter/numerical_converter.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
@@ -12,9 +10,6 @@ class CodecMock extends Mock implements CategoricalDataCodec {}
 
 class CategoricalDataCodecFactoryMock extends Mock implements
     CategoricalDataCodecFactory {}
-
-class PreprocessorArgumentsValidatorMock extends Mock implements
-    PreprocessorArgumentsValidator {}
 
 class NumericalConverterMock extends Mock implements
     NumericalConverter {
@@ -33,21 +28,4 @@ CategoricalDataCodecFactory createCategoricalDataCodecFactoryMock(
       when(factory.fromType(data.item1, argThat(equals(data.item2)), any))
           .thenReturn(data.item3));
   return factory;
-}
-
-PreprocessorArgumentsValidator createPreprocessorArgumentsValidatorMock({
-  bool validationShouldBeFailed}) {
-  final validator = PreprocessorArgumentsValidatorMock();
-  if (validationShouldBeFailed != null) {
-    when(validator.validate(
-      labelIdx: anyNamed('labelIdx'),
-      labelName: anyNamed('labelName'),
-      rows: anyNamed('rows'),
-      columns: anyNamed('columns'),
-      headerExists: anyNamed('headerExists'),
-      namesToEncoders: anyNamed('namesToEncoders'),
-      indexToEncoder: anyNamed('indexToEncoder'),
-    )).thenReturn(validationShouldBeFailed ? 'error' : '');
-  }
-  return validator;
 }

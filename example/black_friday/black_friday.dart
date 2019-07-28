@@ -1,21 +1,26 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_preprocessing/src/data_reader/data_reader.dart';
 import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
-  final dataFrame = Preprocessor.csv('example/black_friday/black_friday.csv',
-    labelName: 'Purchase\r',
-    columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
-    rows: [ZRange.closed(0, 20)],
-    columnNameToEncodingType: {
-      'Gender': CategoricalDataEncodingType.oneHot,
-      'Age': CategoricalDataEncodingType.oneHot,
-      'City_Category': CategoricalDataEncodingType.oneHot,
-      'Stay_In_Current_City_Years': CategoricalDataEncodingType.oneHot,
-      'Marital_Status': CategoricalDataEncodingType.oneHot,
-    },
+  final csvReader = DataReader.csv('example/black_friday/black_friday.csv');
+  final data = await csvReader.read();
+
+  final dataFrame = DataFrame(
+    data,
+    columns: [2, 3, 5, 6, 7, 11],
+    encodingTypeToColumnNames: {
+      CategoricalDataEncodingType.oneHot: [
+        'Gender',
+        'Age',
+        'City_Category',
+        'Stay_In_Current_City_Years',
+        'Marital_Status',
+      ],
+    }
   );
 
-  final observations = (await dataFrame.data).toMatrix();
+  final observations = dataFrame.toMatrix();
   final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
   final ageEncoded = observations.submatrix(columns: ZRange.closed(2, 8));
   final cityCategoryEncoded = observations

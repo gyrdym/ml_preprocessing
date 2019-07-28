@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/preprocessor/preprocessor_impl.dart';
+import 'package:ml_preprocessing/src/dataframe/dataframe_impl.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
 
@@ -8,16 +8,16 @@ import '../test_helpers/test_preprocessor_impl.dart';
 
 void main() {
   group('PreprocessorImpl', () {
-    final dataFromReader = [
+    final rawData = [
       ['column_1', 'column_2', 'column_3', 'column_4', 'column_5', 'outcome'],
       [100.0, 200.0, 300.0, 400.0, 215.0, 333.0],
       [ 10.0,  20.0,  30.0,  40.0,  25.0,  33.0],
       [500.0, 700.0, 101.0, 403.0, 117.0, 111.0],
     ];
 
-    test('should parse data reader output data', () async {
-      await testPreprocessor(
-          dataFromReader: dataFromReader,
+    test('should parse data reader output data', () {
+      testPreprocessor(
+          rawData: rawData,
           labelIdx: 5,
           testOutputFn: (dataSet) {
             expect(
@@ -33,9 +33,9 @@ void main() {
     });
 
     test('should parse data reader output data with specified label column '
-        'position, case 1', () async {
-      await testPreprocessor(
-          dataFromReader: dataFromReader,
+        'position, case 1', () {
+      testPreprocessor(
+          rawData: rawData,
           labelIdx: 2,
           testOutputFn: (dataSet) {
             expect(
@@ -51,9 +51,9 @@ void main() {
     });
 
     test('should parse data reader output data with specified label column '
-        'position, case 2', () async {
-      await testPreprocessor(
-          dataFromReader: dataFromReader,
+        'position, case 2', () {
+      testPreprocessor(
+          rawData: rawData,
           labelIdx: 0,
           testOutputFn: (dataSet) {
             expect(
@@ -70,10 +70,10 @@ void main() {
     });
 
     test('should throw an error if label index is not in provided '
-        'ranges', () async {
+        'ranges', () {
       expect(
-        () => PreprocessorImpl(
-          DataReaderMock(),
+        () => DataFrameImpl(
+          [[]],
           labelIdx: 1,
           columns: [ZRange.closed(2, 3), ZRange.closed(5, 7)],
         ),
@@ -82,10 +82,10 @@ void main() {
     });
 
     test('should throw an error if neither label index nor label name is not '
-        'provided', () async {
+        'provided', () {
       expect(
-        () => PreprocessorImpl(
-          DataReaderMock(),
+        () => DataFrameImpl(
+          [[]],
           labelIdx: null,
           labelName: null,
           columns: [ZRange.closed(2, 3), ZRange.closed(5, 7)],
@@ -95,9 +95,9 @@ void main() {
     });
 
     test('should not throw an error if label name does not present in the data '
-        'header, but valid label index is provided', () async {
+        'header, but valid label index is provided', () {
       testPreprocessor(
-        dataFromReader: dataFromReader,
+        rawData: rawData,
         labelIdx: 1,
         labelName: 'some_unknown_column',
         testOutputFn: (dataSet) {
@@ -106,9 +106,9 @@ void main() {
       );
     });
 
-    test('should cut out selected columns', () async {
-      await testPreprocessor(
-          dataFromReader: dataFromReader,
+    test('should cut out selected columns', () {
+      testPreprocessor(
+          rawData: rawData,
           labelIdx: 3,
           columns: [
             ZRange.closed(0, 1),
@@ -129,8 +129,8 @@ void main() {
 
     test('should throw an error if there are intersecting column ranges while '
         'parsing csv file', () {
-      final actual = () => PreprocessorImpl(
-        DataReaderMock(),
+      final actual = () => DataFrameImpl(
+        [[]],
         labelIdx: 8,
         columns: [
           ZRange.closed(0, 1), // first and
@@ -142,9 +142,9 @@ void main() {
       expect(actual, throwsException);
     });
 
-    test('should cut out selected rows, all rows in one range', () async {
-      await testPreprocessor(
-          dataFromReader: dataFromReader,
+    test('should cut out selected rows, all rows in one range', () {
+      testPreprocessor(
+          rawData: rawData,
           labelIdx: 5,
           rows: [ZRange.closed(0, 2)],
           testOutputFn: (dataSet) {
@@ -160,9 +160,9 @@ void main() {
           });
     });
 
-    test('should cut out selected rows, several row ranges', () async {
-      await testPreprocessor(
-          dataFromReader: dataFromReader,
+    test('should cut out selected rows, several row ranges', () {
+      testPreprocessor(
+          rawData: rawData,
           labelIdx: 5,
           rows: [
             ZRange.singleton(0),
@@ -178,16 +178,6 @@ void main() {
             );
             expect(dataSet.outcome, equals([[333.0], [111.0]]));
           });
-    });
-
-    test('should throw an error if params validation fails', () {
-      final validatorMock =
-          createPreprocessorArgumentsValidatorMock(validationShouldBeFailed: true);
-      final actual = () => PreprocessorImpl(
-            DataReaderMock(),
-            argumentsValidator: validatorMock,
-          );
-      expect(actual, throwsException);
     });
   });
 }

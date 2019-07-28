@@ -1,6 +1,6 @@
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/preprocessor/records_processor/records_processor_impl.dart';
+import 'package:ml_preprocessing/src/encoder/records_processor/records_processor_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
@@ -105,12 +105,12 @@ void main() {
       final rowIndices = <int>[0, 1, 2, 3];
       final columnIndices = <int>[0, 1, 2, 3, 4];
       final columnToEncodingType = <int, CategoricalDataEncodingType>{
-        4: CategoricalDataEncodingType.ordinal,
+        4: CategoricalDataEncodingType.label,
       };
       final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
         Tuple3(
-          CategoricalDataEncodingType.ordinal,
+          CategoricalDataEncodingType.label,
           ['50.0', '500.0', '150.0', '250.0'],
           codec,
         ),
@@ -228,7 +228,7 @@ void main() {
       final columnToEncodingType = <int, CategoricalDataEncodingType>{
         0: CategoricalDataEncodingType.oneHot,
         2: CategoricalDataEncodingType.oneHot,
-        4: CategoricalDataEncodingType.ordinal,
+        4: CategoricalDataEncodingType.label,
       };
       final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
@@ -243,7 +243,7 @@ void main() {
           column2CodecMock,
         ),
         Tuple3(
-          CategoricalDataEncodingType.ordinal,
+          CategoricalDataEncodingType.label,
           ['50.0', '500.0', '150.0', '250.0'],
           column4CodecMock,
         ),
