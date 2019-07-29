@@ -9,6 +9,9 @@ Future processDataSetWithCategoricalData() async {
   final dataFrame = DataFrame(
     data,
     columns: [2, 3, 5, 6, 7, 11],
+  );
+
+  final encoded = Encoder(
     encodingTypeToColumnNames: {
       CategoricalDataEncodingType.oneHot: [
         'Gender',
@@ -18,9 +21,9 @@ Future processDataSetWithCategoricalData() async {
         'Marital_Status',
       ],
     }
-  );
+  ).encode(dataFrame).encodedData;
 
-  final observations = dataFrame.toMatrix();
+  final observations = encoded.toMatrix();
   final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
   final ageEncoded = observations.submatrix(columns: ZRange.closed(2, 8));
   final cityCategoryEncoded = observations

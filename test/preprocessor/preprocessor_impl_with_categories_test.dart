@@ -259,7 +259,7 @@ Future testCsvWithCategories({
     rawData,
     labelIdx: labelIdx,
     columns: columns,
-    rows: rows,
+    indexedRows: rows,
     headerExists: headerExist,
     encodingTypeToColumnNames: encodingToColumns,
     columnNameToEncodingType: columnToEncoding,

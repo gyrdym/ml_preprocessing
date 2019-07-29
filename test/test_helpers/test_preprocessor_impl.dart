@@ -21,7 +21,7 @@ void testPreprocessor({
     rawData,
     labelIdx: labelIdx,
     labelName: labelName,
-    rows: rows,
+    indexedRows: rows,
     columns: columns,
     codecFactory: categoricalDataFactoryMock,
   );
