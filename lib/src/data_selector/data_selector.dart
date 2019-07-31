@@ -6,12 +6,18 @@ class DataSelector {
       Iterable<String> columnNames,
       Iterable<String> header
   ) : _columnIndices = columnIndices ?? enumerate(header)
-      .where((indexed) => columnNames.contains(indexed.value))
+      .where((indexed) => columnNames?.isNotEmpty == true
+        ? columnNames.contains(indexed.value)
+        : true)
       .map((indexed) => indexed.index);
 
   final Iterable<int> _columnIndices;
 
   Iterable<Iterable<dynamic>> select(List<List<dynamic>> data) =>
-      data.map((row) => enumerate(row)
-        .where((indexed) => _columnIndices.contains(indexed.index)));
+    _columnIndices.isEmpty
+        ? data
+        : data.map((row) =>
+            enumerate(row)
+                .where((indexed) => _columnIndices.contains(indexed.index))
+                .map((indexed) => indexed.value));
 }

@@ -21,5 +21,5 @@ Future main() async {
     },
   ).encode(dataFrame);
 
-  print(encoded.encodedData.toMatrix());
+  print(encoded.data.toMatrix());
 }

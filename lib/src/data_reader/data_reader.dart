@@ -11,5 +11,5 @@ abstract class DataReader {
         CsvCodec(fieldDelimiter: columnDelimiter, eol: eol),
       );
 
-  Future<List<List<dynamic>>> read();
+  Future<Iterable<Iterable<dynamic>>> read();
 }

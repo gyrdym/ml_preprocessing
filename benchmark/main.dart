@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/codec_factory_impl.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder_factory_impl.dart';
 import 'package:ml_preprocessing/src/encoder/numerical_converter/numerical_converter_impl.dart';
 import 'package:ml_preprocessing/src/encoder/records_processor/records_processor_impl.dart';
 
@@ -43,7 +43,7 @@ class RecordsProcessorBenchmark extends BenchmarkBase {
       rowIndices,
       encoders,
       toFloatConverter,
-      CategoricalDataCodecFactoryImpl(),
+      CategoricalDataEncoderFactoryImpl(),
     ).convertAndEncodeRecords();
   }
 

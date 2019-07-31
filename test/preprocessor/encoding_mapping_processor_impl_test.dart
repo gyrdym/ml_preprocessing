@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/codec.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/encoder/encoding_mapping_processor/mapping_processor_impl.dart';
 import 'package:test/test.dart';
@@ -11,7 +11,7 @@ void main() {
         'and the columns header is not empty', () {
       final encoderProcessor = EncodingMappingProcessorImpl(header);
       final encoders = encoderProcessor.getIndexToEncodingTypeMapping({}, {}, {});
-      expect(encoders, equals(<int, CategoricalDataCodec>{}));
+      expect(encoders, equals(<int, CategoricalDataEncoder>{}));
     });
 
     test('should create correct mapping from `name-to-encoder` map if header '
