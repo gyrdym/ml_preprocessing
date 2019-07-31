@@ -17,30 +17,22 @@ abstract class DataFrame {
    */
   factory DataFrame(Iterable<Iterable<dynamic>> data, {
     bool headerExists,
+    Iterable<String> header,
     Iterable<int> columns,
     Iterable<String> columnNames,
     DType dtype,
   }) {
     final originalHeader = headerExists
         ? data.first.map((name) => name.toString().trim())
-        : [];
+        : <String>[];
     final selected = DataSelector(columns, columnNames, originalHeader)
         .select(data);
-    return DataFrameImpl(selected);
+    return DataFrameImpl(selected, headerExists: headerExists, dtype: dtype);
   }
-
-  factory DataFrame.fromMatrix(Matrix typedData, {
-    Iterable<String> header,
-    DType dtype,
-  }) => DataFrameImpl.fromMatrix(
-      typedData,
-      header: header,
-      dtype: dtype
-  );
 
   Iterable<String> get header;
   Iterable<Iterable<dynamic>> get rows;
-  Iterable<Iterable<dynamic>> get column;
+  Iterable<Iterable<dynamic>> get columns;
 
   /// Converts the dataframe into Matrix
   Matrix toMatrix();

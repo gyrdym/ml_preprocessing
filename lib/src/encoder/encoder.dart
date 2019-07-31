@@ -1,14 +1,10 @@
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/dataframe/dataframe.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/codec_factory_impl.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder_factory_impl.dart';
 import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoding_type.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
+import 'package:ml_preprocessing/src/encoder/encoding_mapping_processor/mapping_processor_factory_impl.dart';
 import 'package:ml_preprocessing/src/encoder/numerical_converter/numerical_converter_impl.dart';
-import 'package:ml_preprocessing/src/encoder/records_processor/records_processor_factory_impl.dart';
-import 'package:xrange/zrange.dart';
-
-import 'categorical_data_codec/codec.dart';
-import 'encoding_mapping_processor/mapping_processor_factory_impl.dart';
 
 abstract class Encoder {
   /**
@@ -33,9 +29,8 @@ abstract class Encoder {
     columnNameToEncodingType,
     columnIndexToEncodingType,
     encodingTypeToColumnNames,
-    CategoricalDataCodecFactoryImpl(),
+    CategoricalDataEncoderFactoryImpl(),
     NumericalConverterImpl(),
-    RecordsProcessorFactoryImpl(),
     EncodingMappingProcessorFactoryImpl(),
     dtype,
   );
@@ -45,8 +40,8 @@ abstract class Encoder {
 
 
 class EncodingDescriptor {
-  EncodingDescriptor(this.encodedData, this.rangeToCodec);
+  EncodingDescriptor(this.data, this.ctegoricalColumnsIndices);
 
-  final DataFrame encodedData;
-  final Map<ZRange, CategoricalDataCodec> rangeToCodec;
+  final DataFrame data;
+  final Set<int> ctegoricalColumnsIndices;
 }

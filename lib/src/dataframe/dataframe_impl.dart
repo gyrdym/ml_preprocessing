@@ -12,14 +12,14 @@ class DataFrameImpl implements DataFrame {
         header = headerExists
             ? _data.first.map((name) => name.toString().trim())
             : [],
+        rows = _data.skip(headerExists ? 1 : 0),
+        columns = _data.skip(headerExists ? 1 : 0)
+            .fold<Iterable<Iterable<dynamic>>>(
+              List.filled(_data.first.length, []),
+              (columns, row) => zip([columns, row.map((el) => [el])])
+                  .map((pair) => [...pair.first, ...pair.last]),
+            ),
         _typedData = null,
-        _dtype = dtype ?? DType.float32;
-
-  DataFrameImpl.fromMatrix(this._typedData, {
-    this.header,
-    DType dtype,
-  }) :
-        _data = null,
         _dtype = dtype ?? DType.float32;
 
   final DType _dtype;
@@ -30,7 +30,10 @@ class DataFrameImpl implements DataFrame {
   final Iterable<String> header;
 
   @override
-  final Iterable<IndexedValue<Iterable<dynamic>>> rows;
+  final Iterable<Iterable<dynamic>> rows;
+
+  @override
+  final Iterable<Iterable<dynamic>> columns;
 
   @override
   Matrix toMatrix() => _typedData;

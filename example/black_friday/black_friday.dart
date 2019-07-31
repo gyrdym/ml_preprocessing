@@ -21,7 +21,7 @@ Future processDataSetWithCategoricalData() async {
         'Marital_Status',
       ],
     }
-  ).encode(dataFrame).encodedData;
+  ).encode(dataFrame).data;
 
   final observations = encoded.toMatrix();
   final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
