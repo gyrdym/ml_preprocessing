@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoder.dart';
 
 class CategoricalDataEncoderImpl implements CategoricalDataEncoder {
   CategoricalDataEncoderImpl(Iterable<dynamic> labels, EncodeLabelFn encodeLabel)

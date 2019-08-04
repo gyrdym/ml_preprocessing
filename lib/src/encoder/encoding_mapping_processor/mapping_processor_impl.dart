@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoding_type.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoding_type.dart';
 import 'package:ml_preprocessing/src/encoder/encoding_mapping_processor/mapping_processor.dart';
 
 class EncodingMappingProcessorImpl implements EncodingMappingProcessor {

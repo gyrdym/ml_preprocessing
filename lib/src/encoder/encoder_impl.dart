@@ -1,59 +1,64 @@
 import 'package:ml_linalg/dtype.dart';
-import 'package:ml_preprocessing/src/dataframe/dataframe.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoding_type.dart';
+import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
+import 'package:ml_preprocessing/src/pipeline/column_indices_helpers.dart';
+import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
+import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 import 'package:quiver/iterables.dart';
 
-import 'categorical_data_codec/encoder_factory.dart';
-import 'encoding_mapping_processor/mapping_processor_factory.dart';
-import 'numerical_converter/numerical_converter.dart';
+abstract class EncoderImpl implements Pipeable, Encoder {
+  EncoderImpl({
+    Iterable<int> columns,
+    Iterable<String> columnNames,
+    String headerPrefix,
+    String headerPostfix,
+    DType dtype,
+  }) :
+        _columns = columns,
+        _columnNames = columnNames,
+        _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}'),
+        _dtype = dtype;
 
-class EncoderImpl implements Encoder {
-  EncoderImpl(
-      this._columnNameToEncodingType,
-      this._columnIndexToEncodingType,
-      this._encodingTypeToColumnNames,
-      this._encoderFactory,
-      this._numericalConverter,
-      this._encodingMappingProcessorFactory,
-      this._dtype,
-  );
-
-  final Map<String, CategoricalDataEncodingType> _columnNameToEncodingType;
-  final Map<int, CategoricalDataEncodingType> _columnIndexToEncodingType;
-  final Map<CategoricalDataEncodingType, Iterable<String>> _encodingTypeToColumnNames;
+  final Iterable<int> _columns;
+  final Iterable<String> _columnNames;
+  final ColumnHeaderTemplateFn _columnHeaderTpl;
   final DType _dtype;
-  final CategoricalDataEncoderFactory _encoderFactory;
-  final NumericalConverter _numericalConverter;
-  final EncodingMappingProcessorFactory _encodingMappingProcessorFactory;
 
   @override
-  EncodingDescriptor encode(DataFrame data) {
-    final encodersProcessor = _encodingMappingProcessorFactory
-        .create(data.header);
-    final indexToEncodingType = encodersProcessor.getIndexToEncodingTypeMapping(
-        _columnIndexToEncodingType, _encodingTypeToColumnNames,
-        _columnNameToEncodingType);
-    return _encode(indexToEncodingType, data);
-  }
-
-  EncodingDescriptor _encode(
-      Map<int, CategoricalDataEncodingType> columnIndexToEncodingType,
-      DataFrame data) {
-    final encodedData = enumerate(data.columns).map((indexedColumn) {
-      final column = indexedColumn.value;
-      if (columnIndexToEncodingType.containsKey(indexedColumn.index)) {
-        final encoderType = columnIndexToEncodingType[indexedColumn.index];
-        return _encoderFactory.fromType(encoderType, column).encode(column);
+  PipelineStepData process(PipelineStepData stepData) {
+    var expandedColumns = stepData.expandedColumnIds;
+    final data = stepData.data;
+    final header = data.header;
+    final columnIndices = _getColumnIndices(_columns, _columnNames, header);
+    final encoded = enumerate(data.series).expand((indexedSeries) {
+      final series = indexedSeries.value;
+      final index = indexedSeries.index;
+      final origIndex = getOriginalIndexByExpanded(index, stepData.expandedColumnIds);
+      if (columnIndices.contains(origIndex)) {
+        final encodedSeries = encode(series.data,
+            columnHeaderTpl: _columnHeaderTpl);
+        final shift = encodedSeries.length;
+        expandedColumns = shiftExpandedColumnIndices(expandedColumns, origIndex,
+            index, shift);
+        return encodedSeries;
       }
-      return [
-        column.map(_numericalConverter.convert).toList(),
-      ];
+      return [series];
     });
 
-    return EncodingDescriptor(
-      DataFrame(encodedData, headerExists: false, dtype: _dtype),
-      columnIndexToEncodingType.keys.toSet(),
+    return PipelineStepData(
+      DataFrame.fromSeries(encoded, dtype: _dtype),
+      expandedColumns,
     );
+  }
+
+  Iterable<int> _getColumnIndices(Iterable<int> indices, Iterable<String> names,
+      Iterable<String> header) {
+    if (indices != null) {
+      return indices;
+    }
+    final uniqueNames = Set.from(names);
+    return enumerate(header)
+        .where((indexedName) => uniqueNames.contains(indexedName.value))
+        .map((indexedValue) => indexedValue.index);
   }
 }

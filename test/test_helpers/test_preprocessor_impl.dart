@@ -1,5 +1,5 @@
 import 'package:ml_dataframe/data_set.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder_factory.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoder_factory.dart';
 import 'package:test/test.dart';
 import 'package:xrange/zrange.dart';
 
