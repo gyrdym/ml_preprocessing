@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder_factory.dart';
-import 'package:ml_preprocessing/src/encoder/numerical_converter/numerical_converter.dart';
+import 'package:ml_preprocessing/src/dataframe/numerical_converter/numerical_converter.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoder.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoder_factory.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';

@@ -13,14 +13,9 @@ Future processDataSetWithCategoricalData() async {
 
   final encoded = Encoder(
     encodingTypeToColumnNames: {
-      CategoricalDataEncodingType.oneHot: [
-        'Gender',
-        'Age',
-        'City_Category',
-        'Stay_In_Current_City_Years',
-        'Marital_Status',
-      ],
-    }
+      CategoricalDataEncodingType.oneHot: ['Gender', 'Age', 'City_Category',
+        'Stay_In_Current_City_Years', 'Marital_Status'],
+    },
   ).encode(dataFrame).data;
 
   final observations = encoded.toMatrix();

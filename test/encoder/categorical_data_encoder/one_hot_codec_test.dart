@@ -1,7 +1,5 @@
-import 'package:ml_linalg/matrix.dart';
-import 'package:ml_linalg/vector.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_codec/encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoder_factory_impl.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/linalg.dart';
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/dataframe/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
 import 'package:quiver/iterables.dart';
 
 class DataFrameImpl implements DataFrame {
@@ -19,12 +19,10 @@ class DataFrameImpl implements DataFrame {
               (columns, row) => zip([columns, row.map((el) => [el])])
                   .map((pair) => [...pair.first, ...pair.last]),
             ),
-        _typedData = null,
         _dtype = dtype ?? DType.float32;
 
   final DType _dtype;
   final Iterable<Iterable<dynamic>> _data;
-  final Matrix _typedData;
 
   @override
   final Iterable<String> header;
@@ -36,5 +34,5 @@ class DataFrameImpl implements DataFrame {
   final Iterable<Iterable<dynamic>> columns;
 
   @override
-  Matrix toMatrix() => _typedData;
+  Matrix toMatrix() => null;
 }

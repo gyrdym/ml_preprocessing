@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
 import 'package:ml_preprocessing/src/data_reader/data_reader.dart';
+import 'package:ml_preprocessing/src/numerical_converter/numerical_converter.dart';
+import 'package:ml_preprocessing/src/pipeline/pipeline.dart';
 
 Future main() async {
-  final reader = DataReader.csv('example/dataset.csv');
-
-  final data = await reader.read();
+  final data = await DataReader
+      .csv('example/dataset.csv')
+      .read();
 
   final dataFrame = DataFrame(
     data,
@@ -14,12 +17,16 @@ Future main() async {
     columns: [0, 1, 2, 3],
   );
 
-  final encoded = Encoder(
-    columnNameToEncodingType: {
-      'position': CategoricalDataEncodingType.oneHot,
-      'country': CategoricalDataEncodingType.label,
-    },
-  ).encode(dataFrame);
+  final processed = Pipeline([
+    toNumber(),
+    oneHotEncode({
+      columnNames: ['position'],
+      headerPostfix: '_position',
+    }),
+    labelEncode({
+      columnNames: ['country'],
+    }),
+  ]).apply(dataFrame);
 
-  print(encoded.data.toMatrix());
+  print(processed.toMatrix());
 }

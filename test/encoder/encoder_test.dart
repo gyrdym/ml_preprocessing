@@ -1,11 +1,12 @@
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
 import 'package:xrange/zrange.dart';
 
-import '../../mocks.dart' as mocks;
+import '../mocks.dart' as mocks;
 
 void main() {
   final data = [
@@ -15,16 +16,12 @@ void main() {
     [210.0, 220.0, 230.0, 240.0, 250.0],
   ];
 
-  group('RecordsProcessorImpl', () {
+  group('EncoderImpl', () {
     test('should extract observations according to passed colum indices', () {
-      final rowIndices = <int>[0, 1, 2, 3];
-      final columnIndices = <int>[0, 2, 4];
       final columnToEncodingType = <int, CategoricalDataEncodingType>{};
-      final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
-      final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
-          columnToEncodingType, valueConverter, codecFactory);
+      final processor = EncoderImpl(columnToEncodingType, codecFactory);
       final observations = processor.convertAndEncodeRecords();
 
       expect(
@@ -73,9 +70,9 @@ void main() {
       final valueConverter = mocks.NumericalConverterMock();
       final codecFactory = mocks.createCategoricalDataCodecFactoryMock([
         Tuple3(
-            CategoricalDataEncodingType.oneHot,
-            ['30.0', '300.0', '130.0', '230.0'],
-            codec,
+          CategoricalDataEncodingType.oneHot,
+          ['30.0', '300.0', '130.0', '230.0'],
+          codec,
         ),
       ]);
       final processor = RecordsProcessorImpl(data, columnIndices, rowIndices,
@@ -158,7 +155,7 @@ void main() {
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
       expect(
-          () => RecordsProcessorImpl(data, columnIndices, rowIndices,
+              () => RecordsProcessorImpl(data, columnIndices, rowIndices,
               columnToEncodingType, valueConverter, codecFactory),
           throwsException);
     });
@@ -192,7 +189,7 @@ void main() {
       final codecFactory = mocks.CategoricalDataCodecFactoryMock();
 
       expect(
-          () => RecordsProcessorImpl(data, columnIndices, rowIndices,
+              () => RecordsProcessorImpl(data, columnIndices, rowIndices,
               encoders, valueConverter, codecFactory),
           throwsException);
     });
