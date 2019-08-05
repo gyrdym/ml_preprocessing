@@ -35,7 +35,7 @@ abstract class EncoderImpl implements Pipeable, Encoder {
       final index = indexedSeries.index;
       final origIndex = getOriginalIndexByExpanded(index, stepData.expandedColumnIds);
       if (columnIndices.contains(origIndex)) {
-        final encodedSeries = encode(series.data,
+        final encodedSeries = encodeSeries(series,
             columnHeaderTpl: _columnHeaderTpl);
         final shift = encodedSeries.length;
         expandedColumns = shiftExpandedColumnIndices(expandedColumns, origIndex,

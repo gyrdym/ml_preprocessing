@@ -1,10 +1,12 @@
+import 'package:ml_preprocessing/src/data_frame/series.dart';
+import 'package:quiver/collection.dart';
 import 'package:quiver/iterables.dart';
 
-Map<String, int> getLabelToColumnIdMapping(Iterable<dynamic> data) {
-  final orderedUniqueLabels = data;
-  return Map.fromIterable(
-    enumerate(orderedUniqueLabels),
-    key: (indexed) => indexed.value,
-    value: (indexed) => indexed.index,
-  );
-}
+BiMap<String, int> getColumnIdByLabelMapping(Series series) => BiMap()
+    ..addAll(
+        Map.fromIterable(
+          enumerate(Set.from(series.data)),
+          key: (indexed) => indexed.value,
+          value: (indexed) => indexed.index,
+        )
+    );
