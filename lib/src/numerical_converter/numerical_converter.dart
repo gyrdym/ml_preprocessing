@@ -1,5 +1,6 @@
 import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
+import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 
 class NumericalConverter implements Pipeable {
   NumericalConverter(this._fallbackValue);
@@ -7,14 +8,17 @@ class NumericalConverter implements Pipeable {
   final num _fallbackValue;
 
   @override
-  DataFrame process(DataFrame input) {
-    return DataFrame(input.rows.map((row) => row.map((value) {
-      try {
-        return _convert(value);
-      } catch (err) {
-        return value;
-      }
-    })));
+  PipelineStepData process(PipelineStepData input) {
+    return PipelineStepData(
+        DataFrame(input.data.rows.map((row) => row.map((value) {
+          try {
+            return _convert(value);
+          } catch (err) {
+            return value;
+          }
+        }))),
+        input.expandedColumnIds,
+    );
   }
 
   num _convert(dynamic value) {

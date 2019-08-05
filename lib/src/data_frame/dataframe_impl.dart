@@ -2,6 +2,7 @@ import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/linalg.dart';
 import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:quiver/iterables.dart';
 
 class DataFrameImpl implements DataFrame {
@@ -35,4 +36,8 @@ class DataFrameImpl implements DataFrame {
 
   @override
   Matrix toMatrix() => null;
+
+  @override
+  // TODO: implement series
+  Iterable<Series> get series => null;
 }
