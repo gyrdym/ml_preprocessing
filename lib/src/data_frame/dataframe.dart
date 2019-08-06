@@ -4,7 +4,7 @@ import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/data_frame/dataframe_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/data_selector/data_selector.dart';
-import 'package:tuple/tuple.dart';
+import 'package:quiver/iterables.dart';
 
 /// A structure to store and manipulate data
 abstract class DataFrame {
@@ -20,16 +20,26 @@ abstract class DataFrame {
   factory DataFrame(Iterable<Iterable<dynamic>> data, {
     bool headerExists,
     Iterable<String> header,
+    String autoHeaderPrefix = 'col_',
     Iterable<int> columns,
     Iterable<String> columnNames,
-    DType dtype,
   }) {
     final originalHeader = headerExists
         ? data.first.map((name) => name.toString().trim())
         : <String>[];
+
     final selected = DataSelector(columns, columnNames, originalHeader)
         .select(data);
-    return DataFrameImpl(selected, headerExists: headerExists, dtype: dtype);
+
+    final defaultHeader = header ??
+        enumerate(selected.first)
+            .map((indexed) => '${autoHeaderPrefix}${indexed.index}');
+
+    final processedHeader = headerExists
+        ? selected.first.map((name) => name.toString().trim())
+        : defaultHeader;
+
+    return DataFrameImpl(selected, processedHeader);
   }
 
   factory DataFrame.fromSeries(Iterable<Series> series, {DType dtype}) {
@@ -41,5 +51,5 @@ abstract class DataFrame {
   Iterable<Series> get series;
 
   /// Converts the data_frame into Matrix
-  Matrix toMatrix();
+  Matrix toMatrix(DType dtype);
 }
