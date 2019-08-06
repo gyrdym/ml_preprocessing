@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/dataframe/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
 import 'package:test/test.dart';
 
 void main() {
