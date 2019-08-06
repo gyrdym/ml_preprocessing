@@ -1,4 +1,3 @@
-import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/pipeline/column_indices_helpers.dart';
@@ -12,17 +11,14 @@ abstract class EncoderImpl implements Pipeable, Encoder {
     Iterable<String> columnNames,
     String headerPrefix,
     String headerPostfix,
-    DType dtype,
   }) :
         _columns = columns,
         _columnNames = columnNames,
-        _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}'),
-        _dtype = dtype;
+        _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}');
 
   final Iterable<int> _columns;
   final Iterable<String> _columnNames;
   final ColumnHeaderTemplateFn _columnHeaderTpl;
-  final DType _dtype;
 
   @override
   PipelineStepData process(PipelineStepData stepData) {
@@ -33,7 +29,8 @@ abstract class EncoderImpl implements Pipeable, Encoder {
     final encoded = enumerate(data.series).expand((indexedSeries) {
       final series = indexedSeries.value;
       final index = indexedSeries.index;
-      final origIndex = getOriginalIndexByExpanded(index, stepData.expandedColumnIds);
+      final origIndex = getOriginalIndexByExpanded(index,
+          stepData.expandedColumnIds);
       if (columnIndices.contains(origIndex)) {
         final encodedSeries = encodeSeries(series,
             columnHeaderTpl: _columnHeaderTpl);
@@ -46,7 +43,7 @@ abstract class EncoderImpl implements Pipeable, Encoder {
     });
 
     return PipelineStepData(
-      DataFrame.fromSeries(encoded, dtype: _dtype),
+      DataFrame.fromSeries(encoded),
       expandedColumns,
     );
   }

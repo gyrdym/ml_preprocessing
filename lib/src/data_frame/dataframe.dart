@@ -42,14 +42,14 @@ abstract class DataFrame {
     return DataFrameImpl(selected, processedHeader);
   }
 
-  factory DataFrame.fromSeries(Iterable<Series> series, {DType dtype}) {
-    return null;
-  }
+  factory DataFrame.fromSeries(Iterable<Series> series) = DataFrameImpl.fromSeries;
 
   Iterable<String> get header;
+
   Iterable<Iterable<dynamic>> get rows;
+
   Iterable<Series> get series;
 
   /// Converts the data_frame into Matrix
-  Matrix toMatrix(DType dtype);
+  Matrix toMatrix([DType dtype = DType.float32]);
 }

@@ -1,4 +1,3 @@
-import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_helpers.dart';
@@ -12,13 +11,11 @@ class OneHotEncoder extends EncoderImpl {
     Iterable<String> columnNames,
     String headerPrefix,
     String headerPostfix,
-    DType dtype,
   }) : super(
       columns: columns,
       columnNames: columnNames,
       headerPostfix: headerPostfix,
       headerPrefix: headerPrefix,
-      dtype: dtype,
   );
 
   @override
@@ -72,11 +69,9 @@ Pipeable oneHotEncode({
   Iterable<String> columnNames,
   String headerPrefix,
   String headerPostfix,
-  DType dtype,
 }) => OneHotEncoder(
   columns: columns,
   columnNames: columnNames,
   headerPostfix: headerPostfix,
   headerPrefix: headerPrefix,
-  dtype: dtype,
 );
