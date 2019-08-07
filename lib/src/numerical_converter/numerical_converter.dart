@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 

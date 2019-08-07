@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 
 class PipelineStepData {
   PipelineStepData(this.data, this.expandedColumnIds);
