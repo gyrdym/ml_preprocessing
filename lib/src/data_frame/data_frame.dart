@@ -1,7 +1,7 @@
 import 'package:ml_linalg/dtype.dart';
 import 'package:ml_linalg/linalg.dart';
 import 'package:ml_linalg/matrix.dart';
-import 'package:ml_preprocessing/src/data_frame/dataframe_impl.dart';
+import 'package:ml_preprocessing/src/data_frame/data_frame_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/data_selector/data_selector.dart';
 import 'package:quiver/iterables.dart';
@@ -39,7 +39,11 @@ abstract class DataFrame {
         ? selected.first.map((name) => name.toString().trim())
         : defaultHeader;
 
-    return DataFrameImpl(selected, processedHeader);
+    final headLessData = headerExists
+        ? selected.skip(1)
+        : selected;
+
+    return DataFrameImpl(headLessData, processedHeader);
   }
 
   factory DataFrame.fromSeries(Iterable<Series> series) = DataFrameImpl.fromSeries;

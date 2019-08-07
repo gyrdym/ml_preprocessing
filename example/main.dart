@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/data_reader/data_reader.dart';
 import 'package:ml_preprocessing/src/encoder/label_encoder.dart';
 import 'package:ml_preprocessing/src/encoder/one_hot_encoder.dart';

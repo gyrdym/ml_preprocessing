@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/data_frame/dataframe.dart';
+import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/pipeline/column_indices_helpers.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
