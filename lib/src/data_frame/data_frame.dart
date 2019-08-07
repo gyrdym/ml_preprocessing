@@ -4,19 +4,18 @@ import 'package:ml_linalg/matrix.dart';
 import 'package:ml_preprocessing/src/data_frame/data_frame_impl.dart';
 import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/data_selector/data_selector.dart';
+import 'package:ml_preprocessing/src/numerical_converter/numerical_converter_impl.dart';
 import 'package:quiver/iterables.dart';
 
 /// A structure to store and manipulate data
 abstract class DataFrame {
-  /**
-   * Creates a data_frame from non-typed data.
-   *
-   * [data] Non-typed data, the first element may be a header of dataset (a
-   * collection of strings)
-   *
-   * [headerExists] Indicates, whether the csv-file header (a sequence of
-   * column names) exists or not
-   */
+  /// Creates a data frame from non-typed data.
+  ///
+  /// [data] Non-typed data, the first element may be a header of dataset (a
+  /// collection of strings)
+  ///
+  /// [headerExists] Indicates, whether the csv-file header (a sequence of
+  /// column names) exists or not
   factory DataFrame(Iterable<Iterable<dynamic>> data, {
     bool headerExists,
     Iterable<String> header,
@@ -43,10 +42,12 @@ abstract class DataFrame {
         ? selected.skip(1)
         : selected;
 
-    return DataFrameImpl(headLessData, processedHeader);
+    return DataFrameImpl(headLessData, processedHeader,
+        NumericalConverterImpl(null));
   }
 
-  factory DataFrame.fromSeries(Iterable<Series> series) = DataFrameImpl.fromSeries;
+  factory DataFrame.fromSeries(Iterable<Series> series) =>
+      DataFrameImpl.fromSeries(series, NumericalConverterImpl(null));
 
   Iterable<String> get header;
 
