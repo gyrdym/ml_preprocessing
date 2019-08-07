@@ -1,7 +1,7 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/data_reader/data_reader.dart';
 import 'package:ml_preprocessing/src/encoder/one_hot_encoder.dart';
-import 'package:ml_preprocessing/src/numerical_converter/numerical_converter.dart';
+import 'package:ml_preprocessing/src/numerical_converter/numerical_converter_impl.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline.dart';
 import 'package:xrange/zrange.dart';
 

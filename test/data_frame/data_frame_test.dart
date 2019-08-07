@@ -110,10 +110,10 @@ void main() {
 
     test('should convert stored data into matrix', () {
       final data = [
-        ['col_1', 'col_2', 'col_3', 'col_4', 'col_5'],
-        [   1,       2,        3,       0,        32],
-        [  10,      12,      323,     1.5,      1132],
-        [ -10,     202,     1000,     1.7,     0.005],
+        ['col_1',  'col_2', 'col_3',  'col_4',   'col_5'],
+        [  '1',       2,        3,        0,         32 ],
+        [   10,      12,      323,      1.5,       1132 ],
+        [  -10,     202,     1000,     '1.7',     0.005 ],
       ];
       final frame = DataFrame(data, headerExists: true,
           columnNames: ['col_1', 'col_3', 'col_5']);
