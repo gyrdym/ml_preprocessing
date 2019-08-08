@@ -4,9 +4,11 @@ import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 
 class NumericalConverterImpl implements Pipeable, NumericalConverter {
-  NumericalConverterImpl(this._fallbackValue);
+  NumericalConverterImpl(this._strictTypeCheck);
 
-  final num _fallbackValue;
+  final bool _strictTypeCheck;
+  final Exception _exception =
+    Exception('Unsuccessful attempt to convert a value to number');
 
   @override
   PipelineStepData process(PipelineStepData input) =>
@@ -21,26 +23,34 @@ class NumericalConverterImpl implements Pipeable, NumericalConverter {
 
   @override
   Iterable<Iterable<double>> convertRawData(Iterable<Iterable> data) =>
-    data.map((row) => row.map((value) {
-      try {
-        return _convertSingle(value);
-      } catch (err) {
-        return value;
-      }
-    }));
+    data.map((row) => row.map((value) => _convertSingle(value)));
 
   double _convertSingle(dynamic value) {
-    if (value == null) {
-      return _fallbackValue;
-    }
     if (value is String) {
-      if (value.isEmpty) {
-        return _fallbackValue;
+      try {
+        return double.parse(value);
+      } catch (e) {
+        if (_strictTypeCheck) {
+          throw _exception;
+        }
+        return null;
       }
-      return double.parse(value);
+    }
+    if (value is bool) {
+      if (_strictTypeCheck) {
+        throw _exception;
+      }
+      return value ? 1 : 0;
+    }
+    if (value is! num) {
+      if (_strictTypeCheck) {
+        throw _exception;
+      }
+      return null;
     }
     return value * 1.0;
   }
 }
 
-Pipeable toNumber({num fallbackValue}) => NumericalConverterImpl(fallbackValue);
+Pipeable toNumber({bool strictTypeCheck}) =>
+    NumericalConverterImpl(strictTypeCheck);

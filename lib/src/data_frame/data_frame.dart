@@ -43,11 +43,11 @@ abstract class DataFrame {
         : selected;
 
     return DataFrameImpl(headLessData, processedHeader,
-        NumericalConverterImpl(null));
+        NumericalConverterImpl(true));
   }
 
   factory DataFrame.fromSeries(Iterable<Series> series) =>
-      DataFrameImpl.fromSeries(series, NumericalConverterImpl(null));
+      DataFrameImpl.fromSeries(series, NumericalConverterImpl(true));
 
   Iterable<String> get header;
 
