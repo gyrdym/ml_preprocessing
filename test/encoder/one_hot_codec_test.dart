@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/encoder/one_hot_encoder.dart';
+import 'package:ml_preprocessing/src/encoder/one_hot_series_encoder.dart';
 import 'package:test/test.dart';
 
 void main() {
