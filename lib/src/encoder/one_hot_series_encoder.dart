@@ -1,35 +1,26 @@
 import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_helpers.dart';
-import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
-import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder.dart';
 import 'package:quiver/iterables.dart';
 
-class OneHotEncoder extends EncoderImpl {
-  OneHotEncoder({
-    Iterable<int> columns,
-    Iterable<String> columnNames,
+class OneHotSeriesEncoder implements SeriesEncoder {
+  OneHotSeriesEncoder({
     String headerPrefix,
     String headerPostfix,
-  }) : super(
-      columns: columns,
-      columnNames: columnNames,
-      headerPostfix: headerPostfix,
-      headerPrefix: headerPrefix,
-  );
+  }) : _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}');
+
+  final ColumnHeaderTemplateFn _columnHeaderTpl;
 
   @override
-  Iterable<Series> encodeSeries(Series series,
-      {ColumnHeaderTemplateFn columnHeaderTpl}) {
+  Iterable<Series> encodeSeries(Series series) {
     final length = series.data.length;
     final columnIdByLabel = getColumnIdByLabelMapping(series);
     final labelByColumnId = columnIdByLabel.inverse;
 
     final headers = List.generate(
       columnIdByLabel.length,
-      (id) => columnHeaderTpl != null
-          ? columnHeaderTpl(labelByColumnId[id])
-          : labelByColumnId[id],
+      (id) => _columnHeaderTpl(labelByColumnId[id]),
     );
 
     final initialData = List.generate(
@@ -63,15 +54,3 @@ class _SeriesAccumulator {
   final List<List<int>> data;
   final int counter;
 }
-
-Pipeable oneHotEncode({
-  Iterable<int> columns,
-  Iterable<String> columnNames,
-  String headerPrefix,
-  String headerPostfix,
-}) => OneHotEncoder(
-  columns: columns,
-  columnNames: columnNames,
-  headerPostfix: headerPostfix,
-  headerPrefix: headerPrefix,
-);

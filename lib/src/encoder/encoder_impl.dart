@@ -1,24 +1,22 @@
 import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder.dart';
 import 'package:ml_preprocessing/src/pipeline/column_indices_helpers.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 import 'package:quiver/iterables.dart';
 
-abstract class EncoderImpl implements Pipeable, Encoder {
-  EncoderImpl({
+class EncoderImpl implements Pipeable, Encoder {
+  EncoderImpl(this._seriesEncoder, {
     Iterable<int> columns,
     Iterable<String> columnNames,
-    String headerPrefix,
-    String headerPostfix,
   }) :
         _columns = columns,
-        _columnNames = columnNames,
-        _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}');
+        _columnNames = columnNames;
 
   final Iterable<int> _columns;
   final Iterable<String> _columnNames;
-  final ColumnHeaderTemplateFn _columnHeaderTpl;
+  final SeriesEncoder _seriesEncoder;
 
   @override
   PipelineStepData process(PipelineStepData stepData) {
@@ -32,8 +30,7 @@ abstract class EncoderImpl implements Pipeable, Encoder {
       final origIndex = getOriginalIndexByExpanded(index,
           stepData.expandedColumnIds);
       if (columnIndices.contains(origIndex)) {
-        final encodedSeries = encodeSeries(series,
-            columnHeaderTpl: _columnHeaderTpl);
+        final encodedSeries = _seriesEncoder.encodeSeries(series);
         final shift = encodedSeries.length;
         expandedColumns = shiftExpandedColumnIndices(expandedColumns, origIndex,
             index, shift);
@@ -46,6 +43,12 @@ abstract class EncoderImpl implements Pipeable, Encoder {
       DataFrame.fromSeries(encoded),
       expandedColumns,
     );
+  }
+
+  @override
+  DataFrame encode(DataFrame data) {
+    // TODO: implement encode
+    return null;
   }
 
   Iterable<int> _getColumnIndices(Iterable<int> indices, Iterable<String> names,

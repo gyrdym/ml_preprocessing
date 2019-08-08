@@ -1,7 +1,4 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/data_reader/data_reader.dart';
-import 'package:ml_preprocessing/src/encoder/one_hot_encoder.dart';
-import 'package:ml_preprocessing/src/pipeline/pipeline.dart';
 import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
@@ -13,14 +10,12 @@ Future processDataSetWithCategoricalData() async {
     columns: [2, 3, 5, 6, 7, 11],
   );
 
-  final processed = Pipeline([
-    oneHotEncode(
-      columnNames: ['Gender', 'Age', 'City_Category',
-        'Stay_In_Current_City_Years', 'Marital_Status'],
-    ),
-  ]).apply(dataFrame);
+  final encoded = Encoder.oneHot(
+    columnNames: ['Gender', 'Age', 'City_Category',
+      'Stay_In_Current_City_Years', 'Marital_Status'],
+  ).encode(dataFrame);
 
-  final observations = processed.toMatrix();
+  final observations = encoded.toMatrix();
   final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
   final ageEncoded = observations.submatrix(columns: ZRange.closed(2, 8));
   final cityCategoryEncoded = observations
