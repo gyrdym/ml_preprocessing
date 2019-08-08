@@ -1,16 +1,14 @@
-import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/categorical_data_encoder/encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/encoder/one_hot_encoder.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('OneHotCodec', () {
+  group('OneHotEncoder', () {
     final values = ['group A', 'group B', 'group C', 'group D', 'group A',
       'group B', 'group D'];
-    final encoder = CategoricalDataEncoderFactoryImpl()
-        .fromType(CategoricalDataEncodingType.oneHot, values);
+    final encoder = OneHotEncoder();
 
     test('should encode categorical data', () {
-      expect(encoder.encode(['group A', 'group C', 'group D',
+      expect(encoder.encodeSeries(['group A', 'group C', 'group D',
         'group D', 'group A', 'group C', 'group B']),
           equals([
             [1, 0, 0, 0],
