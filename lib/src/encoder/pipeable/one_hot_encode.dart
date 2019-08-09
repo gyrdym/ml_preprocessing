@@ -1,6 +1,6 @@
 import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
-import 'package:ml_preprocessing/src/encoder/series_encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory_impl.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
 PipeableOperatorFn oneHotEncode({

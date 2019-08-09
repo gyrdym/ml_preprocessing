@@ -1,8 +1,8 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
-import 'package:ml_preprocessing/src/encoder/series_encoder.dart';
-import 'package:ml_preprocessing/src/encoder/series_encoder_factory.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory.dart';
 
 class SeriesEncoderFactoryImpl implements SeriesEncoderFactory {
   @override
