@@ -11,7 +11,7 @@ class DataFrameImpl implements DataFrame {
         series = convertRowsToSeries(header, rows);
 
   DataFrameImpl.fromSeries(this.series, this._toNumber) :
-        header = series.map((series) => series.header),
+        header = series.map((series) => series.name),
         rows = convertSeriesToRows(series);
 
   @override
@@ -35,4 +35,7 @@ class DataFrameImpl implements DataFrame {
             .map((row) => row.toList())
             .toList(),
     );
+
+  @override
+  Map<String, Series> get seriesByName => null;
 }

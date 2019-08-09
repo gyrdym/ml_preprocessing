@@ -1,33 +1,33 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
+import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder_factory_impl.dart';
 
-typedef ColumnHeaderTemplateFn = String Function(String label);
+final _encoderFactory = SeriesEncoderFactoryImpl();
 
 abstract class Encoder {
-  factory Encoder.oneHot({
+  factory Encoder.oneHot(DataFrame fittingData, {
     Iterable<int> columns,
     Iterable<String> columnNames,
     String headerPrefix,
     String headerPostfix,
   }) => EncoderImpl(
-    OneHotSeriesEncoder(
-        headerPrefix: headerPrefix,
-        headerPostfix: headerPostfix,
-    ),
+    fittingData,
+    EncoderType.oneHot,
+    _encoderFactory,
     columnNames: columnNames,
     columns: columns,
   );
 
-  factory Encoder.label({
+  factory Encoder.label(DataFrame fittingData, {
     Iterable<int> columns,
     Iterable<String> columnNames,
     String headerPrefix,
     String headerPostfix,
   }) => EncoderImpl(
-    LabelSeriesEncoder(
-      headerPrefix: headerPrefix,
-      headerPostfix: headerPostfix,
-    ),
+    fittingData,
+    EncoderType.label,
+    _encoderFactory,
     columnNames: columnNames,
     columns: columns,
   );

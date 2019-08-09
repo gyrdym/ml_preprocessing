@@ -1,17 +1,19 @@
-import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
+import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder_factory_impl.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
-Pipeable labelEncode({
+PipeableOperatorFn labelsEncode({
   Iterable<int> columns,
   Iterable<String> columnNames,
   String headerPrefix,
   String headerPostfix,
-}) => EncoderImpl(
-  LabelSeriesEncoder(
-    headerPrefix: headerPrefix,
-    headerPostfix: headerPostfix,
-  ),
+}) => (data) => EncoderImpl(
+  data,
+  EncoderType.label,
+  SeriesEncoderFactoryImpl(),
   columnNames: columnNames,
   columns: columns,
+  encodedHeaderPostfix: headerPostfix,
+  encodedHeaderPrefix: headerPrefix,
 );

@@ -1,21 +1,12 @@
 import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/numerical_converter/numerical_converter.dart';
-import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
-import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 
-class NumericalConverterImpl implements Pipeable, NumericalConverter {
+class NumericalConverterImpl implements NumericalConverter {
   NumericalConverterImpl(this._strictTypeCheck);
 
   final bool _strictTypeCheck;
   final Exception _exception =
     Exception('Unsuccessful attempt to convert a value to number');
-
-  @override
-  PipelineStepData process(PipelineStepData input) =>
-      PipelineStepData(
-        convertDataFrame(input.data),
-        input.expandedColumnIds,
-      );
 
   @override
   DataFrame convertDataFrame(DataFrame data) =>
@@ -51,6 +42,3 @@ class NumericalConverterImpl implements Pipeable, NumericalConverter {
     return value * 1.0;
   }
 }
-
-Pipeable toNumber({bool strictTypeCheck}) =>
-    NumericalConverterImpl(strictTypeCheck);
