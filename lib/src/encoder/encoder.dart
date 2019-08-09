@@ -1,9 +1,9 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
-import 'package:ml_preprocessing/src/encoder/series_encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory_impl.dart';
 
-final _encoderFactory = SeriesEncoderFactoryImpl();
+final _seriesEncoderFactory = SeriesEncoderFactoryImpl();
 
 abstract class Encoder {
   factory Encoder.oneHot(DataFrame fittingData, {
@@ -14,7 +14,7 @@ abstract class Encoder {
   }) => EncoderImpl(
     fittingData,
     EncoderType.oneHot,
-    _encoderFactory,
+    _seriesEncoderFactory,
     columnNames: columnNames,
     columns: columns,
   );
@@ -27,7 +27,7 @@ abstract class Encoder {
   }) => EncoderImpl(
     fittingData,
     EncoderType.label,
-    _encoderFactory,
+    _seriesEncoderFactory,
     columnNames: columnNames,
     columns: columns,
   );

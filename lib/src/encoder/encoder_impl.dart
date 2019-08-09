@@ -2,8 +2,8 @@ import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/encoder/helpers/create_encoder_to_series_mapping.dart';
-import 'package:ml_preprocessing/src/encoder/series_encoder.dart';
-import 'package:ml_preprocessing/src/encoder/series_encoder_factory.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
 class EncoderImpl implements Pipeable, Encoder {

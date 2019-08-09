@@ -37,5 +37,8 @@ class DataFrameImpl implements DataFrame {
     );
 
   @override
-  Map<String, Series> get seriesByName => null;
+  Map<String, Series> get seriesByName =>
+      _seriesByName ??= Map
+          .fromEntries(series.map((series) => MapEntry(series.name, series)));
+  Map<String, Series> _seriesByName;
 }
