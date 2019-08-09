@@ -1,16 +1,13 @@
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
-import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
 
 class Pipeline {
-  Pipeline(this._steps);
+  Pipeline(DataFrame data, Iterable<PipeableOperatorFn> operators) :
+    _steps = operators.map((operator) => operator(data));
 
   final Iterable<Pipeable> _steps;
 
-  DataFrame apply(DataFrame data) =>
-      _steps.fold(
-          PipelineStepData(data, null),
-          (processed, step) => step.process(processed)
-      ).data;
+  DataFrame process(DataFrame data) =>
+      _steps.fold(data, (processed, step) => step.process(processed));
 }

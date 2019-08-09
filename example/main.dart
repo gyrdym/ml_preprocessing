@@ -12,21 +12,17 @@ Future main() async {
       .csv('example/dataset.csv')
       .read();
 
-  final dataFrame = DataFrame(
-    data,
-    headerExists: true,
-    columns: [0, 1, 2, 3],
-  );
+  final dataFrame = DataFrame(data, columns: [0, 1, 2, 3]);
 
-  final processed = Pipeline([
+  final pipeline = Pipeline(dataFrame, [
     oneHotEncode(
       columnNames: ['position'],
       headerPostfix: '_position',
     ),
-    labelEncode(
+    labelsEncode(
       columnNames: ['country'],
     ),
-  ]).apply(dataFrame);
+  ]);
 
-  print(processed.toMatrix());
+  print(pipeline.process(dataFrame).toMatrix());
 }

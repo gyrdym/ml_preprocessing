@@ -1,10 +1,9 @@
 import 'package:ml_preprocessing/src/data_frame/series.dart';
-import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_helpers.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder.dart';
 
 class LabelSeriesEncoder implements SeriesEncoder {
-  LabelSeriesEncoder({
+  LabelSeriesEncoder(Series fittingData, {
     String headerPrefix,
     String headerPostfix,
   }) : _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}');
@@ -16,7 +15,7 @@ class LabelSeriesEncoder implements SeriesEncoder {
     final labelToColumnId = getColumnIdByLabelMapping(series);
     return [
       Series(
-        _columnHeaderTpl(series.header),
+        _columnHeaderTpl(series.name),
         series.data.map((label) => labelToColumnId[label]),
       ),
     ];

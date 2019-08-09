@@ -19,7 +19,7 @@ void main() {
         [ 10,  12,  323, false, '1132'],
         [-10, 202, null,  true,  'abs'],
       ]));
-      expect(frame.series.map((series) => series.header),
+      expect(frame.series.map((series) => series.name),
           equals(['col_0', 'col_1', 'col_2', 'col_3', 'col_4']));
       expect(frame.series.map((series) => series.data), equals([
         [1, 10, -10],
@@ -46,7 +46,7 @@ void main() {
         [ 10,  12,  323, false, '1132'],
         [-10, 202, null,  true,  'abs'],
       ]));
-      expect(frame.series.map((series) => series.header),
+      expect(frame.series.map((series) => series.name),
           equals(['header_1', 'header_2', 'header_3', 'header_4', 'header_5']));
       expect(frame.series.map((series) => series.data), equals([
         [1, 10, -10],
@@ -73,7 +73,7 @@ void main() {
         [ 10,  323, '1132'],
         [-10, null,  'abs'],
       ]));
-      expect(frame.series.map((series) => series.header),
+      expect(frame.series.map((series) => series.name),
           equals(['col_1', 'col_3', 'col_5']));
       expect(frame.series.map((series) => series.data), equals([
         [1, 10, -10],
@@ -99,7 +99,7 @@ void main() {
         [ 10,  323, '1132'],
         [-10, null,  'abs'],
       ]));
-      expect(frame.series.map((series) => series.header),
+      expect(frame.series.map((series) => series.name),
           equals(['col_1', 'col_3', 'col_5']));
       expect(frame.series.map((series) => series.data), equals([
         [1, 10, -10],

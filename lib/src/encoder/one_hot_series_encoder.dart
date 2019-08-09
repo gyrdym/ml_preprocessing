@@ -1,13 +1,12 @@
 import 'package:ml_preprocessing/src/data_frame/series.dart';
-import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_helpers.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder.dart';
 import 'package:quiver/iterables.dart';
 
 class OneHotSeriesEncoder implements SeriesEncoder {
-  OneHotSeriesEncoder({
-    String headerPrefix,
-    String headerPostfix,
+  OneHotSeriesEncoder(Series fittingData, {
+    String headerPrefix = '',
+    String headerPostfix = '',
   }) : _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}');
 
   final ColumnHeaderTemplateFn _columnHeaderTpl;

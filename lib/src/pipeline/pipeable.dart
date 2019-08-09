@@ -1,5 +1,7 @@
-import 'package:ml_preprocessing/src/pipeline/pipeline_step_data.dart';
+import 'package:ml_preprocessing/ml_preprocessing.dart';
 
 abstract class Pipeable {
-  PipelineStepData process(PipelineStepData input);
+  DataFrame process(DataFrame input);
 }
+
+typedef PipeableOperatorFn = Pipeable Function(DataFrame data);

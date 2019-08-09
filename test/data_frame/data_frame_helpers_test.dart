@@ -21,13 +21,13 @@ void main() {
 
         expect(series, hasLength(3));
 
-        expect(series[0].header, 'col_1');
+        expect(series[0].name, 'col_1');
         expect(series[0].data, [1, 100, 230, null, 0]);
 
-        expect(series[1].header, 'col_2');
+        expect(series[1].name, 'col_2');
         expect(series[1].data, [null, '23', '11', 'text', '00']);
 
-        expect(series[2].header, 'col_3');
+        expect(series[2].name, 'col_3');
         expect(series[2].data, [true, false, false, false, true]);
       });
 
@@ -45,10 +45,10 @@ void main() {
 
         expect(series, hasLength(2));
 
-        expect(series[0].header, 'col_1');
+        expect(series[0].name, 'col_1');
         expect(series[0].data, [1, 100, 230, null, 0]);
 
-        expect(series[1].header, 'col_2');
+        expect(series[1].name, 'col_2');
         expect(series[1].data, [null, '23', '11', 'text', '00']);
 
         expect(() => series[2], throwsRangeError);
@@ -68,16 +68,16 @@ void main() {
 
         expect(series, hasLength(4));
 
-        expect(series[0].header, 'col_1');
+        expect(series[0].name, 'col_1');
         expect(series[0].data, [1, 100, 230, null, 0]);
 
-        expect(series[1].header, 'col_2');
+        expect(series[1].name, 'col_2');
         expect(series[1].data, [null, '23', '11', 'text', '00']);
 
-        expect(series[2].header, 'col_3');
+        expect(series[2].name, 'col_3');
         expect(series[2].data, [true, false, false, false, true]);
 
-        expect(series[3].header, 'col_4');
+        expect(series[3].name, 'col_4');
         expect(series[3].data, isEmpty);
       });
     });

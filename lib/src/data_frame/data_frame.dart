@@ -17,7 +17,7 @@ abstract class DataFrame {
   /// [headerExists] Indicates, whether the csv-file header (a sequence of
   /// column names) exists or not
   factory DataFrame(Iterable<Iterable<dynamic>> data, {
-    bool headerExists,
+    bool headerExists = true,
     Iterable<String> header,
     String autoHeaderPrefix = 'col_',
     Iterable<int> columns,
@@ -54,6 +54,8 @@ abstract class DataFrame {
   Iterable<Iterable<dynamic>> get rows;
 
   Iterable<Series> get series;
+
+  Map<String, Series> get seriesByName;
 
   /// Converts the data_frame into Matrix
   Matrix toMatrix([DType dtype = DType.float32]);

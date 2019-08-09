@@ -1,6 +1,6 @@
 class Series<T> {
-  Series(this.header, this.data);
+  Series(this.name, this.data);
 
-  final String header;
+  final String name;
   final Iterable<T> data;
 }
