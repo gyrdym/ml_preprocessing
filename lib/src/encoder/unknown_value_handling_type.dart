@@ -1,0 +1,3 @@
+enum UnknownValueHandlingType {
+  error, ignore,
+}
