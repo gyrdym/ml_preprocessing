@@ -23,7 +23,6 @@ class OneHotSeriesEncoder implements SeriesEncoder {
         _unknownHandlingType == UnknownValueHandlingType.error;
     final data = series.data.map((value) {
       if (shouldThrowErrorIfUnknown && !_labels.contains(value)) {
-        print(value);
         throw Exception('Unknown categorical value encountered - $value');
       }
       return value == label ? 1 : 0;
