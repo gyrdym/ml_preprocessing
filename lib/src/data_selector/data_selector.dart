@@ -13,7 +13,7 @@ class DataSelector {
 
   final Iterable<int> _columnIndices;
 
-  Iterable<Iterable<dynamic>> select(List<List<dynamic>> data) =>
+  Iterable<Iterable<dynamic>> select(Iterable<Iterable<dynamic>> data) =>
     _columnIndices.isEmpty
         ? data
         : data.map((row) =>
