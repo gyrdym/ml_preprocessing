@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/data_frame/data_frame.dart';
+import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/encoder/helpers/create_encoder_to_series_mapping.dart';

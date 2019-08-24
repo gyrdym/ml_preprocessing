@@ -1,5 +1,5 @@
+import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/data_frame/series.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 import 'package:test/test.dart';
 
