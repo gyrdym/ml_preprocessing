@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/src/data_frame/series.dart';
+import 'package:ml_dataframe/ml_dataframe.dart';
 
 typedef ColumnHeaderTemplateFn = String Function(String label);
 

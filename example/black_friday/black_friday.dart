@@ -1,12 +1,9 @@
+import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
-  final csvReader = DataReader.csv('example/black_friday/black_friday.csv');
-  final data = await csvReader.read();
-
-  final dataFrame = DataFrame(
-    data,
+  final dataFrame = await fromCsv('example/black_friday/black_friday.csv',
     columns: [2, 3, 5, 6, 7, 11],
   );
 

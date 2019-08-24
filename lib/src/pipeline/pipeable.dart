@@ -1,4 +1,4 @@
-import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_dataframe/ml_dataframe.dart';
 
 abstract class Pipeable {
   DataFrame process(DataFrame input);
