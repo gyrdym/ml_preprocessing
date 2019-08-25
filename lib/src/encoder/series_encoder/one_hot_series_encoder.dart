@@ -11,17 +11,17 @@ class OneHotSeriesEncoder implements SeriesEncoder {
   }) :
         _unknownHandlingType = unknownValueHandlingType,
         _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}'),
-        _labels = Set.from(fittingData.data);
+        _labels = Set<dynamic>.from(fittingData.data);
 
   final UnknownValueHandlingType _unknownHandlingType;
   final ColumnHeaderTemplateFn _columnHeaderTpl;
   final Set _labels;
 
   @override
-  Iterable<Series> encodeSeries(Series series) => _labels.map((label) {
+  Iterable<Series> encodeSeries(Series series) => _labels.map((dynamic label) {
     final shouldThrowErrorIfUnknown =
         _unknownHandlingType == UnknownValueHandlingType.error;
-    final data = series.data.map((value) {
+    final data = series.data.map((dynamic value) {
       if (shouldThrowErrorIfUnknown && !_labels.contains(value)) {
         throw Exception('Unknown categorical value encountered - `$value` for '
             'series `${series.name}`');

@@ -11,7 +11,7 @@ class LabelSeriesEncoder implements SeriesEncoder {
   }) :
         _unknownHandlingType = unknownValueHandlingType,
         _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}'),
-        _labels = Set.from(fittingData.data).toList(growable: false);
+        _labels = Set<dynamic>.from(fittingData.data).toList(growable: false);
 
   final UnknownValueHandlingType _unknownHandlingType;
   final ColumnHeaderTemplateFn _columnHeaderTpl;
@@ -24,7 +24,7 @@ class LabelSeriesEncoder implements SeriesEncoder {
     return [
       Series(
         _columnHeaderTpl(series.name),
-        series.data.map((label) {
+        series.data.map<dynamic>((dynamic label) {
           if (!_labels.contains(label)) {
             if (shouldThrowErrorIfUnknown) {
               throw Exception('Unknown categorical value encountered - $label');

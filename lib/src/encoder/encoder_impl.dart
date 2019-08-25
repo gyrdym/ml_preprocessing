@@ -29,12 +29,10 @@ class EncoderImpl implements Pipeable, Encoder {
 
   @override
   DataFrame process(DataFrame dataFrame) {
-    final encoded = dataFrame.series.expand((series) {
-//      print('${_encoderBySeries.keys}, ${series.name}, ${series.data}');
-      return _encoderBySeries.containsKey(series.name)
+    final encoded = dataFrame.series.expand((series) =>
+      _encoderBySeries.containsKey(series.name)
           ? _encoderBySeries[series.name].encodeSeries(series)
-          : [series];
-    });
+          : [series]);
     return DataFrame.fromSeries(encoded);
   }
 

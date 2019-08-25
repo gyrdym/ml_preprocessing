@@ -6,7 +6,8 @@ import 'package:test/test.dart';
 void main() {
   group('LabelSeriesEncoder', () {
     test('should encode given series, creating a collection of new series', () {
-      final series = Series('just_header', ['q', '2ee', '0030', '123']);
+      final series = Series('just_header',
+          <dynamic>['q', '2ee', '0030', '123']);
       final encoder = LabelSeriesEncoder(series);
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -17,7 +18,8 @@ void main() {
 
     test('should use source series header as a header of encoded one if '
         'neither header prefix nor header postfix are specified', () {
-      final series = Series('just_header', ['q', '2ee', '0030', '123']);
+      final series = Series('just_header',
+          <dynamic>['q', '2ee', '0030', '123']);
       final encoder = LabelSeriesEncoder(series);
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -28,7 +30,7 @@ void main() {
 
     test('should encode given series with repeating values', () {
       final series = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(series);
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -39,7 +41,7 @@ void main() {
 
     test('should consider given series name prefix', () {
       final series = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(series, headerPrefix: 'pref_');
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -50,7 +52,7 @@ void main() {
 
     test('should consider given series name postfix', () {
       final series = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(series, headerPostfix: '_postf');
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -62,7 +64,7 @@ void main() {
     test('should consider both given series name postfix and series name '
         'prefix', () {
       final series = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(series,
           headerPrefix: 'pref_',
           headerPostfix: '_postf'
@@ -76,14 +78,14 @@ void main() {
 
     test('should use fitted data to encode new one', () {
       final fittingData = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(fittingData,
           headerPrefix: 'pref_',
           headerPostfix: '_postf'
       );
 
       final newData = Series('just_header',
-          ['q', 'q', 'q', 'q', '2ee', '2ee', '0030', 'q', '0030']);
+          <dynamic>['q', 'q', 'q', 'q', '2ee', '2ee', '0030', 'q', '0030']);
       final encoded = encoder.encodeSeries(newData).toList();
 
       expect(encoded, hasLength(1));
@@ -94,12 +96,13 @@ void main() {
     test('should throw error if unknown value handling startegy is to throw '
         'error and unknown value is encountered', () {
       final fittingData = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(fittingData,
           unknownValueHandlingType: UnknownValueHandlingType.error);
       final unknownValue = 'unknown_value';
       final newData = Series('awesome_series',
-          ['q', 'q', 'q', unknownValue, '2ee', '2ee', '0030', 'q', '0030']);
+          <dynamic>['q', 'q', 'q', unknownValue, '2ee', '2ee', '0030', 'q',
+            '0030']);
 
       final actual = () => encoder
           .encodeSeries(newData)
@@ -112,12 +115,13 @@ void main() {
         'value handling startegy is to ignore and unknown value is '
         'encountered', () {
       final fittingData = Series('just_header',
-          ['q', '2ee', 'q', 'q', '0030', '123', '0030']);
+          <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(fittingData,
           unknownValueHandlingType: UnknownValueHandlingType.ignore);
       final unknownValue = 'unknown_value';
       final newData = Series('awesome_series',
-          ['q', 'q', 'q', unknownValue, '2ee', '2ee', '0030', 'q', '0030']);
+          <dynamic>['q', 'q', 'q', unknownValue, '2ee', '2ee', '0030', 'q',
+            '0030']);
       final encoded = encoder.encodeSeries(newData).toList();
 
       expect(encoded, hasLength(1));
