@@ -7,6 +7,6 @@ class Pipeline {
 
   final Iterable<Pipeable> _steps;
 
-  DataFrame process(DataFrame data) =>
-      _steps.fold(data, (processed, step) => step.process(processed));
+  DataFrame process(DataFrame dataFrame) =>
+      _steps.fold(dataFrame, (processed, step) => step.process(processed));
 }
