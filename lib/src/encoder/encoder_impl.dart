@@ -19,7 +19,8 @@ class EncoderImpl implements Pipeable, Encoder {
         _encoderBySeries = createEncoderToSeriesMapping(
             fittingData, columnNames, columns,
             (series) => seriesEncoderFactory.createByType(
-              encoderType, series,
+              encoderType,
+              series,
               headerPostfix: encodedHeaderPostfix,
               headerPrefix: encodedHeaderPrefix,
             ));
@@ -27,12 +28,13 @@ class EncoderImpl implements Pipeable, Encoder {
   final Map<String, SeriesEncoder> _encoderBySeries;
 
   @override
-  DataFrame process(DataFrame data) {
-    final encoded = data.series.expand((series) =>
-      _encoderBySeries.containsKey(series.name)
+  DataFrame process(DataFrame dataFrame) {
+    final encoded = dataFrame.series.expand((series) {
+//      print('${_encoderBySeries.keys}, ${series.name}, ${series.data}');
+      return _encoderBySeries.containsKey(series.name)
           ? _encoderBySeries[series.name].encodeSeries(series)
-          : [series],
-    );
+          : [series];
+    });
     return DataFrame.fromSeries(encoded);
   }
 

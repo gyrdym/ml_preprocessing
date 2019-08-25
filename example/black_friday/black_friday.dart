@@ -4,7 +4,8 @@ import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
   final dataFrame = await fromCsv('example/black_friday/black_friday.csv',
-    columns: [2, 3, 5, 6, 7, 11],
+    columnNames: ['Gender', 'Age', 'City_Category',
+      'Stay_In_Current_City_Years', 'Marital_Status'],
   );
 
   final encoded = Encoder.oneHot(
