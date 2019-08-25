@@ -3,15 +3,15 @@ import 'package:ml_preprocessing/src/encoder/helpers/get_series_names_by_indices
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder.dart';
 
 Map<String, SeriesEncoder> createEncoderToSeriesMapping(
-    DataFrame data,
+    DataFrame dataFrame,
     Iterable<String> predefinedSeriesNames,
     Iterable<int> seriesIndices,
     SeriesEncoder seriesEncoderFactory(Series series),
 ) {
   final seriesNames = predefinedSeriesNames ??
-      getSeriesNamesByIndices(data.header, seriesIndices);
+      getSeriesNamesByIndices(dataFrame.header, seriesIndices);
   final entries = seriesNames.map((name) {
-    final series = data[name];
+    final series = dataFrame[name];
     final encoder = seriesEncoderFactory(series);
     return MapEntry(name, encoder);
   });

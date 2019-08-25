@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.4.0 <3.0.0'
 
 dependencies:
-  ml_dataframe: ^0.0.1
+  ml_dataframe: ^0.0.3
   ml_linalg: ^10.0.3
   quiver: ^2.0.2
   tuple: ^1.0.2

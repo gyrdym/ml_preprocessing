@@ -33,6 +33,7 @@ class LabelSeriesEncoder implements SeriesEncoder {
           }
           return _labels.indexOf(label);
         }),
+        isDiscrete: true,
       ),
     ];
   }

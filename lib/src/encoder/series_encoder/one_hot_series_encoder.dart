@@ -23,10 +23,11 @@ class OneHotSeriesEncoder implements SeriesEncoder {
         _unknownHandlingType == UnknownValueHandlingType.error;
     final data = series.data.map((value) {
       if (shouldThrowErrorIfUnknown && !_labels.contains(value)) {
-        throw Exception('Unknown categorical value encountered - $value');
+        throw Exception('Unknown categorical value encountered - `$value` for '
+            'series `${series.name}`');
       }
       return value == label ? 1 : 0;
     });
-    return Series(_columnHeaderTpl(label), data);
+    return Series(_columnHeaderTpl(label.toString()), data, isDiscrete: true);
   });
 }
