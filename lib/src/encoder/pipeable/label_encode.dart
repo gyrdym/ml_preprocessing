@@ -12,8 +12,8 @@ PipeableOperatorFn labelsEncode({
   data,
   EncoderType.label,
   SeriesEncoderFactoryImpl(),
-  columnNames: columnNames,
-  columns: columns,
+  featureNames: columnNames,
+  featureIds: columns,
   encodedHeaderPostfix: headerPostfix,
   encodedHeaderPrefix: headerPrefix,
 );

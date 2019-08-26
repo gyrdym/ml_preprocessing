@@ -1,5 +1,5 @@
 import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_preprocessing/ml_preprocessing.dart';
+import 'package:ml_preprocessing/src/encoder/series_encoder/label_series_encoder.dart';
 import 'package:ml_preprocessing/src/encoder/unknown_value_handling_type.dart';
 import 'package:test/test.dart';
 

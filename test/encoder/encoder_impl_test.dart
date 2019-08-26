@@ -19,7 +19,7 @@ void main() {
       test('should encode multiple columns', () {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.oneHot(dataFrame,
-            columnNames: ['second', 'third', 'fourth']);
+            featureNames: ['second', 'third', 'fourth']);
         final encoded = encoder.encode(dataFrame);
 
         encoded.toMatrix();
@@ -38,7 +38,7 @@ void main() {
       test('should use indices to access the needed series while encoding', () {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.oneHot(dataFrame,
-            columns: [1, 2, 3]);
+            featureIds: [1, 2, 3]);
         final encoded = encoder.encode(dataFrame);
 
         encoded.toMatrix();
@@ -59,7 +59,7 @@ void main() {
       test('should encode multiple columns', () {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.label(dataFrame,
-            columnNames: ['second', 'third', 'fourth']);
+            featureNames: ['second', 'third', 'fourth']);
         final encoded = encoder.encode(dataFrame);
 
         encoded.toMatrix();
@@ -77,7 +77,7 @@ void main() {
 
       test('should use indices to access the needed series while encoding', () {
         final dataFrame = DataFrame(data);
-        final encoder = Encoder.label(dataFrame, columns: [1, 2, 3]);
+        final encoder = Encoder.label(dataFrame, featureIds: [1, 2, 3]);
         final encoded = encoder.encode(dataFrame);
 
         encoded.toMatrix();
