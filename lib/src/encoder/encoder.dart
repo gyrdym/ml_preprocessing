@@ -7,29 +7,29 @@ final _seriesEncoderFactory = SeriesEncoderFactoryImpl();
 
 abstract class Encoder {
   factory Encoder.oneHot(DataFrame fittingData, {
-    Iterable<int> columns,
-    Iterable<String> columnNames,
+    Iterable<int> featureIds,
+    Iterable<String> featureNames,
     String headerPrefix,
     String headerPostfix,
   }) => EncoderImpl(
     fittingData,
     EncoderType.oneHot,
     _seriesEncoderFactory,
-    columnNames: columnNames,
-    columns: columns,
+    featureNames: featureNames,
+    featureIds: featureIds,
   );
 
   factory Encoder.label(DataFrame fittingData, {
-    Iterable<int> columns,
-    Iterable<String> columnNames,
+    Iterable<int> featureIds,
+    Iterable<String> featureNames,
     String headerPrefix,
     String headerPostfix,
   }) => EncoderImpl(
     fittingData,
     EncoderType.label,
     _seriesEncoderFactory,
-    columnNames: columnNames,
-    columns: columns,
+    featureNames: featureNames,
+    featureIds: featureIds,
   );
 
   DataFrame encode(DataFrame data);

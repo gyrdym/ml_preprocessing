@@ -10,7 +10,7 @@ Future processDataSetWithCategoricalData() async {
 
   final encoded = Encoder.oneHot(
     dataFrame,
-    columnNames: ['Gender', 'Age', 'City_Category',
+    featureNames: ['Gender', 'Age', 'City_Category',
       'Stay_In_Current_City_Years', 'Marital_Status'],
   ).encode(dataFrame);
 

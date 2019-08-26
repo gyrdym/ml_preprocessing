@@ -12,8 +12,8 @@ PipeableOperatorFn oneHotEncode({
   data,
   EncoderType.oneHot,
   SeriesEncoderFactoryImpl(),
-  columnNames: columnNames,
-  columns: columns,
+  featureNames: columnNames,
+  featureIds: columns,
   encodedHeaderPostfix: headerPostfix,
   encodedHeaderPrefix: headerPrefix,
 );

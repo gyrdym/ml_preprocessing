@@ -11,13 +11,13 @@ class EncoderImpl implements Pipeable, Encoder {
       DataFrame fittingData,
       EncoderType encoderType,
       SeriesEncoderFactory seriesEncoderFactory, {
-        Iterable<int> columns,
-        Iterable<String> columnNames,
+        Iterable<int> featureIds,
+        Iterable<String> featureNames,
         String encodedHeaderPrefix,
         String encodedHeaderPostfix,
       }) :
         _encoderBySeries = createEncoderToSeriesMapping(
-            fittingData, columnNames, columns,
+            fittingData, featureNames, featureIds,
             (series) => seriesEncoderFactory.createByType(
               encoderType,
               series,
