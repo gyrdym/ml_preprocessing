@@ -1,21 +1,24 @@
 name: ml_preprocessing
 description: Implementaion of popular algorithms of data preprocessing for machine learning
-version: 3.4.0+1
+version: 4.0.0
 author: Ilia Gyrdymov <ilgyrd@gmail.com>
 homepage: https://github.com/gyrdym/ml_preprocessing
 
 environment:
-  sdk: '>=2.3.0 <3.0.0'
+  sdk: '>=2.4.0 <3.0.0'
 
 dependencies:
-  csv: ^4.0.0
+  ml_dataframe: ^0.0.3
   ml_linalg: ^10.0.3
+  quiver: ^2.0.2
   tuple: ^1.0.2
   xrange: ^0.0.4
 
 dev_dependencies:
-  benchmark_harness: ">=1.0.0 <2.0.0"
-  test: ^1.2.0
-  mockito: ^3.0.0
+  benchmark_harness: '>=1.0.0 <2.0.0'
   build_runner: ^1.1.2
   build_test: ^0.10.2
+  grinder: ^0.8.3
+  ml_tech: ^0.0.5
+  mockito: ^3.0.0
+  test: ^1.2.0
