@@ -34,13 +34,22 @@ You should decide, how to convert string data (aka *categorical data*) to number
 course, you can come up with your own unique algorithms to do all of these operations, but, actually, there are a 
 bunch of well-known well-performed techniques for doing all the conversions.      
 
-In this library, all the data preprocessing operations are narrowed to just one entity - `DataFrame`.
+The aim of the library - to give data scientists, who are interested in Dart programming language, these preprocessing 
+techniques.
 
-## DataFrame
-[`DataFrame`](https://github.com/gyrdym/ml_preprocessing/blob/master/lib/src/data_frame/data_frame.dart) is a
-factory, that creates instances of different adapters for data. For example, one can create a csv reader, that makes 
-work with csv data easier: it's just needed to point, where a dataset resides and then get features and labels in 
-convenient data science friendly format. Also one can specify, how to treat categorical data.
+## Prerequisites
+
+The library depends on [DataFrame class](https://github.com/gyrdym/ml_dataframe/blob/master/lib/src/data_frame/data_frame.dart) 
+from the [repo](https://github.com/gyrdym/ml_dataframe). It's necessary to use it as a dependency in your project,
+because you need to pack data into [DataFrame](https://github.com/gyrdym/ml_dataframe/blob/master/lib/src/data_frame/data_frame.dart)
+before doing preprocessing. An example with a part of pubspec.yaml:
+
+````
+dependencies:
+  ...
+  ml_dataframe: ^0.0.3
+  ...
+````
 
 ## A simple usage example
 Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/mehdidag/black-friday) 
@@ -50,6 +59,7 @@ categorical features.
 First, import all necessary libraries:
 
 ````dart
+import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:xrange/zrange.dart';
 ````
@@ -57,36 +67,48 @@ import 'package:xrange/zrange.dart';
 Then, we should read the csv and create a data frame:
 
 ````dart
-final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
-  labelName: 'Purchase\r',
-  columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
-  rows: [ZRange.closed(0, 20)],
-  categories: {
-    'Gender': CategoricalDataEncoderType.oneHot,
-    'Age': CategoricalDataEncoderType.oneHot,
-    'City_Category': CategoricalDataEncoderType.oneHot,
-    'Stay_In_Current_City_Years': CategoricalDataEncoderType.oneHot,
-    'Marital_Status': CategoricalDataEncoderType.oneHot,
-  },
-);
+final dataFrame = await fromCsv('example/black_friday/black_friday.csv', 
+  columns: [2, 3, 5, 6, 7, 11]);
 ````
 
-Apparently, it is needed to explain input parameters. 
+After we get a dataframe, we may encode all the needed features. Let's analyze the dataset and decide, what features 
+should be encoded. In our case these are:
 
-- **labelName** - name of a column, that contains dependant variables
-- **columns** - a set of intervals, representing which columns one needs to read
-- **rows** - the same as **columns**, but in this case it's being described, which rows one needs to read
-- **categories** - columns, which contains categorical data, and encoders we want these columns to be 
-processed with. In this particular case we want to encode all the categorical columns with [one-hot encoder](https://en.wikipedia.org/wiki/One-hot)
+````dart
+final featureNames = ['Gender', 'Age', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status'];
+````
+
+Let's fit the encoder. 
+
+Why should we fit it? Categorical data encoder fitting is a process, when all the unique category values are being 
+searched for in order to create an encoded labels list. After the fitting is complete, one may use the fitted encoder for 
+new data of the same source. In order to fit the encoder it's needed to create the entity and pass the fitting data as 
+an argument to the constructor, along with the features to be encoded:
+
+ 
+````dart
+final encoder = Encoder.oneHot(
+  dataFrame,
+  featureNames: featureNames,
+);
+
+````
+
+Let's encode the features:
+
+````dart
+final encoded = encoder.encode(dataFrame);
+````
+
+We used the same dataframe here - it's absolutely normal, since when we created the encoder, we just fit it with the 
+dataframe, and now is the time to apply the dataframe to the fitted encoder.
 
 It's time to take a look at our processed data! Let's read it:
 
 ````dart
-final features = await dataFrame.features;
-final labels = await dataFrame.labels;
+final data = encoded.toMatrix();
 
-print(features);
-print(labels);
+print(data);
 ```` 
 
 In the output we will see just numerical data, that's exactly we wanted to reach.

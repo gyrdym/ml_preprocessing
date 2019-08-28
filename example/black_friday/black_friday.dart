@@ -1,34 +1,35 @@
+import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
-  final dataFrame = DataFrame.fromCsv('example/black_friday/black_friday.csv',
-    labelName: 'Purchase\r',
-    columns: [ZRange.closed(2, 3), ZRange.closed(5, 7), ZRange.closed(11, 11)],
-    rows: [ZRange.closed(0, 20)],
-    categories: {
-      'Gender': CategoricalDataEncoderType.oneHot,
-      'Age': CategoricalDataEncoderType.oneHot,
-      'City_Category': CategoricalDataEncoderType.oneHot,
-      'Stay_In_Current_City_Years': CategoricalDataEncoderType.oneHot,
-      'Marital_Status': CategoricalDataEncoderType.oneHot,
-    },
+  final dataFrame = await fromCsv('example/black_friday/black_friday.csv',
+    columnNames: ['Gender', 'Age', 'City_Category',
+      'Stay_In_Current_City_Years', 'Marital_Status'],
   );
 
-  final features = await dataFrame.features;
-  final genderEncoded = features.submatrix(columns: ZRange.closed(0, 1));
-  final ageEncoded = features.submatrix(columns: ZRange.closed(2, 8));
-  final cityCategoryEncoded = features.submatrix(columns: ZRange.closed(9, 11));
-  final stayInCityEncoded = features.submatrix(columns: ZRange.closed(12, 16));
-  final maritalStatusEncoded = features
+  final encoded = Encoder.oneHot(
+    dataFrame,
+    featureNames: ['Gender', 'Age', 'City_Category',
+      'Stay_In_Current_City_Years', 'Marital_Status'],
+  ).encode(dataFrame);
+
+  final observations = encoded.toMatrix();
+  final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
+  final ageEncoded = observations.submatrix(columns: ZRange.closed(2, 8));
+  final cityCategoryEncoded = observations
+      .submatrix(columns: ZRange.closed(9, 11));
+  final stayInCityEncoded = observations
+      .submatrix(columns: ZRange.closed(12, 16));
+  final maritalStatusEncoded = observations
       .submatrix(columns: ZRange.closed(17, 18));
 
   print('Features:');
 
-  print(features);
+  print(observations);
 
-  print('feature matrix dimensions: ${features.rowsNum} x '
-      '${features.columnsNum};');
+  print('feature matrix dimensions: ${observations.rowsNum} x '
+      '${observations.columnsNum};');
 
   print('==============================');
 
