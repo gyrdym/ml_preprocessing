@@ -20,9 +20,9 @@ void main() {
       ]);
 
       final pipeline = Pipeline(fittingData, [
-        oneHotEncode(columns: [1]),
-        oneHotEncode(columns: [2, 3]),
-        labelsEncode(columnNames: ['first']),
+        encodeAsOneHotLabels(columns: [1]),
+        encodeAsOneHotLabels(columns: [2, 3]),
+        encodeAsIntegerLabels(columnNames: ['first']),
       ]);
 
       final result = pipeline.process(fittingData);
@@ -51,8 +51,8 @@ void main() {
       ]);
 
       final pipeline = Pipeline(fittingData, [
-        oneHotEncode(columns: [1, 2]),
-        labelsEncode(columns: [0, 1, 3]),
+        encodeAsOneHotLabels(columns: [1, 2]),
+        encodeAsIntegerLabels(columns: [0, 1, 3]),
       ]);
 
       final result = pipeline.process(fittingData);
