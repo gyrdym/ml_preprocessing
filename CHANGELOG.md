@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.0
+- `DataFrame` class split up into separate smaller entities
+- `DataFrame` class core moved to separate repository
+- `Pipeline` entity created
+- Categorical data encoders implemented `Pipeable` interface
+
 ## 3.4.0
 - `DataFrame`: `encodedColumnRanges` added
 
