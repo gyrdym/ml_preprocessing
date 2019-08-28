@@ -5,6 +5,7 @@ import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_facto
 
 final _seriesEncoderFactory = SeriesEncoderFactoryImpl();
 
+/// Categorical data encoder factory
 abstract class Encoder {
   factory Encoder.oneHot(DataFrame fittingData, {
     Iterable<int> featureIds,

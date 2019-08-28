@@ -11,11 +11,11 @@ Future main() async {
       columns: [0, 1, 2, 3]);
 
   final pipeline = Pipeline(dataFrame, [
-    oneHotEncode(
+    encodeAsOneHotLabels(
       columnNames: ['position'],
       headerPostfix: '_position',
     ),
-    labelsEncode(
+    encodeAsIntegerLabels(
       columnNames: ['country'],
     ),
   ]);

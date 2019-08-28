@@ -3,7 +3,8 @@ import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory_impl.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
-PipeableOperatorFn labelsEncode({
+/// A factory function to use label categorical data encoder in pipeline
+PipeableOperatorFn encodeAsIntegerLabels({
   Iterable<int> columns,
   Iterable<String> columnNames,
   String headerPrefix,
