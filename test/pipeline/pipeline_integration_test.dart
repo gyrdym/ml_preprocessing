@@ -1,12 +1,12 @@
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/pipeable/one_hot_encode.dart';
+import 'package:ml_preprocessing/src/encoder/one_hot_encode.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Pipeline', () {
-    test('should allow steps, which return dataframes of different series '
+    test('should process steps, which return dataframes of different series '
         'number', () {
       final fittingData = DataFrame([
         <dynamic>['first', 'second',     'third',      'fourth'],
