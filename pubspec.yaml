@@ -1,6 +1,6 @@
 name: ml_preprocessing
 description: Implementaion of popular algorithms of data preprocessing for machine learning
-version: 4.0.0
+version: 4.1.0
 author: Ilia Gyrdymov <ilgyrd@gmail.com>
 homepage: https://github.com/gyrdym/ml_preprocessing
 
@@ -11,7 +11,6 @@ dependencies:
   ml_dataframe: ^0.0.4
   ml_linalg: ^11.0.0
   quiver: ^2.0.2
-  tuple: ^1.0.2
   xrange: ^0.0.4
 
 dev_dependencies:
