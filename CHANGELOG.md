@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0
+- `Normalizer` entity added
+- `normalize` operator added
+
 ## 4.0.0
 - `DataFrame` class split up into separate smaller entities
 - `DataFrame` class core moved to separate repository
