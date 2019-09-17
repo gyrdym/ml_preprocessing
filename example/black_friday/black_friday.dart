@@ -12,7 +12,7 @@ Future processDataSetWithCategoricalData() async {
     dataFrame,
     featureNames: ['Gender', 'Age', 'City_Category',
       'Stay_In_Current_City_Years', 'Marital_Status'],
-  ).encode(dataFrame);
+  ).process(dataFrame);
 
   final observations = encoded.toMatrix();
   final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/label_encode.dart';
-import 'package:ml_preprocessing/src/encoder/one_hot_encode.dart';
+import 'package:ml_preprocessing/src/encoder/encode_as_integer_labels.dart';
+import 'package:ml_preprocessing/src/encoder/encode_as_one_hot_labels.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline.dart';
 
 Future main() async {
@@ -12,11 +12,11 @@ Future main() async {
 
   final pipeline = Pipeline(dataFrame, [
     encodeAsOneHotLabels(
-      columnNames: ['position'],
+      featureNames: ['position'],
       headerPostfix: '_position',
     ),
     encodeAsIntegerLabels(
-      columnNames: ['country'],
+      featureNames: ['country'],
     ),
   ]);
 

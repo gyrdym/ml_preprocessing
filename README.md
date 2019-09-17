@@ -47,11 +47,14 @@ before doing preprocessing. An example with a part of pubspec.yaml:
 ````
 dependencies:
   ...
-  ml_dataframe: ^0.0.3
+  ml_dataframe: ^0.0.4
   ...
 ````
 
-## A simple usage example
+## Usage examples
+
+### Getting started
+
 Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/mehdidag/black-friday) 
 dataset. It's pretty interesting data with huge amount of observations (approx. 538000 rows) and a good number of 
 categorical features.
@@ -61,7 +64,6 @@ First, import all necessary libraries:
 ````dart
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:xrange/zrange.dart';
 ````
 
 Then, we should read the csv and create a data frame:
@@ -71,6 +73,8 @@ final dataFrame = await fromCsv('example/black_friday/black_friday.csv',
   columns: [2, 3, 5, 6, 7, 11]);
 ````
 
+### Categorical data
+
 After we get a dataframe, we may encode all the needed features. Let's analyze the dataset and decide, what features 
 should be encoded. In our case these are:
 
@@ -78,12 +82,16 @@ should be encoded. In our case these are:
 final featureNames = ['Gender', 'Age', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status'];
 ````
 
-Let's fit the encoder. 
+### One-hot encoding
 
-Why should we fit it? Categorical data encoder fitting is a process, when all the unique category values are being 
+Let's fit the one-hot encoder. 
+
+Why should we fit it? Categorical data encoder fitting - a process, when all the unique category values are being 
 searched for in order to create an encoded labels list. After the fitting is complete, one may use the fitted encoder for 
-new data of the same source. In order to fit the encoder it's needed to create the entity and pass the fitting data as 
-an argument to the constructor, along with the features to be encoded:
+the new data of the same source. 
+
+In order to fit the encoder it's needed to create the entity and pass the fitting data as an argument to the 
+constructor, along with the features to be encoded:
 
  
 ````dart
@@ -97,7 +105,7 @@ final encoder = Encoder.oneHot(
 Let's encode the features:
 
 ````dart
-final encoded = encoder.encode(dataFrame);
+final encoded = encoder.process(dataFrame);
 ````
 
 We used the same dataframe here - it's absolutely normal, since when we created the encoder, we just fit it with the 
@@ -112,3 +120,52 @@ print(data);
 ```` 
 
 In the output we will see just numerical data, that's exactly we wanted to reach.
+
+### Label encoding
+
+Another one well-known encoding method. The technique is the same - first, we should fit the encoder and after that we
+may use this "trained" encoder in some applications:
+
+````dart
+final encoder = Encoder.label(
+  dataFrame,
+  featureNames: featureNames,
+);
+
+final encoded = encoder.process(dataFrame);
+````
+
+### Numerical data normalizing
+
+Sometimes we need to have our numerical features normalized, that means we need to treat every dataframe row as a 
+vector and divide this vector element-wise by its norm (Euclidean, Manhattan, etc.). To do so the library exposes
+`Normalizer` entity:
+
+````dart
+final normalizer = Normalizer(); // by default Euclidean norm will be used
+final transformed = normalizer.process(dataFrame);
+```` 
+
+Please, notice, if your data has raw categorical values, the normalization will fail as it requires only numerical 
+values. In this case you should encode data (e.g. using one-hot encoding) before normalization.
+
+### Pipeline
+
+There is a convenient way to organize a bunch of data preprocessing operations - `Pipeline`:
+
+````dart
+final pipeline = Pipeline(dataFrame, [
+  encodeAsOneHotLabels(featureNames: ['Gender', 'Age', 'City_Category']),
+  encodeAsIntegerLabels(featureNames: ['Stay_In_Current_City_Years', 'Marital_Status']),
+  normalize(),
+]);
+````
+
+Once you create (or rather fit) a pipeline, you may use it farther in your application:
+
+````dart
+final processed = pipeline.process(dataFrame);
+````
+
+`encodeAsOneHotLabels`, `encodeAsIntegerLabels` and `normalize` are pipeable operator functions. Pipeable operator 
+function is a factory, that takes fitting data and creates a fitted pipeable entity (e.g., `Normalizer` instance)  

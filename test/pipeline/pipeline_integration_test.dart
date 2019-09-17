@@ -1,6 +1,6 @@
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:ml_preprocessing/src/encoder/one_hot_encode.dart';
+import 'package:ml_preprocessing/src/encoder/encode_as_one_hot_labels.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeline.dart';
 import 'package:test/test.dart';
 
@@ -20,9 +20,9 @@ void main() {
       ]);
 
       final pipeline = Pipeline(fittingData, [
-        encodeAsOneHotLabels(columns: [1]),
-        encodeAsOneHotLabels(columns: [2, 3]),
-        encodeAsIntegerLabels(columnNames: ['first']),
+        encodeAsOneHotLabels(features: [1]),
+        encodeAsOneHotLabels(features: [2, 3]),
+        encodeAsIntegerLabels(featureNames: ['first']),
       ]);
 
       final result = pipeline.process(fittingData);
@@ -51,8 +51,8 @@ void main() {
       ]);
 
       final pipeline = Pipeline(fittingData, [
-        encodeAsOneHotLabels(columns: [1, 2]),
-        encodeAsIntegerLabels(columns: [0, 1, 3]),
+        encodeAsOneHotLabels(features: [1, 2]),
+        encodeAsIntegerLabels(features: [0, 1, 3]),
       ]);
 
       final result = pipeline.process(fittingData);
