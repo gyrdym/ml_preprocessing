@@ -20,7 +20,7 @@ void main() {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.oneHot(dataFrame,
             featureNames: ['second', 'third', 'fourth']);
-        final encoded = encoder.encode(dataFrame);
+        final encoded = encoder.process(dataFrame);
 
         encoded.toMatrix();
 
@@ -39,7 +39,7 @@ void main() {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.oneHot(dataFrame,
             featureIds: [1, 2, 3]);
-        final encoded = encoder.encode(dataFrame);
+        final encoded = encoder.process(dataFrame);
 
         encoded.toMatrix();
 
@@ -60,7 +60,7 @@ void main() {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.label(dataFrame,
             featureNames: ['second', 'third', 'fourth']);
-        final encoded = encoder.encode(dataFrame);
+        final encoded = encoder.process(dataFrame);
 
         encoded.toMatrix();
 
@@ -78,7 +78,7 @@ void main() {
       test('should use indices to access the needed series while encoding', () {
         final dataFrame = DataFrame(data);
         final encoder = Encoder.label(dataFrame, featureIds: [1, 2, 3]);
-        final encoded = encoder.encode(dataFrame);
+        final encoded = encoder.process(dataFrame);
 
         encoded.toMatrix();
 

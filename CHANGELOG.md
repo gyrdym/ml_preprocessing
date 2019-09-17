@@ -1,6 +1,7 @@
 # Changelog
 
-## 4.1.0
+## 5.0.0
+- `Encoder` interface changed: there is no more `encode` method, use `process` from `Pipeable` instead
 - `Normalizer` entity added
 - `normalize` operator added
 
