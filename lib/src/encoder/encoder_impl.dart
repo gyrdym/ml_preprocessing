@@ -4,9 +4,8 @@ import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/encoder/helpers/create_encoder_to_series_mapping.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory.dart';
-import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
-class EncoderImpl implements Pipeable, Encoder {
+class EncoderImpl implements Encoder {
   EncoderImpl(
       DataFrame fittingData,
       EncoderType encoderType,
@@ -35,7 +34,4 @@ class EncoderImpl implements Pipeable, Encoder {
           : [series]);
     return DataFrame.fromSeries(encoded);
   }
-
-  @override
-  DataFrame encode(DataFrame data) => process(data);
 }

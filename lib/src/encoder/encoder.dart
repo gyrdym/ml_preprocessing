@@ -2,11 +2,12 @@ import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_impl.dart';
 import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory_impl.dart';
+import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
 final _seriesEncoderFactory = SeriesEncoderFactoryImpl();
 
 /// Categorical data encoder factory
-abstract class Encoder {
+abstract class Encoder implements Pipeable {
   factory Encoder.oneHot(DataFrame fittingData, {
     Iterable<int> featureIds,
     Iterable<String> featureNames,
@@ -32,6 +33,4 @@ abstract class Encoder {
     featureNames: featureNames,
     featureIds: featureIds,
   );
-
-  DataFrame encode(DataFrame data);
 }

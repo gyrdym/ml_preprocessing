@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.0
+- `Encoder` interface changed: there is no more `encode` method, use `process` from `Pipeable` instead
+- `Normalizer` entity added
+- `normalize` operator added
+
 ## 4.0.0
 - `DataFrame` class split up into separate smaller entities
 - `DataFrame` class core moved to separate repository
