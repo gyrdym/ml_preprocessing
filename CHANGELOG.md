@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.1
+- `xrange` package version locked
+
 ## 5.0.0
 - `Encoder` interface changed: there is no more `encode` method, use `process` from `Pipeable` instead
 - `Normalizer` entity added
