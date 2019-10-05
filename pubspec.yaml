@@ -1,6 +1,6 @@
 name: ml_preprocessing
 description: Popular algorithms of data preprocessing for machine learning
-version: 5.0.2
+version: 5.0.3
 author: Ilia Gyrdymov <ilgyrd@gmail.com>
 homepage: https://github.com/gyrdym/ml_preprocessing
 
