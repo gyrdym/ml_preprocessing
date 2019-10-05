@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.3
+- `README` corrected (ml_dataframe version corrected)
+
 ## 5.0.2
 - `xrange` dependency removed
 - `ml_dataframe` 0.0.11 supported

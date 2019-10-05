@@ -47,7 +47,7 @@ before doing preprocessing. An example with a part of pubspec.yaml:
 ````
 dependencies:
   ...
-  ml_dataframe: ^0.0.4
+  ml_dataframe: ^0.0.11
   ...
 ````
 
