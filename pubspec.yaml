@@ -1,6 +1,6 @@
 name: ml_preprocessing
 description: Popular algorithms of data preprocessing for machine learning
-version: 5.0.1
+version: 5.0.2
 author: Ilia Gyrdymov <ilgyrd@gmail.com>
 homepage: https://github.com/gyrdym/ml_preprocessing
 
@@ -8,10 +8,9 @@ environment:
   sdk: '>=2.4.0 <3.0.0'
 
 dependencies:
-  ml_dataframe: ^0.0.4
-  ml_linalg: ^11.0.0
+  ml_dataframe: 0.0.11
+  ml_linalg: ^12.1.0
   quiver: ^2.0.2
-  xrange: 0.0.6
 
 dev_dependencies:
   benchmark_harness: '>=1.0.0 <2.0.0'
