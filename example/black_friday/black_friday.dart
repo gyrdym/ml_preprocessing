@@ -1,6 +1,5 @@
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
-import 'package:xrange/zrange.dart';
 
 Future processDataSetWithCategoricalData() async {
   final dataFrame = await fromCsv('example/black_friday/black_friday.csv',
@@ -15,14 +14,19 @@ Future processDataSetWithCategoricalData() async {
   ).process(dataFrame);
 
   final observations = encoded.toMatrix();
-  final genderEncoded = observations.submatrix(columns: ZRange.closed(0, 1));
-  final ageEncoded = observations.submatrix(columns: ZRange.closed(2, 8));
+
+  final genderEncoded = observations.sample(columnIndices: [0, 1]);
+
+  final ageEncoded = observations.sample(columnIndices: [2, 3, 4, 5, 6, 7, 8]);
+
   final cityCategoryEncoded = observations
-      .submatrix(columns: ZRange.closed(9, 11));
+      .sample(columnIndices: [9, 10, 11]);
+
   final stayInCityEncoded = observations
-      .submatrix(columns: ZRange.closed(12, 16));
+      .sample(columnIndices: [12, 13, 14, 15, 16]);
+
   final maritalStatusEncoded = observations
-      .submatrix(columns: ZRange.closed(17, 18));
+      .sample(columnIndices: [17, 18]);
 
   print('Features:');
 

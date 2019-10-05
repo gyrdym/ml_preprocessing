@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/encoder/encode_as_integer_labels.dart';
