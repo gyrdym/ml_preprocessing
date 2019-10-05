@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.2
+- `xrange` dependency removed
+- `ml_dataframe` 0.0.11 supported
+
 ## 5.0.1
 - `xrange` package version locked
 
