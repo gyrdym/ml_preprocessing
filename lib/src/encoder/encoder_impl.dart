@@ -12,8 +12,8 @@ class EncoderImpl implements Encoder {
       SeriesEncoderFactory seriesEncoderFactory, {
         Iterable<int> featureIds,
         Iterable<String> featureNames,
-        String encodedHeaderPrefix,
-        String encodedHeaderPostfix,
+        String encodedHeaderPrefix = '',
+        String encodedHeaderPostfix = '',
       }) :
         _encoderBySeries = createEncoderToSeriesMapping(
             fittingData, featureNames, featureIds,
