@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.4
+- Default values for parameters `headerPrefix` and `headerPostfix` added where it applicable
+
 ## 5.0.3
 - `README` corrected (ml_dataframe version corrected)
 
