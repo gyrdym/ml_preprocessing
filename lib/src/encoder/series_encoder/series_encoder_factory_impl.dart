@@ -8,8 +8,8 @@ import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_facto
 class SeriesEncoderFactoryImpl implements SeriesEncoderFactory {
   @override
   SeriesEncoder createByType(EncoderType type, Series fittingData, {
-    String headerPrefix,
-    String headerPostfix,
+    String headerPrefix = '',
+    String headerPostfix = '',
   }) {
     switch (type) {
       case EncoderType.label:

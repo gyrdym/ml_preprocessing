@@ -7,8 +7,8 @@ import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 PipeableOperatorFn encodeAsOneHotLabels({
   Iterable<int> features,
   Iterable<String> featureNames,
-  String headerPrefix,
-  String headerPostfix,
+  String headerPrefix = '',
+  String headerPostfix = '',
 }) => (data) => EncoderImpl(
   data,
   EncoderType.oneHot,
