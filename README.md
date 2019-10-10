@@ -127,11 +127,13 @@ Another one well-known encoding method. The technique is the same - first, we sh
 may use this "trained" encoder in some applications:
 
 ````dart
+// fit encoder
 final encoder = Encoder.label(
   dataFrame,
   featureNames: featureNames,
 );
 
+// apply fitted encoder to data
 final encoded = encoder.process(dataFrame);
 ````
 
@@ -164,7 +166,10 @@ final dataFrame = DataFrame([
   [100, 200, 300],
 ], headerExists: false);
 
+// fit standardizer
 final standardizer = Standardizer(dataFrame);
+
+// apply fitted standardizer to data
 final transformed = standardizer.process(dataFrame);
 ````      
 
