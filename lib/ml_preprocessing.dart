@@ -5,3 +5,5 @@ export 'package:ml_preprocessing/src/encoder/encoder.dart';
 export 'package:ml_preprocessing/src/normalizer/normalize.dart';
 export 'package:ml_preprocessing/src/normalizer/normalizer.dart';
 export 'package:ml_preprocessing/src/pipeline/pipeline.dart';
+export 'package:ml_preprocessing/src/standardizer/standardize.dart';
+export 'package:ml_preprocessing/src/standardizer/standardizer.dart';
