@@ -8,7 +8,15 @@ class Standardizer implements Pipeable {
   }) :
       _dtype = dtype,
       _mean = fittingData.toMatrix(dtype).mean(),
-      _deviation = fittingData.toMatrix(dtype).deviation() {
+      _deviation = Vector.fromList(
+        // TODO: Consider SIMD-aware mapping
+        fittingData
+            .toMatrix(dtype)
+            .deviation()
+            .map((el) => el == 0 ? 1 : el)
+            .toList(),
+        dtype: dtype,
+      ) {
     if (!fittingData.toMatrix(dtype).hasData) {
       throw Exception('No data provided');
     }
@@ -21,6 +29,13 @@ class Standardizer implements Pipeable {
   @override
   DataFrame process(DataFrame input) {
     final inputAsMatrix = input.toMatrix(_dtype);
+
+    if (inputAsMatrix.columnsNum != _deviation.length) {
+      throw Exception('Passed dataframe is differ than the one used during '
+          'creation of the Standardizer: expected columns number - '
+          '${_deviation.length}, given - ${inputAsMatrix.columnsNum}.');
+    }
+
     final processedMatrix = inputAsMatrix
         .mapRows((row) => (row - _mean) / _deviation);
 
