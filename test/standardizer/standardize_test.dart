@@ -8,7 +8,7 @@ void main() {
   group('standardize', () {
     final dtype = DType.float32;
 
-    test('should return a Standardizer factory method', () {
+    test('should return a Standardizer factory function', () {
       final fittingData = DataFrame(<Iterable<num>>[
         [1, 2, 3],
       ], headerExists: false);

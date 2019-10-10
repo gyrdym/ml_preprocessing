@@ -2,6 +2,12 @@ import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_linalg/linalg.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
+/// A class that performs data standardization.
+///
+/// Data standardization is a process, targeted to make the data to look like
+/// normally distributed data (with zero mean and unit variance).
+///
+/// Standardization applies column-wise.
 class Standardizer implements Pipeable {
   Standardizer(DataFrame fittingData, {
     DType dtype = DType.float32,
@@ -26,12 +32,14 @@ class Standardizer implements Pipeable {
   final Vector _mean;
   final Vector _deviation;
 
+  /// Takes as an argument [input] with columns of various distribution types
+  /// and returns a [DataFrame], columns of which are normally distributed
   @override
   DataFrame process(DataFrame input) {
     final inputAsMatrix = input.toMatrix(_dtype);
 
     if (inputAsMatrix.columnsNum != _deviation.length) {
-      throw Exception('Passed dataframe is differ than the one used during '
+      throw Exception('Passed dataframe differs from the one used during '
           'creation of the Standardizer: expected columns number - '
           '${_deviation.length}, given - ${inputAsMatrix.columnsNum}.');
     }
