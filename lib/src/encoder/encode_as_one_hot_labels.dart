@@ -9,7 +9,7 @@ PipeableOperatorFn encodeAsOneHotLabels({
   Iterable<String> featureNames,
   String headerPrefix = '',
   String headerPostfix = '',
-}) => (data) => EncoderImpl(
+}) => (data, {dtype}) => EncoderImpl(
   data,
   EncoderType.oneHot,
   SeriesEncoderFactoryImpl(),

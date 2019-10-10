@@ -127,11 +127,13 @@ Another one well-known encoding method. The technique is the same - first, we sh
 may use this "trained" encoder in some applications:
 
 ````dart
+// fit encoder
 final encoder = Encoder.label(
   dataFrame,
   featureNames: featureNames,
 );
 
+// apply fitted encoder to data
 final encoded = encoder.process(dataFrame);
 ````
 
@@ -149,6 +151,28 @@ final transformed = normalizer.process(dataFrame);
 Please, notice, if your data has raw categorical values, the normalization will fail as it requires only numerical 
 values. In this case you should encode data (e.g. using one-hot encoding) before normalization.
 
+### Data standardization
+
+A lot of machine learning algorithms require normally distributed data as their input. Normally distributed data 
+means that every dedicated to a feature column in the data has zero mean and unit variance. One may reach this
+requirement using `Standardizer` class. During creation of the entity all the columns mean values and deviation values
+are being extracted from the passed data and stored as fields of the class, in order to apply them to standardize the
+other (or the same that was used for creation of the Standardizer) data:
+
+````dart
+final dataFrame = DataFrame([
+  [  1,   2,   3],
+  [ 10,  20,  30],
+  [100, 200, 300],
+], headerExists: false);
+
+// fit standardizer
+final standardizer = Standardizer(dataFrame);
+
+// apply fitted standardizer to data
+final transformed = standardizer.process(dataFrame);
+````      
+
 ### Pipeline
 
 There is a convenient way to organize a bunch of data preprocessing operations - `Pipeline`:
@@ -158,6 +182,7 @@ final pipeline = Pipeline(dataFrame, [
   encodeAsOneHotLabels(featureNames: ['Gender', 'Age', 'City_Category']),
   encodeAsIntegerLabels(featureNames: ['Stay_In_Current_City_Years', 'Marital_Status']),
   normalize(),
+  standardize(),
 ]);
 ````
 
@@ -167,5 +192,6 @@ Once you create (or rather fit) a pipeline, you may use it farther in your appli
 final processed = pipeline.process(dataFrame);
 ````
 
-`encodeAsOneHotLabels`, `encodeAsIntegerLabels` and `normalize` are pipeable operator functions. Pipeable operator 
-function is a factory, that takes fitting data and creates a fitted pipeable entity (e.g., `Normalizer` instance)  
+`encodeAsOneHotLabels`, `encodeAsIntegerLabels`, `normalize` and `standardize` are pipeable operator functions. 
+Pipeable operator function is a factory, that takes fitting data and creates a fitted pipeable entity (e.g., 
+`Normalizer` instance)  

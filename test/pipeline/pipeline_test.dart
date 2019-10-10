@@ -35,8 +35,8 @@ void main() {
 
     test('should create a pipeline with predefined steps', () {
       final pipeline = Pipeline(fittingData, [
-        (data) => Plus10Processor(),
-        (data) => MultipleBy2Processor(),
+        (data, {dtype}) => Plus10Processor(),
+        (data, {dtype}) => MultipleBy2Processor(),
       ]);
 
       final result = pipeline.process(targetData);
