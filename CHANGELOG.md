@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.0
+- `Standardizer` entity added
+- `dtype` parameter added as an argument for `Pipeline.process` method
+
 ## 5.0.4
 - Default values for parameters `headerPrefix` and `headerPostfix` added where it applicable
 
