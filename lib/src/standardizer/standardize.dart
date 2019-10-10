@@ -4,5 +4,5 @@ import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 import 'package:ml_preprocessing/src/standardizer/standardizer.dart';
 
 PipeableOperatorFn standardize() =>
-        (DataFrame fittingData, [DType dtype = DType.float32]) =>
+        (DataFrame fittingData, {dtype = DType.float32}) =>
             Standardizer(fittingData, dtype: dtype);

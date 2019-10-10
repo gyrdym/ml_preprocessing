@@ -1,4 +1,5 @@
 import 'package:ml_dataframe/ml_dataframe.dart';
+import 'package:ml_linalg/dtype.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
 /// A class, that is used to organize data preprocessing stages in pipeline
@@ -10,8 +11,14 @@ import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 /// operations to prepare themselves to new portions of data (it's what we
 /// called `fitting`).
 class Pipeline {
-  Pipeline(DataFrame fittingData, Iterable<PipeableOperatorFn> operators) :
-    _steps = operators.map((operator) => operator(fittingData));
+  Pipeline(
+      DataFrame fittingData,
+      Iterable<PipeableOperatorFn> operators,
+      {
+        DType dType = DType.float32,
+      }
+  ) :
+        _steps = operators.map((operator) => operator(fittingData));
 
   final Iterable<Pipeable> _steps;
 
