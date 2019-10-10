@@ -61,6 +61,49 @@ void main() {
       ]));
     });
 
+    test('should extract deviation and mean values from fitting data and apply '
+        'them to the previously unseen data twice or more', () {
+      final fittingData = DataFrame(<Iterable<num>>[
+        [10, 21, 90, 20],
+        [20, 66, 11, 30],
+        [30, 55,  0, 70],
+        [40, 33, 22, 20],
+      ], headerExists: false);
+
+      final testData1 = DataFrame(<Iterable<num>>[
+        [80,  20, 11, -100],
+        [90, -40, 27,    0],
+        [10,  44, 96,  120],
+        [50, -99, 73,   10],
+        [88, -20, 36,   66],
+      ], headerExists: false);
+
+      final testData2 = DataFrame(<Iterable<num>>[
+        [1,  200, 33, 1000],
+        [2, -440, 29,    0],
+        [3,  414,  9,    0],
+      ], headerExists: false);
+
+      final standardizer = Standardizer(fittingData, dtype: dtype);
+
+      final processed1 = standardizer.process(testData1);
+      final processed2 = standardizer.process(testData2);
+
+      expect(processed1.toMatrix(dtype), iterable2dAlmostEqualTo([
+        [ 4.91934955, -1.34095748, -0.56298031, -6.54846188],
+        [ 5.81377674, -4.72863954, -0.106895,   -1.69774938],
+        [-1.34164079,  0.01411534,  1.85997292,  4.12310563],
+        [ 2.23606798, -8.05986023,  1.20435028, -1.21267813],
+        [ 5.6348913,  -3.59941219,  0.14965299,  1.50372088],
+      ]));
+
+      expect(processed2.toMatrix(dtype), iterable2dAlmostEqualTo([
+        [ -2.14662526,  8.82208869,    0.064137,    46.80937563],
+        [ -2.05718254, -27.31318658,  -0.04988433,  -1.69774938],
+        [ -1.96773982,  20.90482136,  -0.61999097,  -1.69774938],
+      ]));
+    });
+
     test('should process a dataframe with only one column', () {
       final fittingData = DataFrame(<Iterable<num>>[
         [10],
