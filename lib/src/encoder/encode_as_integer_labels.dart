@@ -9,7 +9,7 @@ PipeableOperatorFn encodeAsIntegerLabels({
   Iterable<String> featureNames,
   String headerPrefix = '',
   String headerPostfix = '',
-}) => (data) => EncoderImpl(
+}) => (data, {dtype}) => EncoderImpl(
   data,
   EncoderType.label,
   SeriesEncoderFactoryImpl(),
