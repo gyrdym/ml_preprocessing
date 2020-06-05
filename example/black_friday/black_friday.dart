@@ -14,17 +14,12 @@ Future processDataSetWithCategoricalData() async {
   ).process(dataFrame);
 
   final observations = encoded.toMatrix();
-
   final genderEncoded = observations.sample(columnIndices: [0, 1]);
-
   final ageEncoded = observations.sample(columnIndices: [2, 3, 4, 5, 6, 7, 8]);
-
   final cityCategoryEncoded = observations
       .sample(columnIndices: [9, 10, 11]);
-
   final stayInCityEncoded = observations
       .sample(columnIndices: [12, 13, 14, 15, 16]);
-
   final maritalStatusEncoded = observations
       .sample(columnIndices: [17, 18]);
 
