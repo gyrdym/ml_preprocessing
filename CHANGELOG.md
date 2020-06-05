@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.1
+- `ml_dataframe` package updated
+
 ## 5.1.0
 - `Standardizer` entity added
 - `dtype` parameter added as an argument for `Pipeline.process` method
