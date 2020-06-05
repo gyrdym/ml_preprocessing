@@ -1,7 +1,7 @@
 # Changelog
 
 ## 5.1.1
-- `ml_dataframe` package updated
+- `ml_dataframe` dependency updated
 
 ## 5.1.0
 - `Standardizer` entity added
