@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.0
+- `minMaxScaler` added
+
 ## 5.1.1
 - `ml_dataframe` dependency updated
 
