@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.2
+- `ml_dataframe` 0.2.0 supported
+
 ## 5.1.1
 - `ml_dataframe` dependency updated
 
