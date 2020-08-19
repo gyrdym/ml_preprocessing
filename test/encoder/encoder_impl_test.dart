@@ -1,4 +1,5 @@
 import 'package:ml_dataframe/ml_dataframe.dart';
+import 'package:ml_preprocessing/ml_preprocessing.dart';
 import 'package:ml_preprocessing/src/encoder/encoder.dart';
 import 'package:test/test.dart';
 
@@ -13,6 +14,13 @@ void main() {
       [  44,       'M',   'category_val_1',    10   ],
       [  43,       'M',   'category_val_1',    30   ],
       [  55,       'F',   'category_val_3',    10   ],
+    ];
+
+    final unseenData = [
+      ['first', 'second',     'third',      'fourth'],
+      [  1,        'F',   'category_val_5',    10   ],
+      [  10,       'F',   'category_val_2',    20   ],
+      [  11,       'M',   'category_val_1',    10   ],
     ];
 
     group('Encoder.oneHot', () {
@@ -52,6 +60,22 @@ void main() {
           [  43,  0, 1,  1, 0, 0,  0, 0, 1,  ],
           [  55,  1, 0,  0, 0, 1,  1, 0, 0,  ],
         ]));
+      });
+
+      test('should throw error if unknown value handling type is error', () {
+        final trainingDataFrame = DataFrame(data);
+        final unseenDataDataframe = DataFrame(unseenData);
+        final encoder = Encoder.oneHot(
+          trainingDataFrame,
+          featureNames: ['second', 'third', 'fourth'],
+          unknownValueHandlingType: UnknownValueHandlingType.error,
+        );
+        final actual = () => encoder
+            .process(unseenDataDataframe)
+            .toMatrix();
+        final expected = throwsException;
+
+        expect(actual, expected);
       });
     });
 
