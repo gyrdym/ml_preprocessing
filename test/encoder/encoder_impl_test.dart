@@ -77,6 +77,26 @@ void main() {
 
         expect(actual, expected);
       });
+
+      test('should ignore unknown value if unknown value handling type is ignpre', () {
+        final trainingDataFrame = DataFrame(data);
+        final unseenDataDataframe = DataFrame(unseenData);
+        final encoder = Encoder.oneHot(
+          trainingDataFrame,
+          featureNames: ['second', 'third', 'fourth'],
+          unknownValueHandlingType: UnknownValueHandlingType.ignore,
+        );
+        final actual = encoder
+            .process(unseenDataDataframe)
+            .toMatrix();
+        final expected = [
+          [  1,   1, 0,  0, 0, 0,  1, 0, 0,  ],
+          [  10,  1, 0,  0, 1, 0,  0, 1, 0,  ],
+          [  11,  0, 1,  1, 0, 0,  1, 0, 0,  ],
+        ];
+
+        expect(actual, expected);
+      });
     });
 
     group('Encoder.label', () {
