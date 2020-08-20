@@ -4,6 +4,7 @@ import 'package:ml_preprocessing/src/encoder/encoder_type.dart';
 import 'package:ml_preprocessing/src/encoder/helpers/create_encoder_to_series_mapping.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder.dart';
 import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_factory.dart';
+import 'package:ml_preprocessing/src/encoder/unknown_value_handling_type.dart';
 
 class EncoderImpl implements Encoder {
   EncoderImpl(
@@ -14,6 +15,8 @@ class EncoderImpl implements Encoder {
         Iterable<String> featureNames,
         String encodedHeaderPrefix = '',
         String encodedHeaderPostfix = '',
+        UnknownValueHandlingType unknownValueHandlingType =
+            defaultUnknownValueHandlingType,
       }) :
         _encoderBySeries = createEncoderToSeriesMapping(
             fittingData, featureNames, featureIds,
@@ -22,6 +25,7 @@ class EncoderImpl implements Encoder {
               series,
               headerPostfix: encodedHeaderPostfix,
               headerPrefix: encodedHeaderPrefix,
+              unknownValueHandlingType: unknownValueHandlingType,
             ));
 
   final Map<String, SeriesEncoder> _encoderBySeries;
