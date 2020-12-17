@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.1
+- `ml_dataframe`: version 0.3.0 supported
+- `CI`: github actions set up
+
 ## 5.2.0
 - `UnknownValueHandlingType` enum added to the lib's public API
 

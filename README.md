@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/gyrdym/ml_algo.svg?branch=master)](https://travis-ci.com/gyrdym/ml_preprocessing)
+[![Build Status](https://github.com/gyrdym/ml_preprocessing/workflows/CI%20pipeline/badge.svg)](https://github.com/gyrdym/ml_preprocessing/actions?query=branch%3Amaster+)
 [![Coverage Status](https://coveralls.io/repos/github/gyrdym/ml_preprocessing/badge.svg)](https://coveralls.io/github/gyrdym/ml_preprocessing)
 [![pub package](https://img.shields.io/pub/v/ml_preprocessing.svg)](https://pub.dartlang.org/packages/ml_preprocessing)
 [![Gitter Chat](https://badges.gitter.im/gyrdym/gyrdym.svg)](https://gitter.im/gyrdym/)
