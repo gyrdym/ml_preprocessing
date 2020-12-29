@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.2
+- `ml_dataframe`: version 0.4.0 supported
+
 ## 5.2.1
 - `ml_dataframe`: version 0.3.0 supported
 - `CI`: github actions set up
