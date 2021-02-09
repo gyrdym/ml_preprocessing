@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.0.0-nullsafety.0
+- Null-safety added
+
 ## 5.2.2
 - `ml_dataframe`: version 0.4.0 supported
 

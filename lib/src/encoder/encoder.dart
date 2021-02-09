@@ -5,37 +5,31 @@ import 'package:ml_preprocessing/src/encoder/series_encoder/series_encoder_facto
 import 'package:ml_preprocessing/src/encoder/unknown_value_handling_type.dart';
 import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
-final _seriesEncoderFactory = const SeriesEncoderFactoryImpl();
-
 /// Categorical data encoder factory
 abstract class Encoder implements Pipeable {
   factory Encoder.oneHot(DataFrame fittingData, {
-    Iterable<int> featureIds,
-    Iterable<String> featureNames,
-    String headerPrefix,
-    String headerPostfix,
+    Iterable<int>? featureIds,
+    Iterable<String>? featureNames,
     UnknownValueHandlingType unknownValueHandlingType =
         defaultUnknownValueHandlingType,
   }) => EncoderImpl(
     fittingData,
     EncoderType.oneHot,
-    _seriesEncoderFactory,
+    const SeriesEncoderFactoryImpl(),
     featureNames: featureNames,
     featureIds: featureIds,
     unknownValueHandlingType: unknownValueHandlingType,
   );
 
   factory Encoder.label(DataFrame fittingData, {
-    Iterable<int> featureIds,
-    Iterable<String> featureNames,
-    String headerPrefix,
-    String headerPostfix,
+    Iterable<int>? featureIds,
+    Iterable<String>? featureNames,
     UnknownValueHandlingType unknownValueHandlingType =
         defaultUnknownValueHandlingType,
   }) => EncoderImpl(
     fittingData,
     EncoderType.label,
-    _seriesEncoderFactory,
+    const SeriesEncoderFactoryImpl(),
     featureNames: featureNames,
     featureIds: featureIds,
     unknownValueHandlingType: unknownValueHandlingType,
