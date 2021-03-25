@@ -13,7 +13,8 @@ class SeriesEncoderFactoryImpl implements SeriesEncoderFactory {
   SeriesEncoder createByType(EncoderType type, Series fittingData, {
     String headerPrefix = '',
     String headerPostfix = '',
-    UnknownValueHandlingType unknownValueHandlingType,
+    UnknownValueHandlingType unknownValueHandlingType =
+        defaultUnknownValueHandlingType,
   }) {
     switch (type) {
       case EncoderType.label:

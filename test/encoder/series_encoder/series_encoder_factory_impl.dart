@@ -29,13 +29,5 @@ void main() {
 
       expect(actual, expected);
     });
-
-    test('should throw exception if null is unknown encoder type is '
-        'provided', () {
-      final actual = () => factory.createByType(null, series);
-      final expected = throwsUnsupportedError;
-
-      expect(actual, expected);
-    });
   });
 }

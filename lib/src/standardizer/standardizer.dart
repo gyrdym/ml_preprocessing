@@ -46,7 +46,6 @@ class Standardizer implements Pipeable {
 
     final processedMatrix = inputAsMatrix
         .mapRows((row) => (row - _mean) / _deviation);
-
     final discreteColumnNames = input
         .series
         .where((series) => series.isDiscrete)

@@ -5,4 +5,4 @@ abstract class Pipeable {
   DataFrame process(DataFrame input);
 }
 
-typedef PipeableOperatorFn = Pipeable Function(DataFrame data, {DType dtype});
+typedef PipeableOperatorFn = Pipeable Function(DataFrame data, {DType? dtype});
