@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.0.1
+- `pubspec.yaml`: `ml_dataframe` dependency updated
+
 ## 6.0.0
 - Null-safety added (stable release)
 
