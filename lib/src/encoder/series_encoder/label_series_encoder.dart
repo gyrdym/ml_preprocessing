@@ -10,7 +10,7 @@ class LabelSeriesEncoder implements SeriesEncoder {
     String headerPostfix = '',
   }) :
         _unknownHandlingType = unknownValueHandlingType,
-        _columnHeaderTpl = ((String label) => '${headerPrefix}${label}${headerPostfix}'),
+        _columnHeaderTpl = ((String label) => '$headerPrefix$label$headerPostfix'),
         _labels = Set<dynamic>.from(fittingData.data).toList(growable: false);
 
   final UnknownValueHandlingType _unknownHandlingType;
