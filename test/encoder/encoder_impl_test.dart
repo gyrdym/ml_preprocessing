@@ -62,7 +62,7 @@ void main() {
         ]));
       });
 
-      test('should throw error if unknown value handling type is error', () {
+      test('should throw error if unknown value handling type is "error"', () {
         final trainingDataFrame = DataFrame(data);
         final unseenDataDataframe = DataFrame(unseenData);
         final encoder = Encoder.oneHot(

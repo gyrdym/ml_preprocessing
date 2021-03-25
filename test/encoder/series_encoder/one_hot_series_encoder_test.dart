@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('OneHotSeriesEncoder', () {
-    test('should encode given series, creating a collection of new series', () {
+    test('should encode given series creating a collection of new series', () {
       final series = Series('just_header',
           <dynamic>['q', '2ee', '0030', '123']);
       final encoder = OneHotSeriesEncoder(series);

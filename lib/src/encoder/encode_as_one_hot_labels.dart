@@ -6,8 +6,8 @@ import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
 /// A factory function to use `one hot` categorical data encoder in pipeline
 PipeableOperatorFn encodeAsOneHotLabels({
-  Iterable<int> features,
-  Iterable<String> featureNames,
+  Iterable<int>? features,
+  Iterable<String>? featureNames,
   String headerPrefix = '',
   String headerPostfix = '',
   UnknownValueHandlingType unknownValueHandlingType =

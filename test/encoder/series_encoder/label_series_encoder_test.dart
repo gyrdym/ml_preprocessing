@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('LabelSeriesEncoder', () {
-    test('should encode given series, creating a collection of new series', () {
+    test('should encode given series creating a collection of new series', () {
       final series = Series('just_header',
           <dynamic>['q', '2ee', '0030', '123']);
       final encoder = LabelSeriesEncoder(series);
@@ -93,8 +93,8 @@ void main() {
       expect(encoded[0].isDiscrete, isTrue);
     });
 
-    test('should throw error if unknown value handling startegy is to throw '
-        'error and unknown value is encountered', () {
+    test('should throw error if unknown value handling startegy type is "throw '
+        'error" and unknown value is encountered', () {
       final fittingData = Series('just_header',
           <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = LabelSeriesEncoder(fittingData,
@@ -111,8 +111,8 @@ void main() {
       expect(actual, throwsException);
     });
 
-    test('should encode unknown value as last index of all labels if unknown '
-        'value handling startegy is to ignore and unknown value is '
+    test('should encode unknown value as the last index of all labels if '
+        'unknown value handling startegy is "ignore" and unknown value is '
         'encountered', () {
       final fittingData = Series('just_header',
           <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);

@@ -11,8 +11,8 @@ class EncoderImpl implements Encoder {
       DataFrame fittingData,
       EncoderType encoderType,
       SeriesEncoderFactory seriesEncoderFactory, {
-        Iterable<int> featureIds,
-        Iterable<String> featureNames,
+        Iterable<int>? featureIds,
+        Iterable<String>? featureNames,
         String encodedHeaderPrefix = '',
         String encodedHeaderPostfix = '',
         UnknownValueHandlingType unknownValueHandlingType =
@@ -32,10 +32,12 @@ class EncoderImpl implements Encoder {
 
   @override
   DataFrame process(DataFrame dataFrame) {
-    final encoded = dataFrame.series.expand((series) =>
-      _encoderBySeries.containsKey(series.name)
-          ? _encoderBySeries[series.name].encodeSeries(series)
-          : [series]);
+    final encoded = dataFrame
+        .series
+        .expand((series) => _encoderBySeries.containsKey(series.name)
+        ? _encoderBySeries[series.name]!.encodeSeries(series)
+        : [series]);
+
     return DataFrame.fromSeries(encoded);
   }
 }
