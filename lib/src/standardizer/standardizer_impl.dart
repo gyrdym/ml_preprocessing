@@ -5,9 +5,9 @@ import 'package:ml_preprocessing/src/standardizer/standardizer.dart';
 
 class StandardizerImpl implements Standardizer {
   StandardizerImpl(
-      DataFrame fittingData, {
-        DType dtype = DType.float32,
-      })  : _dtype = dtype,
+    DataFrame fittingData, {
+    DType dtype = DType.float32,
+  })  : _dtype = dtype,
         _mean = fittingData.toMatrix(dtype).mean(),
         _deviation = Vector.fromList(
           // TODO: Consider SIMD-aware mapping
@@ -40,7 +40,7 @@ class StandardizerImpl implements Standardizer {
     }
 
     final processedMatrix =
-    inputAsMatrix.mapRows((row) => (row - _mean) / _deviation);
+        inputAsMatrix.mapRows((row) => (row - _mean) / _deviation);
     final discreteColumnNames = input.series
         .where((series) => series.isDiscrete)
         .map((series) => series.name);
