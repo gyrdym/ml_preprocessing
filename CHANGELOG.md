@@ -1,5 +1,12 @@
 # Changelog
 
+## 7.0.0
+- `ml_datframe` 1.0.0 supported
+- `featureNames` parameter renamed to `columnNames`
+- `featureIds` parameter renamed to `columnIndices`
+- `encodeAsIntegerLabels` renamed to `toIntegerLabels`
+- `encodeAsOneHotLabels` renamed to `toOneHotLabels`
+
 ## 6.0.1
 - `pubspec.yaml`: `ml_dataframe` dependency updated
 

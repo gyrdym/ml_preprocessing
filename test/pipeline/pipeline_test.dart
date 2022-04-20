@@ -6,21 +6,21 @@ import 'package:test/test.dart';
 class Plus10Processor implements Pipeable {
   @override
   DataFrame process(DataFrame input) => DataFrame.fromSeries(
-    input.series.map((series) => Series(
-        series.name,
-        series.data.map<dynamic>((dynamic value) => value + 10),
-    )),
-  );
+        input.series.map((series) => Series(
+              series.name,
+              series.data.map<dynamic>((dynamic value) => value + 10),
+            )),
+      );
 }
 
 class MultipleBy2Processor implements Pipeable {
   @override
   DataFrame process(DataFrame input) => DataFrame.fromSeries(
-    input.series.map((series) => Series(
-        series.name,
-        series.data.map<dynamic>((dynamic value) => value * 2),
-    )),
-  );
+        input.series.map((series) => Series(
+              series.name,
+              series.data.map<dynamic>((dynamic value) => value * 2),
+            )),
+      );
 }
 
 void main() {
@@ -41,11 +41,13 @@ void main() {
 
       final result = pipeline.process(targetData);
 
-      expect(result.toMatrix(), equals([
-        [60, 40, 80, 80],
-        [80, 200, 60, 140],
-        [100, 160, 120, 40],
-      ]));
+      expect(
+          result.toMatrix(),
+          equals([
+            [60, 40, 80, 80],
+            [80, 200, 60, 140],
+            [100, 160, 120, 40],
+          ]));
     });
   });
 }

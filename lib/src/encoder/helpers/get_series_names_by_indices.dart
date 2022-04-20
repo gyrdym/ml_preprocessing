@@ -1,8 +1,7 @@
 import 'package:quiver/iterables.dart';
 
 Iterable<String> getSeriesNamesByIndices(
-    Iterable<String> seriesNames,
-    Iterable<int> indices) {
+    Iterable<String> seriesNames, Iterable<int> indices) {
   final uniqueIndices = Set<int>.from(indices);
 
   return enumerate(seriesNames)

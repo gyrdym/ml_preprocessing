@@ -7,31 +7,35 @@ import 'package:ml_preprocessing/src/pipeline/pipeable.dart';
 
 /// Categorical data encoder factory
 abstract class Encoder implements Pipeable {
-  factory Encoder.oneHot(DataFrame fittingData, {
-    Iterable<int>? featureIds,
-    Iterable<String>? featureNames,
+  factory Encoder.oneHot(
+    DataFrame fittingData, {
+    Iterable<int>? columnIndices,
+    Iterable<String>? columnNames,
     UnknownValueHandlingType unknownValueHandlingType =
         defaultUnknownValueHandlingType,
-  }) => EncoderImpl(
-    fittingData,
-    EncoderType.oneHot,
-    const SeriesEncoderFactoryImpl(),
-    featureNames: featureNames,
-    featureIds: featureIds,
-    unknownValueHandlingType: unknownValueHandlingType,
-  );
+  }) =>
+      EncoderImpl(
+        fittingData,
+        EncoderType.oneHot,
+        const SeriesEncoderFactoryImpl(),
+        columnNames: columnNames,
+        columnIndices: columnIndices,
+        unknownValueHandlingType: unknownValueHandlingType,
+      );
 
-  factory Encoder.label(DataFrame fittingData, {
-    Iterable<int>? featureIds,
-    Iterable<String>? featureNames,
+  factory Encoder.label(
+    DataFrame fittingData, {
+    Iterable<int>? columnIndices,
+    Iterable<String>? columnNames,
     UnknownValueHandlingType unknownValueHandlingType =
         defaultUnknownValueHandlingType,
-  }) => EncoderImpl(
-    fittingData,
-    EncoderType.label,
-    const SeriesEncoderFactoryImpl(),
-    featureNames: featureNames,
-    featureIds: featureIds,
-    unknownValueHandlingType: unknownValueHandlingType,
-  );
+  }) =>
+      EncoderImpl(
+        fittingData,
+        EncoderType.label,
+        const SeriesEncoderFactoryImpl(),
+        columnNames: columnNames,
+        columnIndices: columnIndices,
+        unknownValueHandlingType: unknownValueHandlingType,
+      );
 }

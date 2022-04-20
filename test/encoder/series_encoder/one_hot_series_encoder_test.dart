@@ -6,8 +6,8 @@ import 'package:test/test.dart';
 void main() {
   group('OneHotSeriesEncoder', () {
     test('should encode given series creating a collection of new series', () {
-      final series = Series('just_header',
-          <dynamic>['q', '2ee', '0030', '123']);
+      final series =
+          Series('just_header', <dynamic>['q', '2ee', '0030', '123']);
       final encoder = OneHotSeriesEncoder(series);
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -24,10 +24,11 @@ void main() {
       expect(encoded[3].isDiscrete, isTrue);
     });
 
-    test('should use categorical value as a encoded series headers if neither '
+    test(
+        'should use categorical value as a encoded series headers if neither '
         'header prefix nor header postfix are specified', () {
-      final series = Series('just_header',
-          <dynamic>['q', '2ee', '0030', '123']);
+      final series =
+          Series('just_header', <dynamic>['q', '2ee', '0030', '123']);
       final encoder = OneHotSeriesEncoder(series);
       final encoded = encoder.encodeSeries(series).toList();
 
@@ -101,14 +102,13 @@ void main() {
       expect(encoded[3].isDiscrete, isTrue);
     });
 
-    test('should consider both given series name postfix and series name '
+    test(
+        'should consider both given series name postfix and series name '
         'prefix', () {
       final series = Series('just_header',
           <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = OneHotSeriesEncoder(series,
-          headerPrefix: 'pref_',
-          headerPostfix: '_postf'
-      );
+          headerPrefix: 'pref_', headerPostfix: '_postf');
       final encoded = encoder.encodeSeries(series).toList();
 
       expect(encoded, hasLength(4));
@@ -128,9 +128,7 @@ void main() {
       final fittingData = Series('just_header',
           <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = OneHotSeriesEncoder(fittingData,
-          headerPrefix: 'pref_',
-          headerPostfix: '_postf'
-      );
+          headerPrefix: 'pref_', headerPostfix: '_postf');
 
       final newData = Series('just_header',
           <dynamic>['q', 'q', 'q', 'q', '2ee', '2ee', '0030', 'q', '0030']);
@@ -149,34 +147,51 @@ void main() {
       expect(encoded[3].isDiscrete, isTrue);
     });
 
-    test('should throw error if unknown value handling startegy is to throw '
+    test(
+        'should throw error if unknown value handling startegy is to throw '
         'error and unknown value is encountered', () {
       final fittingData = Series('just_header',
           <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = OneHotSeriesEncoder(fittingData,
           unknownValueHandlingType: UnknownValueHandlingType.error);
       final unknownValue = 'unknown_value';
-      final newData = Series('awesome_series',
-          <dynamic>['q', 'q', 'q', unknownValue, '2ee', '2ee', '0030', 'q',
-            '0030']);
+      final newData = Series('awesome_series', <dynamic>[
+        'q',
+        'q',
+        'q',
+        unknownValue,
+        '2ee',
+        '2ee',
+        '0030',
+        'q',
+        '0030'
+      ]);
 
-      final actual = () => encoder
-          .encodeSeries(newData)
-          .map((series) => series.data.toList());
+      final actual = () =>
+          encoder.encodeSeries(newData).map((series) => series.data.toList());
 
       expect(actual, throwsException);
     });
 
-    test('should encode unknown value as 0 if unknown value handling startegy '
+    test(
+        'should encode unknown value as 0 if unknown value handling startegy '
         'is to ignore and unknown value is encountered', () {
       final fittingData = Series('just_header',
           <dynamic>['q', '2ee', 'q', 'q', '0030', '123', '0030']);
       final encoder = OneHotSeriesEncoder(fittingData,
           unknownValueHandlingType: UnknownValueHandlingType.ignore);
       final unknownValue = 'unknown_value';
-      final newData = Series('awesome_series',
-          <dynamic>['q', 'q', 'q', unknownValue, '2ee', '2ee', '0030', 'q',
-            '0030']);
+      final newData = Series('awesome_series', <dynamic>[
+        'q',
+        'q',
+        'q',
+        unknownValue,
+        '2ee',
+        '2ee',
+        '0030',
+        'q',
+        '0030'
+      ]);
       final encoded = encoder.encodeSeries(newData).toList();
 
       expect(encoded, hasLength(4));

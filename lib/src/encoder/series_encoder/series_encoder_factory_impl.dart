@@ -10,7 +10,9 @@ class SeriesEncoderFactoryImpl implements SeriesEncoderFactory {
   const SeriesEncoderFactoryImpl();
 
   @override
-  SeriesEncoder createByType(EncoderType type, Series fittingData, {
+  SeriesEncoder createByType(
+    EncoderType type,
+    Series fittingData, {
     String headerPrefix = '',
     String headerPostfix = '',
     UnknownValueHandlingType unknownValueHandlingType =
