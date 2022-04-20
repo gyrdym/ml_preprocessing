@@ -8,35 +8,35 @@ import 'package:ml_preprocessing/src/encoder/unknown_value_handling_type.dart';
 
 class EncoderImpl implements Encoder {
   EncoderImpl(
-      DataFrame fittingData,
-      EncoderType encoderType,
-      SeriesEncoderFactory seriesEncoderFactory, {
-        Iterable<int>? featureIds,
-        Iterable<String>? featureNames,
-        String encodedHeaderPrefix = '',
-        String encodedHeaderPostfix = '',
-        UnknownValueHandlingType unknownValueHandlingType =
-            defaultUnknownValueHandlingType,
-      }) :
-        _encoderBySeries = createEncoderToSeriesMapping(
-            fittingData, featureNames, featureIds,
+    DataFrame fittingData,
+    EncoderType encoderType,
+    SeriesEncoderFactory seriesEncoderFactory, {
+    Iterable<int>? columnIndices,
+    Iterable<String>? columnNames,
+    String encodedHeaderPrefix = '',
+    String encodedHeaderPostfix = '',
+    UnknownValueHandlingType unknownValueHandlingType =
+        defaultUnknownValueHandlingType,
+  }) : _encoderBySeries = createEncoderToSeriesMapping(
+            fittingData,
+            columnNames,
+            columnIndices,
             (series) => seriesEncoderFactory.createByType(
-              encoderType,
-              series,
-              headerPostfix: encodedHeaderPostfix,
-              headerPrefix: encodedHeaderPrefix,
-              unknownValueHandlingType: unknownValueHandlingType,
-            ));
+                  encoderType,
+                  series,
+                  headerPostfix: encodedHeaderPostfix,
+                  headerPrefix: encodedHeaderPrefix,
+                  unknownValueHandlingType: unknownValueHandlingType,
+                ));
 
   final Map<String, SeriesEncoder> _encoderBySeries;
 
   @override
   DataFrame process(DataFrame dataFrame) {
-    final encoded = dataFrame
-        .series
-        .expand((series) => _encoderBySeries.containsKey(series.name)
-        ? _encoderBySeries[series.name]!.encodeSeries(series)
-        : [series]);
+    final encoded = dataFrame.series.expand((series) =>
+        _encoderBySeries.containsKey(series.name)
+            ? _encoderBySeries[series.name]!.encodeSeries(series)
+            : [series]);
 
     return DataFrame.fromSeries(encoded);
   }
