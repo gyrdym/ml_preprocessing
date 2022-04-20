@@ -10,17 +10,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image:  google/dart:beta
-
     steps:
       - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1
 
       - name: Print Dart SDK version
         run: dart --version
 
       - name: Install dependencies
         run: dart pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze project source
         run: dart analyze --fatal-infos
