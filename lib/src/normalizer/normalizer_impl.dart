@@ -12,7 +12,7 @@ class NormalizerImpl implements Normalizer {
   @override
   DataFrame process(DataFrame input) {
     final transformed =
-    input.toMatrix(_dtype).mapRows((row) => row.normalize(_norm));
+        input.toMatrix(_dtype).mapRows((row) => row.normalize(_norm));
 
     return DataFrame.fromMatrix(transformed, header: input.header);
   }

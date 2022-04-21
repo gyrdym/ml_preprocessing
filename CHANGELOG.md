@@ -1,5 +1,10 @@
 # Changelog
 
+## 7.0.1
+- Added code formatting checking step to CI pipline
+- Corrected `README` examples
+- Added documentation to `Encoder` factory
+
 ## 7.0.0
 - `ml_datframe` 1.0.0 supported
 - `featureNames` parameter renamed to `columnNames`
