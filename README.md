@@ -179,8 +179,8 @@ There is a convenient way to organize a sequence of data preprocessing operation
 
 ````dart
 final pipeline = Pipeline(dataFrame, [
-  encodeAsOneHotLabels(featureNames: ['Gender', 'Age', 'City_Category']),
-  encodeAsIntegerLabels(featureNames: ['Stay_In_Current_City_Years', 'Marital_Status']),
+  toOneHotLabels(columnNames: ['Gender', 'Age', 'City_Category']),
+  toIntegerLabels(columnNames: ['Stay_In_Current_City_Years', 'Marital_Status']),
   normalize(),
   standardize(),
 ]);
@@ -192,6 +192,6 @@ Once you create (or rather fit) a pipeline, you may use it further in your appli
 final processed = pipeline.process(dataFrame);
 ````
 
-`encodeAsOneHotLabels`, `encodeAsIntegerLabels`, `normalize` and `standardize` are pipeable operator functions. 
+`toOneHotLabels`, `toIntegerLabels`, `normalize` and `standardize` are pipeable operator functions. 
 The pipeable operator function is a factory that takes fitting data and creates a fitted pipeable entity (e.g., 
 `Normalizer` instance)  
