@@ -55,7 +55,7 @@ dependencies:
 
 ### Getting started
 
-Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/mehdidag/black-friday) 
+Let's download some data from [Kaggle](https://www.kaggle.com) - let it be amazing [black friday](https://www.kaggle.com/datasets/sdolezel/black-friday) 
 dataset. It's pretty interesting data with huge amount of observations (approx. 538000 rows) and a good number of 
 categorical features.
 
@@ -90,8 +90,8 @@ Why should we fit it? Categorical data encoder fitting - a process, when all the
 searched for in order to create an encoded labels list. After the fitting is complete, one may use the fitted encoder for 
 the new data of the same source. 
 
-In order to fit the encoder, it's needed to create the entity and pass the fitting data as an argument to the 
-constructor, along with the features to be encoded:
+In order to fit the encoder, it's needed to create the instance of the `Encoder` class and pass the fitting data as an 
+argument to the constructor, along with the features to be encoded:
 
  
 ````dart

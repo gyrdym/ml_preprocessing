@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.2
+- `README.md`:
+    - Fixed link to `black_friday` dataset
+
 ## 7.0.1
 - Added code formatting checking step to CI pipline
 - Corrected `README` examples
